@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<!--/*@thymesVar id="username" type=""*/-->
+<h2 th:text="'Hello, '  + '!'">This will be replaced</h2>
+<!--/*@thymesVar id="user" type="com.sorbonne.safetyline.model.User"*/-->
+<form action="" method="post" class="form-test" th:action="@{/safetylineRegisterSubmit}" th:object="${user}">
+    <h2>Registering</h2>
+    <label>Enter your username :</label>
+    <div class="usernamediv">
+        <input th:field="*{idUser}" type="text" class = "form-control" placeholder="Mandatory">
+    </div>
+    <div class="usernamediv">
+        <span class="text-danger" th:errors="*{idUser}">affichage erreurs</span>
+    </div>
+    <label>Enter your password</label>
+    <div class="passworddiv">
+        <input th:field="*{password}" type="password" class = "form-control" placeholder="Mandatory">
+    </div>
+    <div class="passworddiv">
+        <span class="text-danger2" th:errors="*{password}">affichage erreurs</span>
+    </div>
+    <label>Admin</label>
+    <div class="isAdmindiv">
+        <input type="checkbox" name="adm" th:checked="${user.admin}">
+    </div>
+    <div class="buttonsubmit">
+        <button type="submit">Submit</button>
+    </div>
+</form>
+</body>
+</html>
