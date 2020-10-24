@@ -24,10 +24,6 @@
     <div class="passworddiv">
         <span class="text-danger2" th:errors="*{password}">affichage erreurs</span>
     </div>
-    <label>Admin</label>
-    <div class="isAdmindiv">
-        <input type="checkbox" name="adm" th:checked="${user.admin}">
-    </div>
     <div class="buttonsubmit">
         <button type="submit">Submit</button>
     </div>

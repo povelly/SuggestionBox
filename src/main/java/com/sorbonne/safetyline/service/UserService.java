@@ -29,7 +29,6 @@ public class UserService {
         if (existingUser == null) {
             usersRepository.addItem(newUser);
         } else {
-            existingUser.setAdmin(newUser.isAdmin());
             existingUser.setId_ticket(newUser.getId_ticket());
             existingUser.setPassword(newUser.getPassword());
         }

@@ -1,8 +1,13 @@
 package com.sorbonne.safetyline.model;
 
+import javax.persistence.Table;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.sql.Date;
 import java.util.List;
 
+@Entity
+@Table(name = "Strawpoll", schema = "safetyline")
 public class Strawpoll
 {
     private int id_strawpoll;
@@ -10,6 +15,8 @@ public class Strawpoll
     private Date deadline_time;
     private String title;
     private List<Choice> choices;
+    private String id;
+
     public Strawpoll(int id_strawpoll, Date creation_date, Date deadline_time, String title, List<Choice> choices)
     {
         this.id_strawpoll = id_strawpoll;
@@ -17,6 +24,10 @@ public class Strawpoll
         this.deadline_time = deadline_time;
         this.title = title;
         this.choices = choices;
+    }
+
+    public Strawpoll() {
+
     }
 
     public int getId_strawpoll() {
@@ -49,5 +60,14 @@ public class Strawpoll
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Id
+    public String getId() {
+        return id;
     }
 }

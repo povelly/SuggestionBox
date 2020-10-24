@@ -1,9 +1,14 @@
 package com.sorbonne.safetyline.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
+@Entity
+@Table( name="Suggestions", schema = "safetyline")
 public class Suggestion {
     @NotNull(message = "id_recommendation cannot be null")
     private int id_recommendation;
@@ -15,6 +20,8 @@ public class Suggestion {
 
     @NotNull(message = "the date of submission of the suggestion cannot be null")
     private Date date;
+    private String id;
+
     public Suggestion(int id_recommendation, String suggestion_content, String author, Date date)
     {
         this.suggestion_content = suggestion_content;
@@ -22,6 +29,11 @@ public class Suggestion {
         this.author = author;
         this.date = date;
     }
+
+    public Suggestion() {
+
+    }
+
     public int getId_recommendation() {
         return id_recommendation;
     }
@@ -52,5 +64,14 @@ public class Suggestion {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Id
+    public String getId() {
+        return id;
     }
 }

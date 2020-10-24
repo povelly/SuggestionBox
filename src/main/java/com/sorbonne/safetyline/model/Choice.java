@@ -1,10 +1,19 @@
 package com.sorbonne.safetyline.model;
+import javax.persistence.*;
+import java.util.List;
 
+@Entity
+@Table( name="Choice", schema = "safetyline")
 public class Choice
 {
     private int id_choice;
     private static int index = 0;
     private int voters_cpt;
+
+    @ManyToMany
+    private List<User> userList;
+
+
 
     public Choice(int id_choice, String content) {
         this.id_choice = index++;
@@ -12,6 +21,17 @@ public class Choice
         this.content = content;
     }
 
+    public Choice() {
+
+    }
+    public List<User> getUserList() {
+    return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
+    @Id
     public int getId_choice() {
         return id_choice;
     }

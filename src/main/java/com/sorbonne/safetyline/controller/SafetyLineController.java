@@ -4,6 +4,7 @@ package com.sorbonne.safetyline.controller;
 import com.sorbonne.safetyline.exception.DuplicateUsernameException;
 import com.sorbonne.safetyline.model.User;
 import com.sorbonne.safetyline.service.UserService;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +12,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
+import java.awt.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 public class SafetyLineController {
     private UserService userService = new UserService();
 
@@ -24,13 +24,13 @@ public class SafetyLineController {
      *
      * @return          Home of safetyline
      */
-    @GetMapping("/safetylineHome")
-    public ModelAndView getUserId() {
+    @RequestMapping(value="/safetylineHome", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE}, method = RequestMethod.GET)
+    public String getUserId() {
         //name of html file inside template
         String viewName = "safetylineHome";
         Map<String, String> model = new HashMap<String, String>();
         //model.put("name1", "name2");
-        return new ModelAndView(viewName, model);
+        return "je ne sais pas";
     }
 
     /**
@@ -54,6 +54,7 @@ public class SafetyLineController {
     {
         if (bindingResult.hasErrors())
         {
+            //System.out.println(bindingResult.getModel());
             return new ModelAndView("/safetylineRegisterForm");
         }
 
@@ -63,7 +64,6 @@ public class SafetyLineController {
             bindingResult.rejectValue("user_id", "", "This username has already been used");
             return new ModelAndView("safetylineRegisterForm");
         }
-
 
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl("/safetylineHome");

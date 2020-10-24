@@ -1,9 +1,11 @@
 package com.sorbonne.safetyline.dataAccess;
 
 import com.sorbonne.safetyline.model.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class UsersRepository {
     private List<User> users = new ArrayList<>();
@@ -29,7 +31,7 @@ public class UsersRepository {
     public User findByEmail(String email) {
         for (User user: users)
         {
-            if(user.getIdUser().equals(email)){
+            if(user.getId_user().equals(email)){
                 return user;
             }
         }
