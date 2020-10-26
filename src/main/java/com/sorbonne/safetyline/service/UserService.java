@@ -25,7 +25,7 @@ public class UserService {
 
     public void addOrUpdateUser(User newUser) throws DuplicateUsernameException
     {
-        User existingUser = findUserByUserId(newUser.getIdUser());
+        User existingUser = findUserByUserId(newUser.getId_user());
         if (existingUser == null) {
             usersRepository.addItem(newUser);
         } else {
