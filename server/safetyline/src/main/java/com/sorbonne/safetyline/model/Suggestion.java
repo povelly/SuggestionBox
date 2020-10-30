@@ -9,43 +9,35 @@ import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
-@Table( name="Suggestions", schema = "safetyline")
+@Table( name="suggestion", schema = "safetyline")
 public class Suggestion {
     @Id
     @NotNull(message = "id_recommendation cannot be null")
-    @Column( name="Id_recommendation")
-    private Integer id_recommendation;
+    @Column( name="suggestion_id")
+    private Integer suggestion_id;
 
     @NotBlank(message = "your suggestion must contains at least one character")
     @Column( name="suggestion_content")
     private String suggestion_content;
 
-    @Column( name="author")
-    private String author;
 
     @NotNull(message = "the date of submission of the suggestion cannot be null")
-    @Column( name="date")
-    private Date date;
+    @Column( name="suggestion_creation_date")
+    private Date suggestion_creation_date;
 
+    @Column( name="suggestion_author")
+    private String suggestion_author;
 
-    public Suggestion(int id_recommendation, String suggestion_content, String author, Date date)
-    {
-        this.suggestion_content = suggestion_content;
-        this.id_recommendation = id_recommendation;
-        this.author = author;
-        this.date = date;
-    }
 
     public Suggestion() {
 
     }
-
-    public int getId_recommendation() {
-        return id_recommendation;
+    public int getSuggestion_id() {
+        return suggestion_id;
     }
 
-    public void setId_recommendation(int id_recommendation) {
-        this.id_recommendation = id_recommendation;
+    public void setSuggestion_id(int suggestion_id) {
+        this.suggestion_id = suggestion_id;
     }
 
     public String getSuggestion_content() {
@@ -56,20 +48,26 @@ public class Suggestion {
         this.suggestion_content = suggestion_content;
     }
 
-    public String getAuthor() {
-        return author;
+    public Date getSuggestion_creation_date() {
+        return suggestion_creation_date;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setSuggestion_creation_date(Date suggestion_creation_date) {
+        this.suggestion_creation_date = suggestion_creation_date;
     }
 
-    public Date getDate() {
-        return date;
+    public String getSuggestion_author() {
+        return suggestion_author;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setSuggestion_author(String suggestion_author) {
+        this.suggestion_author = suggestion_author;
     }
-
+    public String toString()
+    {
+        return "suggestion "+this.suggestion_id
+                +" created the "+ this.suggestion_creation_date +
+                " by "+ this.suggestion_author +
+                "content: "+this.suggestion_content;
+    }
 }

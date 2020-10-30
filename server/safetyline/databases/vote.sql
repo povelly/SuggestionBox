@@ -1,13 +1,10 @@
-create table vote
+create table if not exists vote
 (
-	id_user_transition varchar(50) not null,
-	id_choice_transition int not null
-)
-comment 'Join table between user and choices';
-
-create index vote_Choice_id_choice_fk
-	on vote (id_choice_transition);
-
-create index vote_User_id_user_fk
-	on vote (id_user_transition);
+	user_id varchar(50) not null,
+	choice_id int not null,
+	constraint vote_choice_choice_id_fk
+		foreign key (choice_id) references choice (choice_id),
+	constraint vote_user_user_id_fk
+		foreign key (user_id) references user (user_id)
+);
 

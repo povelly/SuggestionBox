@@ -3,7 +3,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table( name="Choice", schema = "safetyline")
+@Table( name="choice", schema = "safetyline")
 public class Choice
 {
     @Id

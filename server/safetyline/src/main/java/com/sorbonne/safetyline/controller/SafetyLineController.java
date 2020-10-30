@@ -4,9 +4,6 @@ package com.sorbonne.safetyline.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sorbonne.safetyline.dataAccess.UserDoa;
-import com.sorbonne.safetyline.exception.DuplicateUsernameException;
-import com.sorbonne.safetyline.model.Admin;
 import com.sorbonne.safetyline.model.User;
 import com.sorbonne.safetyline.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +14,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class SafetyLineController {
@@ -71,7 +71,7 @@ public class SafetyLineController {
     }
 
     @RequestMapping(value= "/safetylineUserTest", method = RequestMethod.GET)
-    public String testUserDB(){
+    public String testUserDB()  {
         //userService.deleteUserById_user("user2");
         List<User> users = userService.getAllUsers();
         //List<User> admins = userDoa.getAllAdmins();//
@@ -79,7 +79,23 @@ public class SafetyLineController {
             System.out.println(user);
         //userService.deleteUserById_user("user2");
         //userService.getAllChoicesUser("mathieumemmi");
-        userService.getAllSuggestions("mathieumemmi");
+        //List<User> userfindall =userService.getAllAdmins();
+        //System.out.println(userfindall);
+        //Optional<User> findUser = userService.findByUser_id("mathieumemmi");
+        //System.out.println(findUser);
+        String lowerBoundRangeDateS = "2020/10/29 16:40:22";
+        String upperBoundRangeDateS = "2020/10/31 19:00:00";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime lowerBoundRangeDate = LocalDateTime.of(2020,10,29,16,40,21);
+        LocalDateTime upperBoundRangeDate = LocalDateTime.of(2020,10,30,18,0,0);
+
+        System.out.println("print all suggestions between "+ lowerBoundRangeDate +" and "
+                + upperBoundRangeDate +
+                userService.getSuggestionByDateRange
+                        (java.sql.Date.valueOf(lowerBoundRangeDate.toLocalDate()),java.sql.Date.valueOf(upperBoundRangeDate.toLocalDate())));
+
+
+        System.out.println(userService.getSuggestionByAuthor("joe"));
         return "fjsjkl";
     }
 }

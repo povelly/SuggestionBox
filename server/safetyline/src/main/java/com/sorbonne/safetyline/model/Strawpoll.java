@@ -9,11 +9,11 @@ import java.util.List;
 public class Strawpoll
 {
     @Id
-    @Column( name="id_strawpoll", length = 11)
+    @Column( name="strawpoll_id", length = 11)
     private int id_strawpoll;
-    @Column( name="creation_date")
+    @Column( name="strawpoll_creation_date")
     private Date creation_date;
-    @Column( name="deadline_time")
+    @Column( name="strawpoll_expiration_date")
     private Date deadline_time;
     @Column( name="title", length = 150)
     private String title;
