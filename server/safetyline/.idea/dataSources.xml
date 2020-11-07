@@ -9,6 +9,7 @@
       <jdbc-url>jdbc:mysql://localhost:3306/safetyline</jdbc-url>
       <driver-properties>
         <property name="serverTimezone" value="UTC" />
+        <property name="enabledTLSProtocols" value="TLSv1, TLSv1.1, TLSv1.2, TLSv1.3" />
       </driver-properties>
       <time-zone>Europe/Paris</time-zone>
     </data-source>

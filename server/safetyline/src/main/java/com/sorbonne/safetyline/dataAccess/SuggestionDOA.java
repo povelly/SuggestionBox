@@ -9,9 +9,9 @@ import java.sql.Date;
 import java.util.List;
 
 @Repository
-public interface SuggestionDoa extends JpaRepository<Suggestion, Integer> {
+public interface SuggestionDOA extends JpaRepository<Suggestion, Integer> {
     /**
-         * @return          all suggestions
+     * @return              all suggestions
      */
     @Query(value = "SELECT * FROM suggestion",nativeQuery = true)
     public List<Suggestion> findAll();

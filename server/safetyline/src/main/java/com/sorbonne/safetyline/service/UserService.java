@@ -1,7 +1,8 @@
 package com.sorbonne.safetyline.service;
 
-import com.sorbonne.safetyline.dataAccess.SuggestionDoa;
-import com.sorbonne.safetyline.dataAccess.UserDoa;
+import com.sorbonne.safetyline.dataAccess.StrawpollDOA;
+import com.sorbonne.safetyline.dataAccess.SuggestionDOA;
+import com.sorbonne.safetyline.dataAccess.UserDOA;
 import com.sorbonne.safetyline.model.Strawpoll;
 import com.sorbonne.safetyline.model.Suggestion;
 import com.sorbonne.safetyline.model.User;
@@ -16,19 +17,21 @@ import java.util.Optional;
 @Service
 public class UserService {
     @Autowired
-    private UserDoa userdoa;
+    private UserDOA userdoa;
     @Autowired
-    private SuggestionDoa suggestionDoa;
+    private SuggestionDOA suggestionDoa;
+    @Autowired
+    private StrawpollDOA strawpollDoa;
 
     //---------------------------------------------------------------------------
-    // User
+    // User services
     //---------------------------------------------------------------------------
     public List<User> getAllUsers() {
         return userdoa.getAllUsers();
     }
 
     /**
-     * @see UserDoa#deleteUserById_user(String)
+     * @see UserDOA#deleteUserById_user(String)
      */
     @Transactional
     public void deleteUserById_user(String id_user) {
@@ -36,28 +39,28 @@ public class UserService {
     }
 
     /**
-     * @see UserDoa#getAllAdmins()
+     * @see UserDOA#getAllAdmins()
      */
     public List<User> getAllAdmins() {
         return userdoa.getAllAdmins();
     }
 
     /**
-     * @see UserDoa#findById(Object)
+     * @see UserDOA#findById(Object)
      */
     public Optional<User> getUserById(String user_id) {
         return userdoa.findById(user_id);
     }
 
     /**
-     * @see UserDoa#findByFirst_name(String)
+     * @see UserDOA#findByFirst_name(String)
      */
     public List<User> getUserByFirst_name(String first_name) {
         return userdoa.findByFirst_name(first_name);
     }
 
     /**
-     * @see UserDoa#findByLast_name(String)
+     * @see UserDOA#findByLast_name(String)
      */
     public List<User> getUserByLast_name(String last_name) {
         return userdoa.findByLast_name(last_name);
@@ -65,29 +68,73 @@ public class UserService {
 
 
     //----------------------------------------------------------------------------
-    // Suggestion
+    // Suggestion services
     //----------------------------------------------------------------------------
 
     /**
-     * @see SuggestionDoa#findAll()
+     * @see SuggestionDOA#findAll()
      */
     public List<Suggestion> getAllSuggestions() {
         return suggestionDoa.findAll();
     }
 
     /**
-     * @see SuggestionDoa#findBySuggestion_author(String)
+     * @see SuggestionDOA#findBySuggestion_author(String)
      */
     public List<Suggestion> getSuggestionByAuthor(String author) {
         return suggestionDoa.findBySuggestion_author(author);
     }
 
     /**
-     * @see SuggestionDoa#
+     * @see SuggestionDOA#findBySuggestion_creation_dateRange(Date, Date)
      */
     public List<Suggestion> getSuggestionByDateRange(Date lowerBoundDate, Date upperBoundDate)
     {
         return suggestionDoa.findBySuggestion_creation_dateRange(lowerBoundDate, upperBoundDate);
+    }
+
+    //----------------------------------------------------------------------------
+    // Strawpoll services
+    //----------------------------------------------------------------------------
+
+    /**
+     * @see StrawpollDOA#findAll()
+     */
+    public List<Strawpoll> getAllStrawpolls()
+    {
+        return strawpollDoa.findAll();
+    }
+
+    /**
+     * @see StrawpollDOA#findByStrawpoll_expiration_date(Date, Date)
+     */
+    public List<Strawpoll> getStrawpollByExpiration(Date lowerBound, Date upperBound)
+    {
+        return strawpollDoa.findByStrawpoll_expiration_date(lowerBound, upperBound);
+    }
+
+    /**
+     * @see StrawpollDOA#findByStrawpoll_creation_date(Date, Date)
+     */
+    public List<Strawpoll> getStrawpollByCreation(Date lowerBound, Date upperBound)
+    {
+        return strawpollDoa.findByStrawpoll_creation_date(lowerBound, upperBound);
+    }
+
+    /**
+     * @see StrawpollDOA#findByStrawpoll_author(String)
+     */
+    public List<Strawpoll> getStrawpollByAuthor(String author)
+    {
+        return strawpollDoa.findByStrawpoll_author(author);
+    }
+
+    /**
+     * @see StrawpollDOA#findByTitle(String)
+     */
+    public List<Strawpoll> getStrawpollByTitle(String title)
+    {
+        return strawpollDoa.findByTitle(title);
     }
 
 }

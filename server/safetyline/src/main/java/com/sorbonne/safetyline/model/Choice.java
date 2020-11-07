@@ -7,64 +7,68 @@ import java.util.List;
 public class Choice
 {
     @Id
-    private int id_choice;
-    private static int index = 0;
-    private int voters_cpt;
+    @Column(name = "choice_id", length=11)
+    private int choice_id;
+    @Column(name = "voters_count", length=11)
+    private int voter_count;
+    @Column( name = "strawpoll_id", length=11)
+    private int strawpoll_id;
+    @Column(name = "choice_content", length=200)
+    private String choice_content;
+    @ManyToOne(targetEntity = Strawpoll.class)
+    @JoinColumn(name = "strawpoll_id", insertable = false, updatable = false)
+    private Strawpoll strawpoll;
 
-    //@ManyToMany
-    //private List<User> userList;
-
-
-
-    public Choice(int id_choice, String content) {
-        this.id_choice = index++;
-        this.voters_cpt = 0;
-        this.content = content;
+    public int getChoice_id() {
+        return choice_id;
     }
 
-    public Choice() {
-
-    }
-    //public List<User> getUserList() {
-    //return userList;
-    //}
-
-    //public void setUserList(List<User> userList) {
-    //    this.userList = userList;
-   // }
-    @Id
-    public int getId_choice() {
-        return id_choice;
+    public void setChoice_id(int choice_id) {
+        this.choice_id = choice_id;
     }
 
-    public void setId_choice(int id_choice) {
-        this.id_choice = id_choice;
+    public int getVoter_count() {
+        return voter_count;
     }
 
-    public static int getIndex() {
-        return index;
+    public void setVoter_count(int voter_count) {
+        this.voter_count = voter_count;
     }
 
-    public static void setIndex(int index) {
-        Choice.index = index;
+    public int getStrawpoll_id() {
+        return strawpoll_id;
     }
 
-    public int getVoters_cpt() {
-        return voters_cpt;
+    public void setStrawpoll_id(int strawpoll_id) {
+        this.strawpoll_id = strawpoll_id;
     }
 
-    public void setVoters_cpt(int voters_cpt) {
-        this.voters_cpt = voters_cpt;
+    public String getChoice_content() {
+        return choice_content;
     }
 
-    public String getContent() {
-        return content;
+    public void setChoice_content(String choice_content) {
+        this.choice_content = choice_content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public Strawpoll getStrawpoll() {
+        return strawpoll;
     }
 
-    private String content;
+    public void setStrawpoll(Strawpoll strawpoll) {
+        this.strawpoll = strawpoll;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @ManyToOne
+    private User user;
+
 
 }

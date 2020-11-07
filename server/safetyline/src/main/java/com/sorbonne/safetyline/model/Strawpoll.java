@@ -5,12 +5,12 @@ import java.sql.Date;
 import java.util.List;
 
 @Entity
-//@Table(name = "Strawpoll", schema = "safetyline")
+@Table(name = "strawpoll", schema = "safetyline")
 public class Strawpoll
 {
     @Id
     @Column( name="strawpoll_id", length = 11)
-    private int id_strawpoll;
+    private int strawpoll_id;
     @Column( name="strawpoll_creation_date")
     private Date creation_date;
     @Column( name="strawpoll_expiration_date")
@@ -18,12 +18,28 @@ public class Strawpoll
     @Column( name="title", length = 150)
     private String title;
 
-    @ManyToMany
-    private List<User> usersParticipated;
+    @OneToMany( fetch = FetchType.EAGER,
+                cascade = {
+                    CascadeType.PERSIST,
+                        CascadeType.MERGE
+                })
+    @MapsId("strawpoll_id")
+    @JoinColumn(name = "strawpoll_id")
+    private List<Choice> choices;
+
+    public List<Choice> getChoices() {
+        return choices;
+    }
+
+    public void setChoices(List<Choice> choices) {
+        this.choices = choices;
+    }
+//@ManyToMany
+    //private List<User> usersParticipated;
 
     public Strawpoll(int id_strawpoll, Date creation_date, Date deadline_time, String title, List<Choice> choices)
     {
-        this.id_strawpoll = id_strawpoll;
+        this.strawpoll_id = id_strawpoll;
         this.creation_date = creation_date;
         this.deadline_time = deadline_time;
         this.title = title;
@@ -34,12 +50,12 @@ public class Strawpoll
 
     }
 
-    public int getId_strawpoll() {
-        return id_strawpoll;
+    public int getStrawpoll_id() {
+        return strawpoll_id;
     }
 
-    public void setId_strawpoll(int id_strawpoll) {
-        this.id_strawpoll = id_strawpoll;
+    public void setStrawpoll_id(int id_strawpoll) {
+        this.strawpoll_id = id_strawpoll;
     }
 
     public Date getCreation_date() {

@@ -4,6 +4,7 @@ package com.sorbonne.safetyline.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sorbonne.safetyline.model.Choice;
 import com.sorbonne.safetyline.model.User;
 import com.sorbonne.safetyline.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,25 +78,29 @@ public class SafetyLineController {
         //List<User> admins = userDoa.getAllAdmins();//
         for (User user: users)
             System.out.println(user);
+        User user = users.get(0);
         //userService.deleteUserById_user("user2");
         //userService.getAllChoicesUser("mathieumemmi");
         //List<User> userfindall =userService.getAllAdmins();
         //System.out.println(userfindall);
         //Optional<User> findUser = userService.findByUser_id("mathieumemmi");
         //System.out.println(findUser);
-        String lowerBoundRangeDateS = "2020/10/29 16:40:22";
-        String upperBoundRangeDateS = "2020/10/31 19:00:00";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime lowerBoundRangeDate = LocalDateTime.of(2020,10,29,16,40,21);
-        LocalDateTime upperBoundRangeDate = LocalDateTime.of(2020,10,30,18,0,0);
+        //String lowerBoundRangeDateS = "2020/10/29 16:40:22";
+        //String upperBoundRangeDateS = "2020/10/31 19:00:00";
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        //LocalDateTime lowerBoundRangeDate = LocalDateTime.of(2020,10,29,16,40,21);
+        //LocalDateTime upperBoundRangeDate = LocalDateTime.of(2020,10,30,18,0,0);
 
-        System.out.println("print all suggestions between "+ lowerBoundRangeDate +" and "
-                + upperBoundRangeDate +
-                userService.getSuggestionByDateRange
-                        (java.sql.Date.valueOf(lowerBoundRangeDate.toLocalDate()),java.sql.Date.valueOf(upperBoundRangeDate.toLocalDate())));
+        //System.out.println("print all suggestions between "+ lowerBoundRangeDate +" and "
+        //        + upperBoundRangeDate +
+         //       userService.getSuggestionByDateRange
+         //               (java.sql.Date.valueOf(lowerBoundRangeDate.toLocalDate()),java.sql.Date.valueOf(upperBoundRangeDate.toLocalDate())));
+        //System.out.println(user);
+        System.out.println(user.getSuggestionList());
+        //List<Choice> choices = userService.getAllChoices();
 
 
-        System.out.println(userService.getSuggestionByAuthor("joe"));
+        //System.out.println(userService.getSuggestionByAuthor("joe"));
         return "fjsjkl";
     }
 }
