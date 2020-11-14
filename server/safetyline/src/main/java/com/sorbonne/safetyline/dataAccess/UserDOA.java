@@ -12,6 +12,27 @@ import java.util.List;
 public interface UserDOA extends JpaRepository<User, String> {
 
     /**
+     * create a simple user in database
+     * @param user_id           email of the user
+     * @param first_name        first name of the new user
+     * @param last_name         last name of the new user
+     * @param password          password already hashed of the new user
+     * @param is_admin          true if the user is admin false otherwise
+     */
+    @Modifying
+    @Query(value = "INSERT INTO user (user_id, first_name, last_name, password, is_admin) " +
+            " values (?1,?2,?3,?4,?5)", nativeQuery = true)
+    public void createUser(String user_id, String first_name, String last_name, String password, boolean is_admin);
+
+    /**
+     *  Remove the user with the given username
+     * @param id_user           username (email)
+     */
+    @Modifying
+    @Query(value = "DELETE FROM user WHERE id_user = ?1", nativeQuery = true)
+    public void deleteUserById_user(@Param("id_user")String id_user);
+
+    /**
      * @return                 all users in databases
      */
     @Query(value = "SELECT * FROM user", nativeQuery = true)
@@ -22,14 +43,6 @@ public interface UserDOA extends JpaRepository<User, String> {
      */
     @Query(value = "SELECT * FROM user WHERE is_Admin", nativeQuery = true)
     public List<User> getAllAdmins();
-
-    /**
-     *  Remove the user with the given username
-     * @param id_user           username (email)
-     */
-    @Modifying
-    @Query(value = "DELETE FROM user WHERE id_user = ?1", nativeQuery = true)
-    public void deleteUserById_user(@Param("id_user")String id_user);
 
     /**
      *

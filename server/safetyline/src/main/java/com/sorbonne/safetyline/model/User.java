@@ -1,16 +1,19 @@
 package com.sorbonne.safetyline.model;
 
 
+import org.hibernate.validator.constraints.*;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table( name="user", schema = "safetyline")
-//@NamedQuery(name= "User.getAll", query = "select user from User user")
 public class User
 {
     @Id
@@ -22,8 +25,7 @@ public class User
 
     @NotNull( message = "null password")
     @NotBlank( message = "password empty")
-    @Size( max=30, min=6)
-    @Column( name = "password", length = 50)
+    @Column( name = "password", length = 40)
     private String password;
 
 
@@ -47,6 +49,17 @@ public class User
     @JoinColumn(name = "suggestion_author")
     private List<Suggestion> suggestionList;
 
+
+    @Column( name="is_admin")
+    private boolean is_admin ;
+
+    public boolean isIs_admin() {
+        return is_admin;
+    }
+
+    public void setIs_admin(boolean is_admin) {
+        this.is_admin = is_admin;
+    }
 
     public void setSuggestionList(List<Suggestion> suggestionList) {
         this.suggestionList = suggestionList;

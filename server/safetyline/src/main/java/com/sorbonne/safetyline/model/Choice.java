@@ -13,11 +13,12 @@ public class Choice
     private int voter_count;
     @Column( name = "strawpoll_id", length=11)
     private int strawpoll_id;
-    @Column(name = "choice_content", length=200)
+    @Column(name = "choice_content", length=65000)
     private String choice_content;
     @ManyToOne(targetEntity = Strawpoll.class)
     @JoinColumn(name = "strawpoll_id", insertable = false, updatable = false)
     private Strawpoll strawpoll;
+
 
     public int getChoice_id() {
         return choice_id;

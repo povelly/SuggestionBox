@@ -6,6 +6,7 @@ create table if not exists strawpoll
 	strawpoll_expiration_date datetime not null,
 	title varchar(150) not null,
 	strawpoll_author varchar(50) default 'Anonymous' null comment 'Administrator who created the strawpoll
-'
+',
+	strawpoll_completed int default 0 null
 );
 

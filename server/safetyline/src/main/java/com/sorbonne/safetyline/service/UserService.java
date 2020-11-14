@@ -1,5 +1,7 @@
 package com.sorbonne.safetyline.service;
 
+import beans.JavaMailUtil;
+import beans.Password;
 import com.sorbonne.safetyline.dataAccess.StrawpollDOA;
 import com.sorbonne.safetyline.dataAccess.SuggestionDOA;
 import com.sorbonne.safetyline.dataAccess.UserDOA;
@@ -10,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +43,45 @@ public class UserService {
         userdoa.deleteUserById_user(id_user);
     }
 
+    @Transactional
+    public void addSimpleUser(String user_id, String first_name, String last_name) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
+        String password = Password.generateFirstPassword();
+        /**
+         * Send email to user with his password
+         */
+        String hashPassword = Password.sha256(password);
+        User u = new User();
+        u.setUser_id(user_id);
+        u.setLast_name(last_name);
+        u.setFirst_name(first_name);
+        u.setPassword(password);
+        u.setSuggestionList(new ArrayList<>());
+        u.setIs_admin(false);
+        userdoa.save(u);
+    }
+
+    /**
+     * @see UserDOA#save(Object) 
+     */
+    @Transactional
+    public void addSimpleAdmin(String user_id, String first_name, String last_name) throws Exception {
+
+        String password = Password.generateFirstPassword();
+        /**
+         * Send email to user with his password
+         */
+        //JavaMailUtil.send("sacha.memmi.etu@gmail.com", password);
+        String hashPassword = Password.sha256(password);
+        User u = new User();
+        u.setUser_id(user_id);
+        u.setLast_name(last_name);
+        u.setFirst_name(first_name);
+        u.setPassword(password);
+        u.setSuggestionList(new ArrayList<>());
+        u.setIs_admin(true);
+        userdoa.save(u);
+    }
     /**
      * @see UserDOA#getAllAdmins()
      */

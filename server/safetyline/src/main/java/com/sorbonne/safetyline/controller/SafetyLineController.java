@@ -15,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -79,6 +81,13 @@ public class SafetyLineController {
         for (User user: users)
             System.out.println(user);
         User user = users.get(0);
+        try {
+            userService.addSimpleAdmin("jeanvaljean@hotmail.fr", "jean", "valjean");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //userService.deleteUserById_user("user2");
         //userService.getAllChoicesUser("mathieumemmi");
         //List<User> userfindall =userService.getAllAdmins();

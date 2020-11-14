@@ -34,8 +34,9 @@ public class Strawpoll
     public void setChoices(List<Choice> choices) {
         this.choices = choices;
     }
-//@ManyToMany
-    //private List<User> usersParticipated;
+
+    @Column(name="strawpoll_completed", length=11)
+    private int strawpoll_completed;
 
     public Strawpoll(int id_strawpoll, Date creation_date, Date deadline_time, String title, List<Choice> choices)
     {
