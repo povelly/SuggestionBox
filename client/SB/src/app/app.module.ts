@@ -3,14 +3,16 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { LoginModule } from './login/login.module';
+import { LoginFormComponent } from './login/login-form/login-form.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
-    LoginModule
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
