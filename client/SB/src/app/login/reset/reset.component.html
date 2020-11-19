@@ -2,14 +2,24 @@
 <div class="row">
     <div class="col-md-6 offset-md-3 mt-4">
         <h3>Mot de passe oublié</h3>
-        <form>
+        <form #f="ngForm"
+        (ngSubmit)="onSubmit(f)">
 
             <div class="form-group">
                 <label for="resetPasswordEmail">Email</label>
-                <input type="email" class="form-control" id="resetPasswordEmail" placeholder="moi@mail.fr">
+                <input type="email" 
+                name="username"
+                ngModel
+                required
+                #username="ngModel"
+                class="form-control" 
+                id="resetPasswordEmail" 
+                placeholder="moi@mail.fr">
             </div>
 
-            <button type="submit" class="btn btn-primary">Modifier mot de passe </button>
+            <button type="submit" 
+            [disabled]="f.invalid"
+            class="btn btn-primary">Modifier mot de passe </button>
 
             <button routerLink="/login" type="button" class="btn btn-primary">Cancel</button>
         </form>

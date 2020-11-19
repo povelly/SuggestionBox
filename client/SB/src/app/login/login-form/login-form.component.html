@@ -16,6 +16,7 @@
         id="exampleInputEmail1" 
         aria-describedby="emailHelp">
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        <p>username valid: {{ username.valid }}</p>
       </div>
 
       <div class="form-group">
@@ -26,7 +27,7 @@
         required
         #password="ngModel"
         class="form-control" 
-        id="exampleInputPassword1">
+        id="loginPassword">
       </div>
 
       <button type="submit" 

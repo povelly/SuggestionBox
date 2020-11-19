@@ -10,6 +10,8 @@ export class LoginFormComponent implements OnInit {
 
   mot = "Bonjour";
 
+
+
   constructor() { }
 
   ngOnInit(): void {
