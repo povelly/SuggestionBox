@@ -19,8 +19,8 @@ export class LoginFormComponent implements OnInit {
       next: x => console.log('User logged in'),
       error: err => console.log(err)
     };
-    this.authService.login(f.value).subscribe(loginObserver);
-    this.authService.login(f.value)
+    this.authService.login2(f.value).subscribe(loginObserver);
+    //this.authService.login2(f.value)
     console.log(f.value);  // { first: '', last: '' }
     console.log(f.valid);  // false
   }

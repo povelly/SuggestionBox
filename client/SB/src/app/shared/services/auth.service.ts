@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 
 @Injectable({
@@ -21,5 +22,8 @@ export class AuthService {
         }
       })
     )
+  }
+  login2(model: any) {
+    return of(true);
   }
 }
