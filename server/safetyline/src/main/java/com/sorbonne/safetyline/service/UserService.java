@@ -181,4 +181,13 @@ public class UserService {
         return strawpollDoa.findByTitle(title);
     }
 
+
+    // --------------------------------------------------------------------------------
+    // Connection services
+    // ---------------------------------------------------------------------------------
+
+    public boolean authentifyUser(String username, String hashPassword)
+    {
+        return !userdoa.findUserByIdPassword(username, hashPassword).isEmpty();
+    }
 }
