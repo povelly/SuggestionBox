@@ -73,6 +73,13 @@ public class SafetyLineController {
         return new ModelAndView(redirectView);
     }
 
+
+    @RequestMapping("/safetylineConnexion")
+    public boolean safetylineConnexion(@RequestParam(name ="username") String username, @RequestParam(name="password") String passwordHash)
+    {
+        return userService.authentifyUser(username,passwordHash);
+    }
+
     @RequestMapping(value= "/safetylineUserTest", method = RequestMethod.GET)
     public String testUserDB()  {
         //userService.deleteUserById_user("user2");
