@@ -44,6 +44,12 @@ public class SafetyLineController {
         JsonNode actualObj = mapper.readTree("{\"k1\":\"v1\",\"k2\":\"v2\"}");
         return actualObj;
     }
+    
+    @RequestMapping("/safetylineConnexion")
+    public boolean safetylineConnexion(@RequestParam(name ="username") String username, @RequestParam(name="password") String passwordHash)
+    {
+        return userService.authentifyUser(username,passwordHash);
+    }
 
     /**
      *  First view the user will access before user send the completed register form

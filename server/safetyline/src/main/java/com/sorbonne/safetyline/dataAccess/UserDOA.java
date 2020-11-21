@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserDOA extends JpaRepository<User, String> {
@@ -47,5 +48,15 @@ public interface UserDOA extends JpaRepository<User, String> {
      */
     @Query(value = "SELECT * FROM user WHERE first_name = ?1", nativeQuery = true)
     public List<User> findByFirst_name(@Param("firstName") String firstName);
+    
+    
+    /**
+     * 
+     * @param username		string username
+     * @param hashpassword	password hashed
+     * @return				the user
+     */
+    @Query(value = "SELECT * FROM user WHERE user_id=?1 AND password=?2", nativeQuery = true)
+    public List<User> findUserByIdPassword(String username, String hashpassword);
 
 }

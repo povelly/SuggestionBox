@@ -65,6 +65,15 @@ public class UserService {
     public List<User> getUserByLast_name(String last_name) {
         return userdoa.findByLast_name(last_name);
     }
+    
+    // --------------------------------------------------------------------------------
+    // Connection services
+    // ---------------------------------------------------------------------------------
+
+    public boolean authentifyUser(String username, String hashPassword)
+    {
+        return !userdoa.findUserByIdPassword(username, hashPassword).isEmpty();
+    }
 
 
     //----------------------------------------------------------------------------
