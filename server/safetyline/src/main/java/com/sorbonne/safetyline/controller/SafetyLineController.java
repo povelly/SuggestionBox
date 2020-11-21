@@ -4,11 +4,15 @@ package com.sorbonne.safetyline.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sorbonne.safetyline.context.UserConnexionContext;
 import com.sorbonne.safetyline.model.Choice;
 import com.sorbonne.safetyline.model.User;
 import com.sorbonne.safetyline.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,7 +25,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@CrossOrigin
 @RestController
 public class SafetyLineController {
     @Autowired
@@ -45,10 +51,22 @@ public class SafetyLineController {
         return actualObj;
     }
     
-    @RequestMapping("/safetylineConnexion")
-    public boolean safetylineConnexion(@RequestParam(name ="username") String username, @RequestParam(name="password") String passwordHash)
+    @PostMapping("/safetylineConnexion")
+    @ResponseBody
+    public Map<String,Object> safetylineConnexion(@RequestBody UserConnexionContext user)
     {
-        return userService.authentifyUser(username,passwordHash);
+    	HashMap<String, Object> map = new HashMap<>();
+    	if (userService.authentifyUser(user.getUsername(),user.getPassword()))
+    	{
+    		map.put("status", 200);
+    		map.put("message", "user found");
+    		map.put("username", user.getUsername());
+    		return map;
+    	} else {
+    		map.put("status", 404);
+    		map.put("message", "user not found");
+    		return map;
+    	}
     }
 
     /**
