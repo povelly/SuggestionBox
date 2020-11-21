@@ -9,7 +9,7 @@ import { Observable, of } from 'rxjs';
 })
 export class AuthService {
 
-  authUrl = "http://localhost:5000/api/auth/";
+  authUrl = "http://localhost:8020/safetylineConnexion";
 
   constructor(private http: HttpClient) { }
 
