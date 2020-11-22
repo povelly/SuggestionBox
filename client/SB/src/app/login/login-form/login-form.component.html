@@ -1,19 +1,44 @@
+
 <form class="login-form">
   <div class="login-content">
     <h4>Connexion</h4>
+    <form #f="ngForm" 
+    (ngSubmit)="onSubmit(f)">
       <p>
-        <input type="mail" placeholder="Mail" />
+        <input type="email"
+        name="username"
+        ngModel
+        required
+        #username="ngModel"
+        class="form-control"
+        id="exampleInputEmail1"
+        placeholder="Email"
+        aria-describedby="emailHelp">
       </p>
       <p>
-        <input type="password" placeholder="Password" />
+        <input type="password" 
+        placeholder="Password" 
+        name="password"
+        ngModel
+        required
+        #password="ngModel"
+        class="form-control"
+        id="loginPassword"/>
       </p>
-      <button type="submit">Se connecter</button>
+
+      <button type="submit"
+      [disabled]="f.invalid">Se connecter<i class="fas fa-sign-in-alt"></i></button>
+    </form>
   </div>
   <div class="login-footer">
-    <a href="#">Mot de passe oublié ?</a>
+    <!--<a href="#">Mot de passe oublié ?</a>-->
+    <a routerLink="/login/reset">Modifier mon mot de passe</a>
   </div>
 </form>
-<!--<p>login-form works!</p>
+
+
+
+<!--
 
 <div class="row">
   <div class="col-md-6 offset-md-3 mt-4">
