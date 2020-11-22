@@ -1,4 +1,19 @@
-<p>login-form works!</p>
+<form class="login-form">
+  <div class="login-content">
+    <h4>Connexion</h4>
+      <p>
+        <input type="mail" placeholder="Mail" />
+      </p>
+      <p>
+        <input type="password" placeholder="Password" />
+      </p>
+      <button type="submit">Se connecter</button>
+  </div>
+  <div class="login-footer">
+    <a href="#">Mot de passe oublié ?</a>
+  </div>
+</form>
+<!--<p>login-form works!</p>
 
 <div class="row">
   <div class="col-md-6 offset-md-3 mt-4">
@@ -7,13 +22,13 @@
     (ngSubmit)="onSubmit(f)">
       <div class="form-group">
         <label for="exampleInputEmail1">Email address</label>
-        <input type="email" 
+        <input type="email"
         name="username"
         ngModel
         required
         #username="ngModel"
-        class="form-control" 
-        id="exampleInputEmail1" 
+        class="form-control"
+        id="exampleInputEmail1"
         aria-describedby="emailHelp">
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         <p>username valid: {{ username.valid }}</p>
@@ -21,22 +36,22 @@
 
       <div class="form-group">
         <label for="exampleInputPassword1">Password</label>
-        <input type="password" 
+        <input type="password"
         name="password"
         ngModel
         required
         #password="ngModel"
-        class="form-control" 
+        class="form-control"
         id="loginPassword">
       </div>
 
-      <button type="submit" 
+      <button type="submit"
       [disabled]="f.invalid"
       class="btn btn-primary">Connexion <i class="fas fa-sign-in-alt"></i></button>
- 
+
       <div class="form-group">
         <a routerLink="/login/reset">Modifier mon mot de passe</a>
       </div>
     </form>
   </div>
-</div>
+</div>-->

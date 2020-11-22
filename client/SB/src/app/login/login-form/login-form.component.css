@@ -1,7 +1,114 @@
 .ng-valid[required], .ng-valid.required  {
     border-left: 5px solid #42A948; /* green */
   }
-  
+
   .ng-invalid:not(form)  {
     border-left: 5px solid #a94442; /* red */
+  }
+
+
+  @import url('../../../charte.css');
+  *{
+    margin: 0;
+    background: inherit;
+  }
+  body {
+    background-color: white;
+  }
+  .container {
+    min-height: calc(100vh - 140px);
+    background: var(--grey-light-color);
+  }
+  .content {
+    background: var(--grey-light-color);
+  }
+  header {
+    background: var(--gray-light-color);
+    height: 90px;
+  }
+  footer {
+    height: 140px;
+    background: var(--grey-dark-color);
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    background-color: #f1f1f1; /* TODO */
+  }
+  nav>ul>li {
+    display: inline;
+  }
+
+  li a:hover {
+      background-color: #555;
+      color: white;
+  }
+  nav {
+    width: 100%;
+    background: red;
+    height: 50px;
+  }
+
+  nav img {
+    max-height: 47px;
+    margin: -0px;
+  }
+  /*
+  li a {
+    background-color: #4CAF50;
+    display: block;
+    color: #000;
+    padding: 8px 0 8px 16px;
+    text-decoration: none;
+    color: #000;
+    padding: 8px 0 8px 16px;
+    text-decoration: none;
+  }
+  */
+  li a {
+    background-color: #4CAF50;
+    color: #000;
+    text-decoration: none;
+  }
+  nav>ul>li:last-child {
+    float: right;
+  }
+
+  li>ul {
+    display: none;
+  }
+  nav>ul li:hover>ul {
+    display: block;
+  }
+
+  .login-form {
+    background: #E9E9E9;
+    text-align: center;
+  }
+
+  .login-content {
+    padding: 10px;
+    background: #E9E9E9;
+  }
+  .login-form {
+    max-width: 370px;
+    /* width: 400px; */
+    width: 45%;
+    min-width: 300px;
+    margin: auto;
+  }
+  .login-footer {
+    background: #CFCFCF;
+    text-align: center;
+    font-style: italic;
+    font-size: small;
+    padding: 5px;
+  }
+  .login-footer a {
+    color: var(--grey-dark-color);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
   }

@@ -1,0 +1,110 @@
+:root{
+    --primary-color: #7639AA;
+    --secondary-color: #A80D72;
+    --grey-dark-color: #434343;
+    --grey-light-color: #F8F8F8;
+}
+@font-face {
+  font-family: 'MontSerrat Bold';
+  src: url('montserrat-bold.ttf')  format('truetype');
+}
+* {
+  font-family: "Montserrat", "Lato";
+  background: var(--grey-light-color);
+}
+p {
+  font-size: 16px;
+  font-family: "Lato";
+}
+p.big {
+  font-size: 18px;
+}
+h1 {
+  font-family: "Montserrat Bold";
+  font-size: 48px;
+}
+h2 {
+  font-family: "Montserrat Bold";
+  font-size: 36px;
+}
+h3 {
+  font-family: "Montserrat Bold";
+  font-size: 28px;
+}
+h4 {
+  font-family: "Montserrat Bold";
+  font-size: 22px;
+}
+h5 {
+  font-family: "Montserrat Bold";
+  font-size: 18px;
+}
+input {
+  background: #F4F4F4;
+  border: none;
+  color: #808080;
+  border-bottom: 2px solid #808080;
+  height: 40px;
+  width: 270px;
+  padding: 5px;
+  margin: 5px;
+}
+input:focus {
+  border-bottom: 2px solid var(--secondary-color);
+}
+input:focus::placeholder {
+  color: var(--secondary-color);
+  font-size: x-small;
+}
+textarea {
+  color: #8F8F8F;
+  border: 2px solid #8F8F8F;
+  resize: none;
+  padding-left: 5px;
+  padding-top: 10px;
+  font-size: small;
+  height: 112px;
+  width: 270px;
+}
+textarea:focus {
+  border: 2px solid var(--secondary-color);
+  font-size: x-small;
+  color: #9F367A;
+}
+button {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  width: 150px;
+  border: none;
+  background: linear-gradient(to left, var(--primary-color), var(--secondary-color));
+  color: white;
+  font-size: 12px;
+  font-weight: 900;
+}
+button:hover {
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+}
+button.ghost {
+  background: linear-gradient(var(--primary-color), var(--secondary-color));
+  box-shadow:inset 0px 0px 0px 3px white;
+}
+button.ghost:hover {
+  background: white;
+  color: #863E88;
+}
+button.secondary {
+  background: var(--grey-light-color);
+  box-shadow:inset 0px 0px 0px 3px #7F4486;
+  color: #7F4486;
+}
+button.secondary:hover {
+  background: #7F4486;
+  color: white;
+}
+
+/*
+TODO :
+- header & polices
+- hauteur des interlignes (paragraphes et hx)
+- margin
+*/
