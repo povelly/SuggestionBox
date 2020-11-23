@@ -56,11 +56,13 @@ public class SafetyLineController {
     public Map<String,Object> safetylineConnexion(@RequestBody UserConnexionContext user)
     {
     	HashMap<String, Object> map = new HashMap<>();
-    	if (userService.authentifyUser(user.getUsername(),user.getPassword()))
+    	List<User> list = userService.authentifyUser(user.getUsername(),user.getPassword());
+    	if (!list.isEmpty())
     	{
     		map.put("status", 200);
     		map.put("message", "user found");
     		map.put("username", user.getUsername());
+    		map.put("type", list.get(0).getIs_admin());
     		return map;
     	} else {
     		map.put("status", 404);

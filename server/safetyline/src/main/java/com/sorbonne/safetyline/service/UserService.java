@@ -70,9 +70,9 @@ public class UserService {
     // Connection services
     // ---------------------------------------------------------------------------------
 
-    public boolean authentifyUser(String username, String hashPassword)
+    public List<User> authentifyUser(String username, String hashPassword)
     {
-        return !userdoa.findUserByIdPassword(username, hashPassword).isEmpty();
+        return userdoa.findUserByIdPassword(username, hashPassword);
     }
 
 

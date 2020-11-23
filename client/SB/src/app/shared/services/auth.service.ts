@@ -18,10 +18,13 @@ export class AuthService {
     return this.http.post(this.authUrl, model).pipe(
       map((response: any) => {
         const user = response;
-        if (user.result) {
+        //console.log(response)
+        if (user.status == 200) {
           localStorage.setItem('username', user.username);
-          localStorage.setItem('type', user.type);
+          localStorage.setItem('admin', user.type);
           this.router.navigate(['/home']);
+        } else {
+          console.log(user.message);
         }
       })
     )

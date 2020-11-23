@@ -25,7 +25,10 @@ public class User
     @Size( max=30, min=6)
     @Column( name = "password", length = 50)
     private String password;
-
+    
+    @NotNull (message = "null is admin")
+    @Column( name = "is_admin")
+    private Boolean is_admin;
 
     @NotNull( message = "null name")
     @NotBlank( message = "empty name")
@@ -93,8 +96,18 @@ public class User
     public List<Suggestion> getSuggestionList() {
         return suggestionList;
     }
+    
+    public Boolean getIs_admin() {
+		return is_admin;
+	}
 
-    public String toString()
+
+	public void setIs_admin(Boolean is_admin) {
+		this.is_admin = is_admin;
+	}
+
+
+	public String toString()
     {
         String res = "";
         res += "idUser : "+this.user_id+" password :"+this.password + " name: "+ this.last_name + " firstname: "+this.first_name;
