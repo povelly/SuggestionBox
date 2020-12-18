@@ -1,8 +1,7 @@
 package com.sorbonne.safetyline.service;
 
-import com.sorbonne.safetyline.dataAccess.StrawpollDOA;
-import com.sorbonne.safetyline.dataAccess.SuggestionDOA;
-import com.sorbonne.safetyline.dataAccess.UserDOA;
+import beans.Password;
+import com.sorbonne.safetyline.dataAccess.*;
 import com.sorbonne.safetyline.model.Strawpoll;
 import com.sorbonne.safetyline.model.Suggestion;
 import com.sorbonne.safetyline.model.User;
@@ -10,18 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
     @Autowired
-    private UserDOA userdoa;
+    private UserDAO userdoa;
     @Autowired
-    private SuggestionDOA suggestionDoa;
+    private SuggestionDAO suggestionDAO;
     @Autowired
-    private StrawpollDOA strawpollDoa;
+    private StrawpollDAO strawpollDoa;
 
     //---------------------------------------------------------------------------
     // User services
@@ -31,48 +33,78 @@ public class UserService {
     }
 
     /**
-     * @see UserDOA#deleteUserById_user(String)
+     * @see UserDAO#deleteUserById_user(String)
      */
     @Transactional
     public void deleteUserById_user(String id_user) {
         userdoa.deleteUserById_user(id_user);
     }
 
+    @Transactional
+    public void addSimpleUser(String user_id, String first_name, String last_name) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
+        String password = Password.generateFirstPassword();
+        /**
+         * Send email to user with his password
+         */
+        String hashPassword = Password.sha256(password);
+        User u = new User();
+        u.setUser_id(user_id);
+        u.setLast_name(last_name);
+        u.setFirst_name(first_name);
+        u.setPassword(password);
+        u.setSuggestionList(new ArrayList<>());
+        u.setIs_admin(false);
+        userdoa.save(u);
+    }
+
     /**
-     * @see UserDOA#getAllAdmins()
+     * @see UserDAO#save(Object)
+     */
+    @Transactional
+    public void addSimpleAdmin(String user_id, String first_name, String last_name) throws Exception {
+
+        String password = Password.generateFirstPassword();
+        /**
+         * Send email to user with his password
+         */
+        //JavaMailUtil.send("sacha.memmi.etu@gmail.com", password);
+        String hashPassword = Password.sha256(password);
+        User u = new User();
+        u.setUser_id(user_id);
+        u.setLast_name(last_name);
+        u.setFirst_name(first_name);
+        u.setPassword(password);
+        u.setSuggestionList(new ArrayList<>());
+        u.setIs_admin(true);
+        userdoa.save(u);
+    }
+    /**
+     * @see UserDAO#getAllAdmins()
      */
     public List<User> getAllAdmins() {
         return userdoa.getAllAdmins();
     }
 
     /**
-     * @see UserDOA#findById(Object)
+     * @see UserDAO#findById(Object)
      */
     public Optional<User> getUserById(String user_id) {
         return userdoa.findById(user_id);
     }
 
     /**
-     * @see UserDOA#findByFirst_name(String)
+     * @see UserDAO#findByFirst_name(String)
      */
     public List<User> getUserByFirst_name(String first_name) {
         return userdoa.findByFirst_name(first_name);
     }
 
     /**
-     * @see UserDOA#findByLast_name(String)
+     * @see UserDAO#findByLast_name(String)
      */
     public List<User> getUserByLast_name(String last_name) {
         return userdoa.findByLast_name(last_name);
-    }
-    
-    // --------------------------------------------------------------------------------
-    // Connection services
-    // ---------------------------------------------------------------------------------
-
-    public List<User> authentifyUser(String username, String hashPassword)
-    {
-        return userdoa.findUserByIdPassword(username, hashPassword);
     }
 
 
@@ -81,25 +113,25 @@ public class UserService {
     //----------------------------------------------------------------------------
 
     /**
-     * @see SuggestionDOA#findAll()
+     * @see SuggestionDAO#findAll()
      */
     public List<Suggestion> getAllSuggestions() {
-        return suggestionDoa.findAll();
+        return suggestionDAO.findAll();
     }
 
     /**
-     * @see SuggestionDOA#findBySuggestion_author(String)
+     * @see SuggestionDAO#findBySuggestion_author(String)
      */
     public List<Suggestion> getSuggestionByAuthor(String author) {
-        return suggestionDoa.findBySuggestion_author(author);
+        return suggestionDAO.findBySuggestion_author(author);
     }
 
     /**
-     * @see SuggestionDOA#findBySuggestion_creation_dateRange(Date, Date)
+     * @see SuggestionDAO#findBySuggestion_creation_dateRange(Date, Date)
      */
     public List<Suggestion> getSuggestionByDateRange(Date lowerBoundDate, Date upperBoundDate)
     {
-        return suggestionDoa.findBySuggestion_creation_dateRange(lowerBoundDate, upperBoundDate);
+        return suggestionDAO.findBySuggestion_creation_dateRange(lowerBoundDate, upperBoundDate);
     }
 
     //----------------------------------------------------------------------------
@@ -107,7 +139,7 @@ public class UserService {
     //----------------------------------------------------------------------------
 
     /**
-     * @see StrawpollDOA#findAll()
+     * @see StrawpollDAO#findAll()
      */
     public List<Strawpoll> getAllStrawpolls()
     {
@@ -115,7 +147,7 @@ public class UserService {
     }
 
     /**
-     * @see StrawpollDOA#findByStrawpoll_expiration_date(Date, Date)
+     * @see StrawpollDAO#findByStrawpoll_expiration_date(Date, Date)
      */
     public List<Strawpoll> getStrawpollByExpiration(Date lowerBound, Date upperBound)
     {
@@ -123,7 +155,7 @@ public class UserService {
     }
 
     /**
-     * @see StrawpollDOA#findByStrawpoll_creation_date(Date, Date)
+     * @see StrawpollDAO#findByStrawpoll_creation_date(Date, Date)
      */
     public List<Strawpoll> getStrawpollByCreation(Date lowerBound, Date upperBound)
     {
@@ -131,7 +163,7 @@ public class UserService {
     }
 
     /**
-     * @see StrawpollDOA#findByStrawpoll_author(String)
+     * @see StrawpollDAO#findByStrawpoll_author(String)
      */
     public List<Strawpoll> getStrawpollByAuthor(String author)
     {
@@ -139,11 +171,20 @@ public class UserService {
     }
 
     /**
-     * @see StrawpollDOA#findByTitle(String)
+     * @see StrawpollDAO#findByTitle(String)
      */
     public List<Strawpoll> getStrawpollByTitle(String title)
     {
         return strawpollDoa.findByTitle(title);
     }
 
+
+    // --------------------------------------------------------------------------------
+    // Connection services
+    // ---------------------------------------------------------------------------------
+
+    public List<User> authentifyUser(String username, String hashPassword)
+    {
+        return userdoa.findUserByIdPassword(username, hashPassword);
+    }
 }

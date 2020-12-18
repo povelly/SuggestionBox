@@ -4,25 +4,17 @@ package com.sorbonne.safetyline.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sorbonne.safetyline.context.UserConnexionContext;
-import com.sorbonne.safetyline.model.Choice;
+import com.sorbonne.safetyline.model.Connexion;
 import com.sorbonne.safetyline.model.User;
 import com.sorbonne.safetyline.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +45,7 @@ public class SafetyLineController {
     
     @PostMapping("/safetylineConnexion")
     @ResponseBody
-    public Map<String,Object> safetylineConnexion(@RequestBody UserConnexionContext user)
+    public Map<String,Object> safetylineConnexion(@RequestBody Connexion user)
     {
     	HashMap<String, Object> map = new HashMap<>();
     	List<User> list = userService.authentifyUser(user.getUsername(),user.getPassword());
