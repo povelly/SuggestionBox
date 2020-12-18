@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
+<com.sorbonne.safetyline.beans xmlns="http://www.springframework.org/schema/com.sorbonne.safetyline.beans"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+        xsi:schemaLocation="http://www.springframework.org/schema/com.sorbonne.safetyline.beans http://www.springframework.org/schema/com.sorbonne.safetyline.beans/spring-com.sorbonne.safetyline.beans.xsd"
         xmlns:jpa="http://www.springframework.org/schema/data/jpa">
     <jpa:repositories base-package="com.sorbonne.safetyline.dataAccess" />
-</beans>
+</com.sorbonne.safetyline.beans>

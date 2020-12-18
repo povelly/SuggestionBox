@@ -18,7 +18,7 @@ public class User
     @NotBlank(message = "empty id")
     @Email( message = "Your email must have an email format")
     @Column(name = "user_id", length = 50)
-    private String user_id;
+    private String userId;
 
     @NotNull( message = "null password")
     @NotBlank( message = "password empty")
@@ -28,17 +28,17 @@ public class User
     
     @NotNull (message = "null is admin")
     @Column( name = "is_admin")
-    private Boolean is_admin;
+    private Boolean isAdmin;
 
     @NotNull( message = "null name")
     @NotBlank( message = "empty name")
     @Column( name = "last_name", length = 50)
-    private String last_name;
+    private String lastName;
 
     @NotNull( message = "null first name")
     @NotBlank( message = "emtpy first name")
     @Column( name="first_name", length=50)
-    private String first_name;
+    private String firstName;
 
     @OneToMany(targetEntity = Suggestion.class,
             fetch=FetchType.EAGER,
@@ -46,27 +46,17 @@ public class User
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             })
-    @MapsId("user_id")
+    @MapsId("userId")
     @JoinColumn(name = "suggestion_author")
     private List<Suggestion> suggestionList;
 
 
-    public void setSuggestionList(List<Suggestion> suggestionList) {
-        this.suggestionList = suggestionList;
+    public String getUserId() {
+        return userId;
     }
 
-
-    public User() {
-        super();
-    }
-
-
-    public String getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getPassword() {
@@ -77,40 +67,42 @@ public class User
         this.password = password;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public Boolean getAdmin() {
+        return isAdmin;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public List<Suggestion> getSuggestionList() {
         return suggestionList;
     }
-    
-    public Boolean getIs_admin() {
-		return is_admin;
-	}
 
+    public void setSuggestionList(List<Suggestion> suggestionList) {
+        this.suggestionList = suggestionList;
+    }
 
-	public void setIs_admin(Boolean is_admin) {
-		this.is_admin = is_admin;
-	}
-
-
-	public String toString()
+    public String toString()
     {
         String res = "";
-        res += "idUser : "+this.user_id+" password :"+this.password + " name: "+ this.last_name + " firstname: "+this.first_name;
+        res += "idUser : "+this.userId+" password :"+this.password + " name: "+ this.lastName + " firstname: "+this.firstName;
         return res;
     }
 }

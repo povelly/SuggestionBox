@@ -1,11 +1,20 @@
 package com.sorbonne.safetyline.controller;
 
+/**
+ *
+ * @author Georges Mathieu / Memmi Sacha
+ *
+ * Controller calling different services
+ *
+ */
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sorbonne.safetyline.model.Connexion;
 import com.sorbonne.safetyline.model.User;
+import com.sorbonne.safetyline.service.StrawpollService;
+import com.sorbonne.safetyline.service.SuggestionService;
 import com.sorbonne.safetyline.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,8 +31,13 @@ import java.util.Map;
 @CrossOrigin
 @RestController
 public class SafetyLineController {
+
     @Autowired
-    private UserService userService = new UserService();
+    private UserService userService             = new UserService();
+    @Autowired
+    private StrawpollService strawpollService   = new StrawpollService();
+    @Autowired
+    private SuggestionService suggestionService = new SuggestionService();
 
     /**
      *
@@ -93,6 +107,11 @@ public class SafetyLineController {
     public String testUserDB()  {
         //userService.deleteUserById_user("user2");
         List<User> users = userService.getAllUsers();
+        if (users.isEmpty())
+        {
+            System.out.println("users empty");
+            return "";
+        }
         //List<User> admins = userDoa.getAllAdmins();//
         for (User user: users)
             System.out.println(user);

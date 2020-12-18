@@ -1,10 +1,9 @@
-package beans;
+package com.sorbonne.safetyline.utils;
 
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
-
 import java.security.MessageDigest;
 
 public class Password {

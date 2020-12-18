@@ -8,47 +8,49 @@ public class Choice
 {
     @Id
     @Column(name = "choice_id", length=11)
-    private int choice_id;
+    private int choiceId;
     @Column(name = "voters_count", length=11)
-    private int voter_count;
+    private int voterCount;
     @Column( name = "strawpoll_id", length=11)
-    private int strawpoll_id;
+    private int strawpollId;
     @Column(name = "choice_content", length=200)
-    private String choice_content;
+    private String choiceContent;
     @ManyToOne(targetEntity = Strawpoll.class)
     @JoinColumn(name = "strawpoll_id", insertable = false, updatable = false)
     private Strawpoll strawpoll;
+    @ManyToOne
+    private User user;
 
-    public int getChoice_id() {
-        return choice_id;
+    public int getChoiceId() {
+        return choiceId;
     }
 
-    public void setChoice_id(int choice_id) {
-        this.choice_id = choice_id;
+    public void setChoiceId(int choiceId) {
+        this.choiceId = choiceId;
     }
 
-    public int getVoter_count() {
-        return voter_count;
+    public int getVoterCount() {
+        return voterCount;
     }
 
-    public void setVoter_count(int voter_count) {
-        this.voter_count = voter_count;
+    public void setVoterCount(int voterCount) {
+        this.voterCount = voterCount;
     }
 
-    public int getStrawpoll_id() {
-        return strawpoll_id;
+    public int getStrawpollId() {
+        return strawpollId;
     }
 
-    public void setStrawpoll_id(int strawpoll_id) {
-        this.strawpoll_id = strawpoll_id;
+    public void setStrawpollId(int strawpollId) {
+        this.strawpollId = strawpollId;
     }
 
-    public String getChoice_content() {
-        return choice_content;
+    public String getChoiceContent() {
+        return choiceContent;
     }
 
-    public void setChoice_content(String choice_content) {
-        this.choice_content = choice_content;
+    public void setChoiceContent(String choiceContent) {
+        this.choiceContent = choiceContent;
     }
 
     public Strawpoll getStrawpoll() {
@@ -66,9 +68,4 @@ public class Choice
     public void setUser(User user) {
         this.user = user;
     }
-
-    @ManyToOne
-    private User user;
-
-
 }

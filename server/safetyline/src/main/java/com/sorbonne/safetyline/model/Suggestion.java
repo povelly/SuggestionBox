@@ -14,60 +14,62 @@ public class Suggestion {
     @Id
     @NotNull(message = "id_recommendation cannot be null")
     @Column( name="suggestion_id")
-    private Integer suggestion_id;
+    private Integer suggestionId;
 
     @NotBlank(message = "your suggestion must contains at least one character")
     @Column( name="suggestion_content")
-    private String suggestion_content;
+    private String suggestionContent;
 
 
     @NotNull(message = "the date of submission of the suggestion cannot be null")
     @Column( name="suggestion_creation_date")
-    private Date suggestion_creation_date;
+    private Date suggestionCreationDate;
 
     @Column( name="suggestion_author")
-    private String suggestion_author;
+    private String suggestionAuthor;
 
 
     public Suggestion() {
 
     }
-    public int getSuggestion_id() {
-        return suggestion_id;
+
+    public Integer getSuggestionId() {
+        return suggestionId;
     }
 
-    public void setSuggestion_id(int suggestion_id) {
-        this.suggestion_id = suggestion_id;
+    public void setSuggestionId(Integer suggestionId) {
+        this.suggestionId = suggestionId;
     }
 
-    public String getSuggestion_content() {
-        return suggestion_content;
+    public String getSuggestionContent() {
+        return suggestionContent;
     }
 
-    public void setSuggestion_content(String suggestion_content) {
-        this.suggestion_content = suggestion_content;
+    public void setSuggestionContent(String suggestionContent) {
+        this.suggestionContent = suggestionContent;
     }
 
-    public Date getSuggestion_creation_date() {
-        return suggestion_creation_date;
+    public Date getSuggestionCreationDate() {
+        return suggestionCreationDate;
     }
 
-    public void setSuggestion_creation_date(Date suggestion_creation_date) {
-        this.suggestion_creation_date = suggestion_creation_date;
+    public void setSuggestionCreationDate(Date suggestionCreationDate) {
+        this.suggestionCreationDate = suggestionCreationDate;
     }
 
-    public String getSuggestion_author() {
-        return suggestion_author;
+    public String getSuggestionAuthor() {
+        return suggestionAuthor;
     }
 
-    public void setSuggestion_author(String suggestion_author) {
-        this.suggestion_author = suggestion_author;
+    public void setSuggestionAuthor(String suggestionAuthor) {
+        this.suggestionAuthor = suggestionAuthor;
     }
+
     public String toString()
     {
-        return "suggestion "+this.suggestion_id
-                +" created the "+ this.suggestion_creation_date +
-                " by "+ this.suggestion_author +
-                "content: "+this.suggestion_content;
+        return "suggestion "+this.suggestionId
+                +" created the "+ this.suggestionCreationDate +
+                " by "+ this.suggestionAuthor +
+                "content: "+this.suggestionContent;
     }
 }
