@@ -29,7 +29,7 @@ export class AuthService {
       })
     )
   }
-  login(model: any) {
+  login(model: any) { 
     this.router.navigate(['/home']);
     return of(true);
   }
