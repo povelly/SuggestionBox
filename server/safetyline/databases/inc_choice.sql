@@ -1,4 +1,4 @@
-create definer = xanadoo@localhost trigger inc_choice
+create definer = root@localhost trigger inc_choice
 	after insert
 	on vote
 	for each row

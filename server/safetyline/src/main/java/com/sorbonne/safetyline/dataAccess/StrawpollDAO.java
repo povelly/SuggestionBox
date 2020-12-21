@@ -9,7 +9,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Repository
-public interface StrawpollDOA extends JpaRepository<Strawpoll, Integer> {
+public interface StrawpollDAO extends JpaRepository<Strawpoll, Integer> {
 
     /**
      * @return                  all strawpoll in the table

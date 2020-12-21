@@ -9,7 +9,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Repository
-public interface SuggestionDOA extends JpaRepository<Suggestion, Integer> {
+public interface SuggestionDAO extends JpaRepository<Suggestion, Integer> {
     /**
      * @return              all suggestions
      */
