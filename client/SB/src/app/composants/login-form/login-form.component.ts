@@ -1,17 +1,45 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
+//import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.css']
+  styleUrls: ['./login-form.component.css'],
 })
 export class LoginFormComponent implements OnInit {
 
-  constructor(private authService: AuthService ) { }
+  myForm: FormGroup;
 
-  ngOnInit(): void {
+  constructor(private authService: AuthService, private fb: FormBuilder) { }
+
+  ngOnInit() {
+    this.myForm = this.fb.group({
+      username: ['',[
+        Validators.required,
+        Validators.email
+      ]],
+      password: ['',[
+        Validators.required,
+        Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')
+      ]],
+    });
+
+    this.myForm.valueChanges.subscribe(console.log)
+  }
+
+  onSubmit2(f2: FormGroup){
+    const loginObserver = {
+      next: x => console.log('reception http'),
+      error: err => console.log(err)
+    };
+    this.authService.login(f2.value).subscribe(loginObserver);
+    console.log(f2.status);  
+    console.log(f2.value);
+
+
   }
 
   onSubmit(f: NgForm) {
