@@ -14,7 +14,7 @@ export class AuthService {
 
   constructor(private http: HttpClient,private router: Router) { }
 
-  login(model: any) {
+  login2(model: any) {
     return this.http.post(this.authUrl, model).pipe(
       map((response: any) => {
         const user = response;
@@ -29,7 +29,7 @@ export class AuthService {
       })
     )
   }
-  login2(model: any) {
+  login(model: any) { 
     this.router.navigate(['/home']);
     return of(true);
   }

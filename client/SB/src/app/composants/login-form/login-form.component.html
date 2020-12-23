@@ -1,4 +1,28 @@
+<form class="login-form">
+  <div class="login-content">
+  <h4>Connexion</h4>
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit2(myForm)">
+      <p>
+        <input formControlName="username" 
+        name="username"
+        placeholder="Email">
+      </p>
+      <p>
+        <input formControlName="password"
+        name="password" 
+        placeholder="Password">
+      </p>
+      <button type="submit"
+      [disabled]="myForm.invalid">Se connecter<i class="fas fa-sign-in-alt"></i></button>
+    </form>
+  </div>
+  <div class="login-footer">
+    <!--<a href="#">Mot de passe oublié ?</a>-->
+    <a routerLink="/reset">Modifier son mot de passe</a>
+  </div>
+</form>
 
+<!-- 
 <form class="login-form">
   <div class="login-content">
     <h4>Connexion</h4>
@@ -31,11 +55,11 @@
     </form>
   </div>
   <div class="login-footer">
-    <!--<a href="#">Mot de passe oublié ?</a>-->
-    <a routerLink="/login/reset">Modifier mon mot de passe</a>
+    <a href="#">Mot de passe oublié ?</a>
+    <a routerLink="/reset">Modifier mon mot de passe</a>
   </div>
 </form>
-
+-->
 
 
 <!--
