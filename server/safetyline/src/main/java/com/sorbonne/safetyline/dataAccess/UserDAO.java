@@ -69,5 +69,5 @@ public interface UserDAO extends JpaRepository<User, String> {
      * @return				the user
      */
     @Query(value = "SELECT * FROM user WHERE user_id=?1 AND password=?2", nativeQuery = true)
-    public List<User> findUserByIdPassword(String username, String hashpassword);
+    public List<User> findUserByIdPassword(String username, String hashPassword);
 }

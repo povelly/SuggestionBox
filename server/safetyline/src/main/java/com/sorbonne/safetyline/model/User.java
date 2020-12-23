@@ -1,16 +1,12 @@
 package com.sorbonne.safetyline.model;
 
 
-import org.springframework.data.jpa.repository.Query;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table( name="user", schema = "safetyline")
-//@NamedQuery(name= "User.getAll", query = "select user from User user")
 public class User
 {
     @Id
