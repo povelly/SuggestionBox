@@ -68,7 +68,7 @@ public class SafetyLineController {
     		map.put("status", 200);
     		map.put("message", "user found");
     		map.put("username", user.getUsername());
-    		map.put("type", list.get(0).getIs_admin());
+    		map.put("type", list.get(0).getAdmin());
     		return map;
     	} else {
     		map.put("status", 404);
