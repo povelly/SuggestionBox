@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup, NgForm, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-reset',
@@ -8,9 +9,31 @@ import { NgForm } from '@angular/forms';
 })
 export class ResetComponent implements OnInit {
 
-  constructor() { }
+  myForm: FormGroup;
 
-  ngOnInit(): void {
+  constructor(private authService: AuthService, private fb: FormBuilder) { }
+
+  ngOnInit(): void{
+    this.myForm = this.fb.group({
+      username: ['',[
+        Validators.required,
+        Validators.email
+      ]]
+    });
+
+    this.myForm.valueChanges.subscribe(console.log)
+  }
+
+  onSubmit2(f2: FormGroup){
+    const loginObserver = {
+      next: x => console.log('reception http'),
+      error: err => console.log(err)
+    };
+    this.authService.reset(f2.value).subscribe(loginObserver);
+    console.log(f2.value);  
+    console.log(f2.valid);
+
+
   }
 
   onSubmit(f: NgForm) {

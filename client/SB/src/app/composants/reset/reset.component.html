@@ -1,4 +1,29 @@
-<p>reset works!</p>
+<div class="login-form">
+    <div class="login-content">
+        <h3>Mot de passe oublié</h3>
+        <form [formGroup]="myForm"
+        (ngSubmit)="onSubmit2(myForm)">
+
+            <div class="form-group">
+                <label for="resetPasswordEmail">Email</label>
+                <p>
+                    <input formControlName="username" 
+                    name="username"
+                    placeholder="Email">
+                  </p>
+            </div>
+
+            <button type="submit" 
+            [disabled]="myForm.invalid"
+            class="btn btn-primary">Modifier mot de passe </button>
+
+            <button routerLink="/login" type="button" class="btn btn-primary">Cancel</button>
+        </form>
+    </div>
+</div>
+
+
+<!--
 <div class="row">
     <div class="col-md-6 offset-md-3 mt-4">
         <h3>Mot de passe oublié</h3>
@@ -25,3 +50,4 @@
         </form>
     </div>
 </div>
+-->
