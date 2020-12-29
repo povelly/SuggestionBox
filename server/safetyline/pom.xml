@@ -15,7 +15,7 @@
     <description>Demo project for Spring Boot</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
     </properties>
 
     <dependencies>
@@ -88,6 +88,12 @@
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
             <version>1.6.1</version>
+        </dependency>
+        
+        <dependency>
+	       <groupId>com.mailjet</groupId>
+	       <artifactId>mailjet-client</artifactId>
+	       <version>4.2.0</version>
         </dependency>
     </dependencies>
 
