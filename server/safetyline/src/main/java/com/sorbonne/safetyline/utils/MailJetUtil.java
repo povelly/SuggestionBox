@@ -30,7 +30,7 @@ public class MailJetUtil {
 		System.out.println(response.getData());
 	}
 
-	public static void main(String[] args) throws MailjetException, MailjetSocketTimeoutException {
+	/* public static void main(String[] args) throws MailjetException, MailjetSocketTimeoutException {
 		send("suggestionboxsafetyline1@gmail.com", "PREMIER EMAIL TEST", "<h3>ON TESTE LE PREMIER MAIL!</h3><br />LE TEST!");
-	}
+	}*/
 }
