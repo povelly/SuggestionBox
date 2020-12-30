@@ -14,7 +14,7 @@ export class AuthService {
 
   constructor(private http: HttpClient,private router: Router) { }
 
-  login2(model: any) {
+  login(model: any) {
     return this.http.post(this.authUrl, model).pipe(
       map((response: any) => {
         const user = response;
@@ -28,14 +28,14 @@ export class AuthService {
       })
     )
   }
-  login(model: any) { 
+  login2(model: any) { 
     localStorage.setItem('username', model.username);
     localStorage.setItem('admin', 'true');
     this.router.navigate(['/home']);
     return of(true);
   }
 
-  reset2(model: any){
+  reset(model: any){
     return this.http.post(this.authUrl, model).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -49,14 +49,14 @@ export class AuthService {
     )
   }
 
-  reset(model: any){
+  reset2(model: any){
     localStorage.removeItem('username');  //Peut remplacer par un clean
     localStorage.removeItem('admin');
     this.router.navigate(['/login']);
     return of(true);
   }
 
-  delete2(){
+  delete(){
     const headers = { 'Authorization': localStorage.getItem('username') };
     return this.http.delete(this.authUrl,  { headers } ).pipe(
       map((response: any) => {
@@ -72,7 +72,7 @@ export class AuthService {
     )
   }
 
-  delete(){
+  delete2(){
     console.log('Nous supprimons le compte: ' + localStorage.getItem('username'))
     localStorage.removeItem('username');  //Peut remplacer par un clean
     localStorage.removeItem('admin');
