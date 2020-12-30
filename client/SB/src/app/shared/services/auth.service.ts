@@ -37,7 +37,7 @@ export class AuthService {
   }
 
   reset2(model: any){
-    return this.http.post(this.authUrl, model).pipe(
+    return this.http.post(this.authUrl2, model).pipe(
       map((response: any) => {
         if (response.status == 200) {
           localStorage.removeItem('username');  //Peut remplacer par un clean
