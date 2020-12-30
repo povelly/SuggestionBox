@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDTO {
 
-	private String userId;
+	private String username;
 	private String password;
 	private boolean isAdmin;
 	private String lastName;

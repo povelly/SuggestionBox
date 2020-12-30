@@ -71,12 +71,12 @@ public class SafetyLineController {
     public Map<String,Object> safetylineConnexion(@RequestBody UserDTO user)
     {
     	HashMap<String, Object> map = new HashMap<>();
-    	List<User> list = userService.authentifyUser(user.getUserId(),user.getPassword());
+    	List<User> list = userService.authentifyUser(user.getUsername(),user.getPassword());
     	if (!list.isEmpty())
     	{
     		map.put("status", 200);
     		map.put("message", "user found");
-    		map.put("username", user.getUserId());
+    		map.put("username", user.getUsername());
     		map.put("type", list.get(0).getAdmin());
     		return map;
     	} else {
@@ -100,18 +100,18 @@ public class SafetyLineController {
 
     	    if(user.isAdmin())
             {
-                userService.addUser(user.getUserId(), user.getFirstName(), user.getLastName(), true);
+                userService.addUser(user.getUsername(), user.getFirstName(), user.getLastName(), true);
                 map.put("status", 200);
                 map.put("message", "admin registered");
                 map.put("type", true);
             }
     	    else{
-    	        userService.addUser(user.getUserId(), user.getFirstName(), user.getLastName(), false);
+    	        userService.addUser(user.getUsername(), user.getFirstName(), user.getLastName(), false);
                 map.put("status", 200);
     	        map.put("message", "user registered");
     	        map.put("type", false);
             }
-    	    map.put("username", user.getUserId());
+    	    map.put("username", user.getUsername());
 
         } catch (UsernameAlreadyExists e) {
             map.put("status", 500);
@@ -137,7 +137,7 @@ public class SafetyLineController {
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
-    		Optional<User> userFromDB = userService.getUserById(user.getUserId());
+    		Optional<User> userFromDB = userService.getUserById(user.getUsername());
     		if(!userFromDB.isPresent())
 	            throw new UtilisateurInconnuException();
 
@@ -145,16 +145,16 @@ public class SafetyLineController {
             {
     	    	int nb = 0;
     	    	// on compte le nombre d'admins if(nb < 2) throw new LastAdminException()
-                userService.deleteUserByIdUser(user.getUserId());
+                userService.deleteUserByIdUser(user.getUsername());
                 map.put("status", 200);
                 map.put("message", "admin deleted, there are " + (nb-1) + " admins left.");
             }
     	    else{
-    	    	userService.deleteUserByIdUser(user.getUserId());
+    	    	userService.deleteUserByIdUser(user.getUsername());
                 map.put("status", 200);
                 map.put("message", "user has been deleted");
             }
-    	    map.put("username", user.getUserId());
+    	    map.put("username", user.getUsername());
 
         } catch (UtilisateurInconnuException e) {
             map.put("status", 500);
