@@ -11,10 +11,11 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   authUrl = "http://localhost:8020/safetylineConnexion";
+  authUrl2 = "http://localhost:8020/account";
 
   constructor(private http: HttpClient,private router: Router) { }
 
-  login(model: any) {
+  login2(model: any) {
     return this.http.post(this.authUrl, model).pipe(
       map((response: any) => {
         const user = response;
@@ -28,14 +29,14 @@ export class AuthService {
       })
     )
   }
-  login2(model: any) { 
+  login(model: any) { 
     localStorage.setItem('username', model.username);
     localStorage.setItem('admin', 'true');
     this.router.navigate(['/home']);
     return of(true);
   }
 
-  reset(model: any){
+  reset2(model: any){
     return this.http.post(this.authUrl, model).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -49,16 +50,16 @@ export class AuthService {
     )
   }
 
-  reset2(model: any){
+  reset(model: any){
     localStorage.removeItem('username');  //Peut remplacer par un clean
     localStorage.removeItem('admin');
     this.router.navigate(['/login']);
     return of(true);
   }
 
-  delete(){
-    const headers = { 'Authorization': localStorage.getItem('username') };
-    return this.http.delete(this.authUrl,  { headers } ).pipe(
+  delete2(){
+    const headers = { 'username': localStorage.getItem('username') };
+    return this.http.delete(this.authUrl2,  { headers } ).pipe(
       map((response: any) => {
         //console.log(response)
         if (response.status == 200) {
@@ -72,7 +73,7 @@ export class AuthService {
     )
   }
 
-  delete2(){
+  delete(){
     console.log('Nous supprimons le compte: ' + localStorage.getItem('username'))
     localStorage.removeItem('username');  //Peut remplacer par un clean
     localStorage.removeItem('admin');
