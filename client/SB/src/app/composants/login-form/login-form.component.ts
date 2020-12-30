@@ -36,8 +36,8 @@ export class LoginFormComponent implements OnInit {
       error: err => console.log(err)
     };
     this.authService.login(f2.value).subscribe(loginObserver);
-    console.log(f2.status);  
-    console.log(f2.value);
+    //console.log(f2.status);  
+    //console.log(f2.value);
 
 
   }
@@ -49,8 +49,9 @@ export class LoginFormComponent implements OnInit {
     };
     this.authService.login(f.value).subscribe(loginObserver);
     //this.authService.login2(f.value)
-    console.log(f.value);  // { first: '', last: '' }
-    console.log(f.valid);  // false
+
+    //console.log(f.value);  // { first: '', last: '' }
+    //console.log(f.valid);  // false
   }
 
 }

@@ -30,7 +30,7 @@ export class AuthService {
   }
   login(model: any) { 
     localStorage.setItem('username', model.username);
-    localStorage.setItem('admin', 'True');
+    localStorage.setItem('admin', 'true');
     this.router.navigate(['/home']);
     return of(true);
   }

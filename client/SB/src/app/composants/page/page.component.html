@@ -1,2 +1,12 @@
 <button (click)="cancel()" type="button" class="btn btn-primary">Deconnexion</button>
 <button (click)="clicSurBouton()" type="button" class="btn btn-primary">Supprmier mon compte</button>
+
+<div *ngIf="cond">Vous êtes un administrateur.
+
+    <button routerLink="/admin" type="button" class="btn btn-primary">Admin</button>
+
+</div>
+
+<button routerLink="/parameters" type="button" class="btn btn-primary">Paramètres</button>
+
+

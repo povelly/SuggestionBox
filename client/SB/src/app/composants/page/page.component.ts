@@ -11,8 +11,12 @@ export class PageComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router) { }
 
+  cond = localStorage.getItem('admin')=='true';
+
+
   ngOnInit(): void {
   }
+
 
   clicSurBouton(){
     const loginObserver = {

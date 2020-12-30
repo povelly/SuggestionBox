@@ -6,15 +6,19 @@ import { PageComponent } from './page/page.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AdminComponent } from './admin/admin/admin.component';
+import { ParametersComponent } from './parameters/parameters/parameters.component';
 
 const routes: Routes = [
   { path: 'login', component:LoginFormComponent },
   { path: 'reset', component:ResetComponent },
   { path: 'home', component:PageComponent },
+  { path: 'admin', component:AdminComponent },
+  { path: 'parameters', component:ParametersComponent },
 ];
 
 @NgModule({
-  declarations: [LoginFormComponent, ResetComponent, PageComponent],
+  declarations: [LoginFormComponent, ResetComponent, PageComponent, AdminComponent, ParametersComponent],
   imports: [
     CommonModule,
     FormsModule,
