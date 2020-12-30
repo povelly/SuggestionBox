@@ -6,7 +6,7 @@ import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
 import java.security.MessageDigest;
 
-public class Password {
+public class PasswordUtil {
     public static final int nbLowerCaseChar = 3;
     public static final int nbUpperCaseChar = 3;
     public static final int nbDigits = 2;

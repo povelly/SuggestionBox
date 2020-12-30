@@ -6,7 +6,7 @@ import com.sorbonne.safetyline.dataAccess.*;
 import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
 import com.sorbonne.safetyline.model.User;
 import com.sorbonne.safetyline.utils.MailJetUtil;
-import com.sorbonne.safetyline.utils.Password;
+import com.sorbonne.safetyline.utils.PasswordUtil;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,9 +42,9 @@ public class UserService {
     public void addUser(String user_id, String first_name, String last_name, boolean isAdmin) throws UsernameAlreadyExists, NoSuchAlgorithmException, UnsupportedEncodingException, MailjetException, MailjetSocketTimeoutException, JSONException {
         if(this.getUserById(user_id).isEmpty())
             throw new UsernameAlreadyExists();
-        String password = com.sorbonne.safetyline.utils.Password.generateFirstPassword();
+        String password = PasswordUtil.generateFirstPassword();
 
-        String hashPassword = Password.sha256(password);
+        String hashPassword = PasswordUtil.sha256(password);
         User u = new User();
         u.setUserId(user_id);
         u.setLastName(last_name);
