@@ -12,9 +12,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
+import com.sorbonne.safetyline.exception.UtilisateurInconnuException;
 import com.sorbonne.safetyline.model.Connexion;
 import com.sorbonne.safetyline.model.User;
-import com.sorbonne.safetyline.dto.UserCreation;
+import com.sorbonne.safetyline.dto.UserDTO;
 import com.sorbonne.safetyline.service.StrawpollService;
 import com.sorbonne.safetyline.service.SuggestionService;
 import com.sorbonne.safetyline.service.UserService;
@@ -30,6 +31,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -60,17 +62,21 @@ public class SafetyLineController {
         return actualObj;
     }
     
+    /**
+     * Search if the user is in the database or not, used for connexion
+     * @return the HTTP response
+     */
     @PostMapping("/safetylineConnexion")
     @ResponseBody
-    public Map<String,Object> safetylineConnexion(@RequestBody Connexion user)
+    public Map<String,Object> safetylineConnexion(@RequestBody UserDTO user)
     {
     	HashMap<String, Object> map = new HashMap<>();
-    	List<User> list = userService.authentifyUser(user.getUsername(),user.getPassword());
+    	List<User> list = userService.authentifyUser(user.getUserId(),user.getPassword());
     	if (!list.isEmpty())
     	{
     		map.put("status", 200);
     		map.put("message", "user found");
-    		map.put("username", user.getUsername());
+    		map.put("username", user.getUserId());
     		map.put("type", list.get(0).getAdmin());
     		return map;
     	} else {
@@ -80,9 +86,14 @@ public class SafetyLineController {
     	}
     }
     
+    /**
+     * Creates an account using id, first name, last name and a boolean, 
+     * the boolean that indicates if the user is an admin or not
+     * @return the HTTP response
+     */
     @PostMapping("/account")
     @ResponseBody
-    public Map<String,Object> creationCompte(@RequestBody UserCreation user)
+    public Map<String,Object> creationCompte(@RequestBody UserDTO user)
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
@@ -106,6 +117,49 @@ public class SafetyLineController {
             map.put("status", 500);
             map.put("message", "username already exists");
 
+        } catch(Exception e) {
+    	    e.printStackTrace();
+    	    map.put("status", 500);
+    	    map.put("message", "failed to register");
+
+        } finally {
+    	    return map;
+        }
+    }
+    
+    /**
+     * Deletes an account using the email
+     * @return the HTTP response
+     */
+    @DeleteMapping("/account")
+    @ResponseBody
+    public Map<String,Object> suppressionCompte(@RequestBody UserDTO user)
+    {
+    	HashMap<String, Object> map = new HashMap<>();
+    	try{
+    		Optional<User> userFromDB = userService.getUserById(user.getUserId());
+    		if(!userFromDB.isPresent())
+	            throw new UtilisateurInconnuException();
+
+    	    if(userFromDB.get().getAdmin())
+            {
+    	    	int nb = 0;
+    	    	// on compte le nombre d'admins if(nb < 2) throw new LastAdminException()
+                userService.deleteUserByIdUser(user.getUserId());
+                map.put("status", 200);
+                map.put("message", "admin deleted, there are " + (nb-1) + " admins left.");
+            }
+    	    else{
+    	    	userService.deleteUserByIdUser(user.getUserId());
+                map.put("status", 200);
+                map.put("message", "user has been deleted");
+            }
+    	    map.put("username", user.getUserId());
+
+        } catch (UtilisateurInconnuException e) {
+            map.put("status", 500);
+            map.put("message", "unknown username");
+            // catch LastAdminException
         } catch(Exception e) {
     	    e.printStackTrace();
     	    map.put("status", 500);

@@ -34,8 +34,8 @@ public class UserService {
      * @see UserDAO#deleteUserById_user(String)
      */
     @Transactional
-    public void deleteUserById_user(String id_user) {
-        userdoa.deleteUserById_user(id_user);
+    public void deleteUserByIdUser(String user_id) {
+        userdoa.deleteUserByIdUser(user_id);
     }
 
     @Transactional

@@ -30,8 +30,8 @@ public interface UserDAO extends JpaRepository<User, String> {
      * @param id_user           username (email)
      */
     @Modifying
-    @Query(value = "DELETE FROM user WHERE id_user = ?1", nativeQuery = true)
-    public void deleteUserById_user(@Param("id_user")String id_user);
+    @Query(value = "DELETE FROM user WHERE user_id = ?1", nativeQuery = true)
+    public void deleteUserByIdUser(@Param("user_id")String user_id);
 
     /**
      * @return                 all users in databases
