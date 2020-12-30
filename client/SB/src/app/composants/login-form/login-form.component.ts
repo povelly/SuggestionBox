@@ -23,7 +23,9 @@ export class LoginFormComponent implements OnInit {
       ]],
       password: ['',[
         Validators.required,
-        Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')
+        //Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')
+        //Validators.pattern('^((?=.*[0-9])|(?=.*[^a-zA-Z0-9_]+))(?=.*[A-Z])(?=.*[a-z]).*$')
+        Validators.pattern('^(?=.{6,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$')
       ]],
     });
 
