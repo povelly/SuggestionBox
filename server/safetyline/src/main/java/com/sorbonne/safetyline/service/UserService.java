@@ -3,9 +3,11 @@ package com.sorbonne.safetyline.service;
 import com.mailjet.client.errors.MailjetException;
 import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import com.sorbonne.safetyline.dataAccess.*;
+import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
 import com.sorbonne.safetyline.model.User;
 import com.sorbonne.safetyline.utils.MailJetUtil;
 import com.sorbonne.safetyline.utils.Password;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,8 +39,9 @@ public class UserService {
     }
 
     @Transactional
-    public void addSimpleUser(String user_id, String first_name, String last_name) throws NoSuchAlgorithmException, UnsupportedEncodingException, MailjetException, MailjetSocketTimeoutException {
-
+    public void addUser(String user_id, String first_name, String last_name, boolean isAdmin) throws UsernameAlreadyExists, NoSuchAlgorithmException, UnsupportedEncodingException, MailjetException, MailjetSocketTimeoutException, JSONException {
+        if(this.getUserById(user_id).isEmpty())
+            throw new UsernameAlreadyExists();
         String password = com.sorbonne.safetyline.utils.Password.generateFirstPassword();
 
         String hashPassword = Password.sha256(password);
@@ -48,44 +51,17 @@ public class UserService {
         u.setFirstName(first_name);
         u.setPassword(hashPassword);
         u.setSuggestionList(new ArrayList<>());
-        u.setAdmin(false);
+        u.setAdmin(isAdmin);
         userdoa.save(u);
         
         /**
 		 * Send email to user with his password
 		 */
-		// JavaMailUtil.send("sacha.memmi.etu@gmail.com", password);
 		MailJetUtil.send(user_id, "Creation de compte sur la SuggestionBox de Safetyline",
 				"Bonjour, ci-joint vos identifiants de connexion <br> Identifiant : " + user_id + "<br> Password : "
 						+ password);
     }
 
-    /**
-     * @see UserDAO#save(Object)
-     */
-    @Transactional
-    public void addSimpleAdmin(String user_id, String first_name, String last_name) throws Exception {
-
-        String password = Password.generateFirstPassword();
-        
-        String hashPassword = Password.sha256(password);
-        User u = new User();
-        u.setUserId(user_id);
-        u.setLastName(last_name);
-        u.setFirstName(first_name);
-        u.setPassword(hashPassword);
-        u.setSuggestionList(new ArrayList<>());
-        u.setAdmin(true);
-        userdoa.save(u);
-        
-		/**
-		 * Send email to user with his password
-		 */
-		// JavaMailUtil.send("sacha.memmi.etu@gmail.com", password);
-		MailJetUtil.send(user_id, "Creation de compte sur la SuggestionBox de Safetyline",
-				"Bonjour, ci-joint vos identifiants de connexion <br> Identifiant : " + user_id + "<br> Password : "
-						+ password);
-    }
     /**
      * @see UserDAO#getAllAdmins()
      */

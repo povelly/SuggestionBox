@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mailjet.client.errors.MailjetException;
 import com.mailjet.client.errors.MailjetSocketTimeoutException;
+import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
 import com.sorbonne.safetyline.model.Connexion;
 import com.sorbonne.safetyline.model.User;
 import com.sorbonne.safetyline.model.UserCreation;
@@ -88,36 +89,35 @@ public class SafetyLineController {
     public Map<String,Object> creationCompte(@RequestBody UserCreation user)
     {
     	HashMap<String, Object> map = new HashMap<>();
-    	if(user.isAdmin()) 
-    	{
-    		try {
-				userService.addSimpleAdmin(user.getUserId(), user.getFirstName(), user.getLastName());
-				map.put("status", 200);
-	    		map.put("message", "admin registered");
-	    		map.put("username", user.getUserId());
-	    		map.put("type", true);
-	    		return map;
-			} catch (Exception e) {
-				e.printStackTrace();
-				map.put("status", 500);
-	    		map.put("message", "failed to register");
-	    		return map;
-			}
-    	} else {
-    		try {
-				userService.addSimpleUser(user.getUserId(), user.getFirstName(), user.getLastName());
-				map.put("status", 200);
-	    		map.put("message", "user registered");
-	    		map.put("username", user.getUserId());
-	    		map.put("type", false);
-	    		return map;
-			} catch (NoSuchAlgorithmException | UnsupportedEncodingException | MailjetException | MailjetSocketTimeoutException e) {
-				e.printStackTrace();
-				map.put("status", 500);
-	    		map.put("message", "failed to register");
-	    		return map;
-			}
-    	}
+    	try{
+
+    	    if(user.isAdmin())
+            {
+                userService.addUser(user.getUserId(), user.getFirstName(), user.getLastName(), true);
+                map.put("status", 200);
+                map.put("message", "admin registered");
+                map.put("type", true);
+            }
+    	    else{
+    	        userService.addUser(user.getUserId(), user.getFirstName(), user.getLastName(), false);
+                map.put("status", 200);
+    	        map.put("message", "user registered");
+    	        map.put("type", false);
+            }
+    	    map.put("username", user.getUserId());
+    	    map.put("type", true);
+    	    return map;
+        } catch (UsernameAlreadyExists e) {
+            map.put("status", 500);
+            map.put("message", "username already exists");
+            return map;
+        } catch(Exception e) {
+    	    e.printStackTrace();
+    	    map.put("status", 500);
+    	    map.put("message", "failed to register");
+        } finally {
+    	    return map;
+        }
     }
 
     /**

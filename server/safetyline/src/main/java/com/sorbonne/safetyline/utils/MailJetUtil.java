@@ -8,13 +8,14 @@ import com.mailjet.client.MailjetResponse;
 import com.mailjet.client.ClientOptions;
 import com.mailjet.client.resource.Emailv31;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MailJetUtil {
 	
 	private static final String SENDER = "suggestionboxsafetyline1@gmail.com";
 
-	public static void send(String to, String subject, String content) throws MailjetException, MailjetSocketTimeoutException {
+	public static void send(String to, String subject, String content) throws MailjetException, MailjetSocketTimeoutException, JSONException {
 		// api key, private key, version
 		MailjetClient mClient = new MailjetClient("b6b6b131416b89c104b6e2c2945a1d5f",
 				"604fe9b4c3f9a873200864183ee07c60", new ClientOptions("v3.1"));
