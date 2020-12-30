@@ -11,12 +11,10 @@ package com.sorbonne.safetyline.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mailjet.client.errors.MailjetException;
-import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
 import com.sorbonne.safetyline.model.Connexion;
 import com.sorbonne.safetyline.model.User;
-import com.sorbonne.safetyline.model.UserCreation;
+import com.sorbonne.safetyline.dto.UserCreation;
 import com.sorbonne.safetyline.service.StrawpollService;
 import com.sorbonne.safetyline.service.SuggestionService;
 import com.sorbonne.safetyline.service.UserService;
@@ -29,8 +27,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

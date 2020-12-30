@@ -1,15 +1,19 @@
-package com.sorbonne.safetyline.model;
+package com.sorbonne.safetyline.dto;
+
+
+import lombok.Data;
 
 /**
  * Used to fetch data from client side for the creation of an account
  */
+@Data
 public class UserCreation {
 
 	private String userId;
 	private boolean isAdmin;
 	private String lastName;
 	private String firstName;
-
+	/**
 	public UserCreation(String userId, boolean isAdmin, String lastName, String firstName) {
 		super();
 		this.userId = userId;
@@ -49,5 +53,5 @@ public class UserCreation {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-
+*/
 }
