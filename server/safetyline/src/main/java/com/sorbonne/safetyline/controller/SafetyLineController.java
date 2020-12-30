@@ -105,15 +105,16 @@ public class SafetyLineController {
     	        map.put("type", false);
             }
     	    map.put("username", user.getUserId());
-    	    return map;
+
         } catch (UsernameAlreadyExists e) {
             map.put("status", 500);
             map.put("message", "username already exists");
-            return map;
+
         } catch(Exception e) {
     	    e.printStackTrace();
     	    map.put("status", 500);
     	    map.put("message", "failed to register");
+
         } finally {
     	    return map;
         }
