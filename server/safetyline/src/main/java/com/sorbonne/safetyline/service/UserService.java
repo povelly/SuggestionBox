@@ -40,7 +40,7 @@ public class UserService {
 
     @Transactional
     public void addUser(String user_id, String first_name, String last_name, boolean isAdmin) throws UsernameAlreadyExists, NoSuchAlgorithmException, UnsupportedEncodingException, MailjetException, MailjetSocketTimeoutException, JSONException {
-        if(this.getUserById(user_id).isEmpty())
+        if(this.getUserById(user_id).isPresent())
             throw new UsernameAlreadyExists();
         String password = PasswordUtil.generateFirstPassword();
 
