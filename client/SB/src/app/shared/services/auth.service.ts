@@ -18,7 +18,6 @@ export class AuthService {
     return this.http.post(this.authUrl, model).pipe(
       map((response: any) => {
         const user = response;
-        //console.log(response)
         if (user.status == 200) {
           localStorage.setItem('username', user.username);
           localStorage.setItem('admin', user.type);
@@ -30,6 +29,8 @@ export class AuthService {
     )
   }
   login(model: any) { 
+    localStorage.setItem('username', model.username);
+    localStorage.setItem('admin', 'True');
     this.router.navigate(['/home']);
     return of(true);
   }
@@ -37,8 +38,9 @@ export class AuthService {
   reset2(model: any){
     return this.http.post(this.authUrl, model).pipe(
       map((response: any) => {
-        //console.log(response)
         if (response.status == 200) {
+          localStorage.removeItem('username');  //Peut remplacer par un clean
+          localStorage.removeItem('admin');
           this.router.navigate(['/login']);
         } else {
           console.log(response.message);
@@ -48,6 +50,32 @@ export class AuthService {
   }
 
   reset(model: any){
+    localStorage.removeItem('username');  //Peut remplacer par un clean
+    localStorage.removeItem('admin');
+    this.router.navigate(['/login']);
+    return of(true);
+  }
+
+  delete2(){
+    const headers = { 'Authorization': localStorage.getItem('username') };
+    return this.http.delete(this.authUrl,  { headers } ).pipe(
+      map((response: any) => {
+        //console.log(response)
+        if (response.status == 200) {
+          localStorage.removeItem('username');  //Peut remplacer par un clean
+          localStorage.removeItem('admin');
+          this.router.navigate(['/login']);
+        } else {
+          console.log(response.message);
+        }
+      })
+    )
+  }
+
+  delete(){
+    console.log('Nous supprimons le compte: ' + localStorage.getItem('username'))
+    localStorage.removeItem('username');  //Peut remplacer par un clean
+    localStorage.removeItem('admin');
     this.router.navigate(['/login']);
     return of(true);
   }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-page',
@@ -7,9 +9,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  clicSurBouton(){
+    const loginObserver = {
+      next: x => console.log('reception http'),
+      error: err => console.log(err)
+    };
+    this.authService.delete().subscribe(loginObserver);
+  }
+
+  cancel(){
+    localStorage.clear()
+    //console.log(localStorage)
+    this.router.navigate(['/login']);
   }
 
 }
