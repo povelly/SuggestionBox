@@ -18,8 +18,8 @@ public class User
 
     @NotNull( message = "null password")
     @NotBlank( message = "password empty")
-    @Size( max=30, min=6)
-    @Column( name = "password", length = 50)
+    @Size( max=65, min=6)
+    @Column( name = "password", length = 65)
     private String password;
     
     @NotNull (message = "null is admin")

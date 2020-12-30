@@ -1,7 +1,10 @@
 package com.sorbonne.safetyline.service;
 
+import com.mailjet.client.errors.MailjetException;
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import com.sorbonne.safetyline.dataAccess.*;
 import com.sorbonne.safetyline.model.User;
+import com.sorbonne.safetyline.utils.MailJetUtil;
 import com.sorbonne.safetyline.utils.Password;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,21 +37,27 @@ public class UserService {
     }
 
     @Transactional
-    public void addSimpleUser(String user_id, String first_name, String last_name) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public void addSimpleUser(String user_id, String first_name, String last_name) throws NoSuchAlgorithmException, UnsupportedEncodingException, MailjetException, MailjetSocketTimeoutException {
 
         String password = com.sorbonne.safetyline.utils.Password.generateFirstPassword();
-        /**
-         * Send email to user with his password
-         */
+
         String hashPassword = Password.sha256(password);
         User u = new User();
         u.setUserId(user_id);
         u.setLastName(last_name);
         u.setFirstName(first_name);
-        u.setPassword(password);
+        u.setPassword(hashPassword);
         u.setSuggestionList(new ArrayList<>());
         u.setAdmin(false);
         userdoa.save(u);
+        
+        /**
+		 * Send email to user with his password
+		 */
+		// JavaMailUtil.send("sacha.memmi.etu@gmail.com", password);
+		MailJetUtil.send(user_id, "Creation de compte sur la SuggestionBox de Safetyline",
+				"Bonjour, ci-joint vos identifiants de connexion <br> Identifiant : " + user_id + "<br> Password : "
+						+ password);
     }
 
     /**
@@ -58,19 +67,24 @@ public class UserService {
     public void addSimpleAdmin(String user_id, String first_name, String last_name) throws Exception {
 
         String password = Password.generateFirstPassword();
-        /**
-         * Send email to user with his password
-         */
-        //JavaMailUtil.send("sacha.memmi.etu@gmail.com", password);
+        
         String hashPassword = Password.sha256(password);
         User u = new User();
         u.setUserId(user_id);
         u.setLastName(last_name);
         u.setFirstName(first_name);
-        u.setPassword(password);
+        u.setPassword(hashPassword);
         u.setSuggestionList(new ArrayList<>());
         u.setAdmin(true);
         userdoa.save(u);
+        
+		/**
+		 * Send email to user with his password
+		 */
+		// JavaMailUtil.send("sacha.memmi.etu@gmail.com", password);
+		MailJetUtil.send(user_id, "Creation de compte sur la SuggestionBox de Safetyline",
+				"Bonjour, ci-joint vos identifiants de connexion <br> Identifiant : " + user_id + "<br> Password : "
+						+ password);
     }
     /**
      * @see UserDAO#getAllAdmins()
