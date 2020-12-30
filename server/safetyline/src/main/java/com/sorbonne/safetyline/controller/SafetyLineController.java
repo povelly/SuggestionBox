@@ -105,7 +105,6 @@ public class SafetyLineController {
     	        map.put("type", false);
             }
     	    map.put("username", user.getUserId());
-    	    map.put("type", true);
     	    return map;
         } catch (UsernameAlreadyExists e) {
             map.put("status", 500);
