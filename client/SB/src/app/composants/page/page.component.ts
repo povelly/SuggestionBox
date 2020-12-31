@@ -29,6 +29,7 @@ export class PageComponent implements OnInit {
   cancel(){
     localStorage.clear()
     //console.log(localStorage)
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 
