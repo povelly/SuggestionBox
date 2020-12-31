@@ -12,6 +12,7 @@ export class AuthService {
 
   authUrl = "http://localhost:8020/safetylineConnexion";
   authUrl2 = "http://localhost:8020/account";
+  authUrl3 = "http://localhost:8020/accountDelete";
 
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
@@ -78,8 +79,8 @@ export class AuthService {
   }
 
   delete(){
-    const headers = { 'username': localStorage.getItem('username') };
-    return this.http.delete(this.authUrl2,  { headers } ).pipe(
+    const body = { 'username': localStorage.getItem('username') };
+    return this.http.post(this.authUrl3, body).pipe(
       map((response: any) => {
         //console.log(response)
         if (response.status == 200) {
