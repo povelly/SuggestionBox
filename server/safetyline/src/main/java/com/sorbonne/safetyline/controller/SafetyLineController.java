@@ -19,6 +19,8 @@ import com.sorbonne.safetyline.dto.UserDTO;
 import com.sorbonne.safetyline.service.StrawpollService;
 import com.sorbonne.safetyline.service.SuggestionService;
 import com.sorbonne.safetyline.service.UserService;
+import com.sorbonne.safetyline.utils.PasswordUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
@@ -71,7 +73,7 @@ public class SafetyLineController {
     public Map<String,Object> safetylineConnexion(@RequestBody UserDTO user)
     {
     	HashMap<String, Object> map = new HashMap<>();
-    	List<User> list = userService.authentifyUser(user.getUsername(),user.getPassword());
+    	List<User> list = userService.authentifyUser(user.getUsername(), PasswordUtil.sha256(user.getPassword()));
     	if (!list.isEmpty())
     	{
     		map.put("status", 200);
@@ -97,7 +99,7 @@ public class SafetyLineController {
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
-
+    		System.out.println("bool : " + user.isAdmin());
     	    if(user.isAdmin())
             {
                 userService.addUser(user.getUsername(), user.getFirstName(), user.getLastName(), true);
@@ -131,7 +133,7 @@ public class SafetyLineController {
      * Deletes an account using the email
      * @return the HTTP response
      */
-    @DeleteMapping("/account")
+    @PostMapping("/accountDelete")
     @ResponseBody
     public Map<String,Object> suppressionCompte(@RequestBody UserDTO user)
     {
