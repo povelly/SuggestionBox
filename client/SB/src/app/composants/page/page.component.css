@@ -1,0 +1,76 @@
+body {
+    background: #CCC;
+  }
+  :root{
+      --primary-color: #7639AA;
+      --secondary-color: #A80D72;
+      --grey-dark-color: #434343;
+      --grey-light-color: #F8F8F8;
+  }
+  * {
+    margin: 0px;
+    padding: 0px;
+    font-family: "Montserrat", "Lato";
+  }
+  nav {
+    width: 100%;
+    margin: 0;
+    background: var(--primary-color) !important;
+    position: sticky;
+    top: 0;
+  }
+  nav ul {
+    list-style-type: none;
+  }
+  nav ul li {
+    float: right;
+    width: auto;
+    text-align: center;
+    position: relative;
+  }
+  nav ul::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  nav a {
+    display: block;
+    text-decoration: none;
+    color: black;
+    border-bottom: 2px solid transparent;
+    padding: 10px 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  nav a:hover {
+    color: white;
+    background: var(--secondary-color);
+    border-bottom: 3px solid white;
+  }
+  .under {
+    display: none;
+    box-shadow: 0px 1px 2px #CCC;
+    background-color: white;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+  }
+  nav > ul li:hover .under {
+    display: block;
+  }
+  .under li {
+    float: none;
+    width: 100%;
+    text-align: left;
+  }
+  .under a {
+    padding: 10px;
+    border-bottom: none;
+  }
+  .under a:hover {
+    border-bottom: none;
+  }
+  .scrolling > a::after {
+    content:"▾";
+    font-size: 12px;
+  }

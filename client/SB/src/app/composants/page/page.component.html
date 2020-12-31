@@ -1,3 +1,22 @@
+<nav>
+    <ul>
+      <li style="float: right" class="scrolling"><a href="#">Profil &ensp;</a>
+        <ul class="under">
+          <span *ngIf="cond">
+            <a routerLink="/admin" type="button" class="btn btn-primary">Admin</a>
+          </span>
+          <li><a routerLink="/parameters" type="button" class="btn btn-primary">Paramètres</a></li>
+          <li><a (click)="clicSurBouton()" type="button" class="btn btn-primary">Supprmier mon compte</a></li>
+          <li><a (click)="cancel()" type="button" class="btn btn-primary">Deconnexion</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Sondages</a></li>
+      <li><a href="#">Faire une suggestion</a></li>
+      <li style="float: left"><a href="#">SafetyLine</a></li>
+    </ul>
+  </nav>
+
+<!--
 <button (click)="cancel()" type="button" class="btn btn-primary">Deconnexion</button>
 <button (click)="clicSurBouton()" type="button" class="btn btn-primary">Supprmier mon compte</button>
 
@@ -9,4 +28,4 @@
 
 <button routerLink="/parameters" type="button" class="btn btn-primary">Paramètres</button>
 
-
+-->

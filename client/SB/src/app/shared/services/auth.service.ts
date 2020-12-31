@@ -25,13 +25,13 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login2(model: any) {
+  login(model: any) {
     return this.http.post(this.authUrl, model).pipe(
       map((response: any) => {
         const user = response;
         if (user.status == 200) {
           localStorage.setItem('user', JSON.stringify(user));
-          localStorage.setItem('token', user.token);
+          //localStorage.setItem('token', user.token);
           localStorage.setItem('username', user.username);
           localStorage.setItem('admin', user.type);
           this.currentUserSubject.next(user);
@@ -42,7 +42,7 @@ export class AuthService {
       })
     )
   }
-  login(model: any) { 
+  login2(model: any) { 
     localStorage.setItem('token', 'token');
     localStorage.setItem('username', model.username);
     localStorage.setItem('admin', 'true');
@@ -54,7 +54,7 @@ export class AuthService {
     this.currentUserSubject.next(null);
   }
 
-  reset2(model: any){
+  reset(model: any){
     return this.http.post(this.authUrl2, model).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -69,7 +69,7 @@ export class AuthService {
     )
   }
 
-  reset(model: any){
+  reset2(model: any){
     //localStorage.removeItem('username');  //Peut remplacer par un clean
     //localStorage.removeItem('admin');
     localStorage.clear();
@@ -77,7 +77,7 @@ export class AuthService {
     return of(true);
   }
 
-  delete2(){
+  delete(){
     const headers = { 'username': localStorage.getItem('username') };
     return this.http.delete(this.authUrl2,  { headers } ).pipe(
       map((response: any) => {
@@ -94,7 +94,7 @@ export class AuthService {
     )
   }
 
-  delete(){
+  delete2(){
     console.log('Nous supprimons le compte: ' + localStorage.getItem('username'))
     //localStorage.removeItem('username');  //Peut remplacer par un clean
     //localStorage.removeItem('admin');
