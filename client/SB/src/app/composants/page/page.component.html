@@ -16,6 +16,37 @@
     </ul>
   </nav>
 
+  <div class="login-form">
+    <div class="login-content">
+        <h3>Entrez une suggestion</h3>
+        <form [formGroup]="myForm"
+        (ngSubmit)="sugg(myForm)">
+
+            <div class="form-group">
+                <label for="resetPasswordEmail">Suggestion:</label>
+                <!--<p>
+                    <input formControlName="username" 
+                    name="username"
+                    placeholder="Email">
+                </p>-->
+                </div> 
+            <textarea formControlName="text" id="story" name="story"
+              rows="5" cols="33">
+                It was a dark and stormy night...
+            </textarea>
+            <div>
+                <input  formControlName="anonymous" type="checkbox" id="anonymous" name="anonymous">
+                <label for="anonymous">anonymous</label>
+            </div>
+            <button type="submit" 
+            [disabled]="myForm.invalid"
+            class="btn btn-primary">Envoyer suggestion </button>
+
+            <button routerLink="/login" type="button" class="btn btn-primary">Cancel</button>
+        </form>
+    </div>
+</div>
+
 <!--
 <button (click)="cancel()" type="button" class="btn btn-primary">Deconnexion</button>
 <button (click)="clicSurBouton()" type="button" class="btn btn-primary">Supprmier mon compte</button>

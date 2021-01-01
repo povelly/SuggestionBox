@@ -9,7 +9,32 @@
 <button routerLink="/home" type="button" class="btn btn-primary">Cancel</button>
 
 <div *ngIf="modeCreation">
-    Mode creation
+    <div class="login-form">
+        <div class="login-content">
+            <h3>Ajouter un utilisateur</h3>
+            <form [formGroup]="myForm"
+            (ngSubmit)="creation(myForm)">
+    
+                <div class="form-group">
+                    <label for="resetPasswordEmail">Email</label>
+                    <p>
+                        <input formControlName="username" 
+                        name="username"
+                        placeholder="Email">
+                    </p>
+                </div>
+                <div>
+                    <input  formControlName="admin" type="checkbox" id="admin" name="admin">
+                    <label for="admin">Administrateur</label>
+                </div>
+                <button type="submit" 
+                [disabled]="myForm.invalid"
+                class="btn btn-primary">Envoyer inscription </button>
+    
+                <button routerLink="/login" type="button" class="btn btn-primary">Cancel</button>
+            </form>
+        </div>
+    </div>
 </div>
 
 <div *ngIf="modeSupp">

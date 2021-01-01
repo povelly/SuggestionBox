@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, NgForm, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-admin',
@@ -10,10 +12,21 @@ export class AdminComponent implements OnInit {
   modeCreation = true
   modeSupp = false
   modeSondage = false
+  myForm: FormGroup;
 
-  constructor() { }
+  constructor(private authService: AuthService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
+
+    this.myForm = this.fb.group({
+      username: ['',[
+        Validators.required,
+        Validators.email
+      ]],
+      admin: [false]
+    });
+
+    this.myForm.valueChanges.subscribe(console.log)
   }
 
   boutonCreation(){
@@ -32,6 +45,15 @@ export class AdminComponent implements OnInit {
     this.modeCreation = false
     this.modeSupp = false
     this.modeSondage = true
+  }
+
+  creation(f: FormGroup){
+    const loginObserver = {
+    next: x => console.log('reception http'),
+    error: err => console.log(err)
+    };
+    console.log(f.value);
+    this.authService.create(f.value).subscribe(loginObserver);
   }
 
 }

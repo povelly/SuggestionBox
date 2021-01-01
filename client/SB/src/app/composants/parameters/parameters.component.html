@@ -2,6 +2,7 @@
     <div class="login-content">
     <h4>Modification du mot de passe</h4>
       <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
+        <label for="resetPasswordEmail">Ancien mot de passe</label>
         <p>
             
           <input formControlName="oldPassword"
@@ -9,12 +10,14 @@
           name="password" 
           placeholder="Ancien mot de passe">
         </p>
+        <label for="resetPasswordEmail">Nouveau mot de passe</label>
         <p>
             <input formControlName="newPassword1"
             type = "password"
             name="password" 
             placeholder="Nouveau mot de passe">
         </p>
+        <label for="resetPasswordEmail">Confirmation du nouveau mot de passe</label>
         <p>
             <input formControlName="newPassword2"
             type = "password"

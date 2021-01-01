@@ -121,5 +121,38 @@ export class AuthService {
     return of(true);
   }
 
+  create2(model: any){
+    return this.http.post(this.authUrl2, model).pipe(
+      map((response: any) => {
+        if (response.status == 200) {
+          this.router.navigate(['/home']);
+        } else {
+          console.log(response.message);
+        }
+      })
+    )
+  }
 
+  create(model: any){
+    this.router.navigate(['/home']);
+    return of(true);
+  }
+
+  suggestion2(model: any){
+    return this.http.post(this.authUrl2, model).pipe(
+      map((response: any) => {
+        if (response.status == 200) {
+          this.router.navigate(['/home']);
+        } else {
+          console.log(response.message);
+        }
+      })
+    )
+  }
+
+  suggestion(model: any){
+    this.router.navigate(['/home']);
+    console.log(model.value);
+    return of(true);
+  }
 }
