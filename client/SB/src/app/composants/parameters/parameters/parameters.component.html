@@ -1,2 +1,33 @@
-<p>parameters works!</p>
-<button routerLink="/home" type="button" class="btn btn-primary">Cancel</button>
+<form class="login-form">
+    <div class="login-content">
+    <h4>Modification du mot de passe</h4>
+      <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
+        <p>
+            
+          <input formControlName="oldPassword"
+          type = "password"
+          name="password" 
+          placeholder="Ancien mot de passe">
+        </p>
+        <p>
+            <input formControlName="newPassword1"
+            type = "password"
+            name="password" 
+            placeholder="Nouveau mot de passe">
+        </p>
+        <p>
+            <input formControlName="newPassword2"
+            type = "password"
+            name="password" 
+            placeholder="Confirmation du nouveau mot de passe">
+        </p>
+        <button type="submit"
+        [disabled]="myForm.invalid">Changer mon mot de passe<i class="fas fa-sign-in-alt"></i></button>
+      </form>
+    </div>
+    <div class="login-footer">
+      <!--<a href="#">Mot de passe oublié ?</a>-->
+      <button routerLink="/home" type="button" class="btn btn-primary">Cancel</button>
+    </div>
+</form>
+
