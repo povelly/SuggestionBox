@@ -6,8 +6,8 @@ import { PageComponent } from './page/page.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AdminComponent } from './admin/admin/admin.component';
-import { ParametersComponent } from './parameters/parameters/parameters.component';
+import { AdminComponent } from './admin/admin.component';
+import { ParametersComponent } from './parameters/parameters.component';
 
 const routes: Routes = [
   { path: 'login', component:LoginFormComponent },

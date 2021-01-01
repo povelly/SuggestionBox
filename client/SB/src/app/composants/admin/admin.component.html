@@ -1,0 +1,21 @@
+<nav>
+    <ul>
+        <li><a (click)="boutonSondages()" type="button" class="btn btn-primary">Consultation des sondages</a></li>
+        <li><a (click)="boutonSupp()" type="button" class="btn btn-primary">Remerciment d'un collaborateur</a></li>
+        <li><a (click)="boutonCreation()" type="button" class="btn btn-primary">Ajout d'un collaborateur</a></li>
+        <li style="float: left"><a href="/home">SafetyLine</a></li>
+    </ul>
+  </nav>
+<button routerLink="/home" type="button" class="btn btn-primary">Cancel</button>
+
+<div *ngIf="modeCreation">
+    Mode creation
+</div>
+
+<div *ngIf="modeSupp">
+    Mode suppression
+</div>
+
+<div *ngIf="modeSondage">
+    Mode sondages
+</div>

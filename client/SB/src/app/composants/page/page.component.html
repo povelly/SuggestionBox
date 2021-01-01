@@ -1,6 +1,6 @@
 <nav>
     <ul>
-      <li style="float: right" class="scrolling"><a href="#">Profil &ensp;</a>
+      <li style="float: right" class="scrolling"><a href="/home">Profil &ensp;</a>
         <ul class="under">
           <span *ngIf="cond">
             <a routerLink="/admin" type="button" class="btn btn-primary">Admin</a>
@@ -10,9 +10,9 @@
           <li><a (click)="cancel()" type="button" class="btn btn-primary">Deconnexion</a></li>
         </ul>
       </li>
-      <li><a href="#">Sondages</a></li>
-      <li><a href="#">Faire une suggestion</a></li>
-      <li style="float: left"><a href="#">SafetyLine</a></li>
+      <li><a href="/home">Sondages</a></li>
+      <li><a href="/home">Faire une suggestion</a></li>
+      <li style="float: left"><a href="/home">SafetyLine</a></li>
     </ul>
   </nav>
 
