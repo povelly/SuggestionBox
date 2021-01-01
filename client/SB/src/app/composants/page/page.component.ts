@@ -46,7 +46,7 @@ export class PageComponent implements OnInit {
     next: x => console.log('reception http'),
     error: err => console.log(err)
     };
-    
+    console.log(f.value);
     this.authService.suggestion(f.value).subscribe(loginObserver);
   }
 

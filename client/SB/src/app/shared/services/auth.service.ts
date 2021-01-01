@@ -152,7 +152,7 @@ export class AuthService {
 
   suggestion(model: any){
     this.router.navigate(['/home']);
-    console.log(model.value);
+    console.log(model.text);
     return of(true);
   }
 }
