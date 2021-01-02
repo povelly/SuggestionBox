@@ -34,8 +34,14 @@ public class UserService {
      * @see UserDAO#deleteUserById_user(String)
      */
     @Transactional
-    public void deleteUserByIdUser(String user_id) {
+    public void deleteUserByIdUser(String user_id) throws JSONException, MailjetException, MailjetSocketTimeoutException {
         userdoa.deleteUserByIdUser(user_id);
+        
+        /**
+		 * Send email to user with his password
+		 */
+		MailJetUtil.send(user_id, "Suppression de compte sur la SuggestionBox de Safetyline",
+				"Bonjour, votre compte Safetyline SuggestionBox " + user_id + " a été supprimé");
     }
 
     @Transactional

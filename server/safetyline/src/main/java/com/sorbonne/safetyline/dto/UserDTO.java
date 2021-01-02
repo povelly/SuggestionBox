@@ -14,7 +14,7 @@ public class UserDTO {
 
 	private String username;
 	private String password;
-	private boolean isAdmin;
+	private boolean admin;
 	private String lastName;
 	private String firstName;
 
