@@ -11,6 +11,8 @@ package com.sorbonne.safetyline.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysql.cj.ServerPreparedQuery;
+import com.sorbonne.safetyline.exception.SessionExpired;
 import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
 import com.sorbonne.safetyline.exception.UtilisateurInconnuException;
 import com.sorbonne.safetyline.model.Connexion;
@@ -28,6 +30,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import java.util.HashMap;
@@ -70,8 +74,10 @@ public class SafetyLineController {
      */
     @PostMapping("/safetylineConnexion")
     @ResponseBody
-    public Map<String,Object> safetylineConnexion(@RequestBody UserDTO user)
+    public Map<String,Object> safetylineConnexion(@RequestBody UserDTO user, HttpServletRequest request)
     {
+
+
     	HashMap<String, Object> map = new HashMap<>();
     	List<User> list = userService.authentifyUser(user.getUsername(), PasswordUtil.sha256(user.getPassword()));
     	if (!list.isEmpty())
@@ -80,6 +86,8 @@ public class SafetyLineController {
     		map.put("message", "user found");
     		map.put("username", user.getUsername());
     		map.put("type", list.get(0).getAdmin());
+            HttpSession session = request.getSession();
+            session.setAttribute("token_id", session.getId());
     		return map;
     	} else {
     		map.put("status", 404);
@@ -135,10 +143,15 @@ public class SafetyLineController {
      */
     @PostMapping("/account")
     @ResponseBody
-    public Map<String,Object> updateCompte(@RequestBody UserDTO user)
+    public Map<String,Object> updateCompte(@RequestBody UserDTO user, HttpServletRequest request)
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
+    	    HttpSession session = request.getSession(false);
+    	    if(session == null || !request.isRequestedSessionIdValid())
+            {
+                throw new SessionExpired();
+            }
     		Optional<User> userFromDB = userService.getUserById(user.getUsername());
     		if(!userFromDB.isPresent())
 	            throw new UtilisateurInconnuException();
@@ -161,7 +174,11 @@ public class SafetyLineController {
             }
     	    map.put("username", user.getUsername());
 
-        } catch (UtilisateurInconnuException e) {
+        } catch(SessionExpired s) {
+    	    map.put("status", 500);
+    	    map.put("message", "your session expired or has never been created");
+        }
+    	catch (UtilisateurInconnuException e) {
             map.put("status", 500);
             map.put("message", "unknown user");
 
