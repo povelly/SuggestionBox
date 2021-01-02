@@ -11,10 +11,12 @@ package com.sorbonne.safetyline.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sorbonne.safetyline.exception.EmptySuggestionException;
 import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
 import com.sorbonne.safetyline.exception.UtilisateurInconnuException;
 import com.sorbonne.safetyline.model.Connexion;
 import com.sorbonne.safetyline.model.User;
+import com.sorbonne.safetyline.dto.SuggestionDTO;
 import com.sorbonne.safetyline.dto.UserDTO;
 import com.sorbonne.safetyline.service.StrawpollService;
 import com.sorbonne.safetyline.service.SuggestionService;
@@ -63,6 +65,8 @@ public class SafetyLineController {
         JsonNode actualObj = mapper.readTree("{\"k1\":\"v1\",\"k2\":\"v2\"}");
         return actualObj;
     }
+    
+    ////////////////////////////////// USER //////////////////////////////////
     
     /**
      * Search if the user is in the database or not, used for connexion
@@ -217,6 +221,53 @@ public class SafetyLineController {
     	    return map;
         }
     }
+    
+    /////////////////////////////////// SUGGESTION /////////////////////////////////
+    
+    /**
+     * Creates a suggestion
+     * @return the HTTP response
+     */
+    @PostMapping("/suggestion")
+    @ResponseBody
+    public Map<String,Object> creationSuggestion(@RequestBody SuggestionDTO sug)
+    {
+    	System.out.println("here sug");
+    	HashMap<String, Object> map = new HashMap<>();
+    	try{
+    		System.out.println("here sug2");
+    		if(sug.getContent() == null) throw new EmptySuggestionException();
+    		
+    	    if(sug.getAuthor() != null)
+            {
+    	    	System.out.println("here sug3");
+    	    	suggestionService.creationSuggestion(sug.getContent(), sug.getAuthor());
+                map.put("status", 200);
+                map.put("message", "suggestion has been created");
+            }
+    	    else {
+    	    	// Suggestion anonyme
+    	    	suggestionService.creationSuggestion(sug.getContent(), null);
+                map.put("status", 200);
+    	        map.put("message", "anonymous suggestion has been created");
+            }
+    	    System.out.println("here sug??");
+
+        } catch (EmptySuggestionException e) {
+            map.put("status", 500);
+            map.put("message", "empty suggestion");
+            
+        } catch(Exception e) {
+    	    e.printStackTrace();
+    	    map.put("status", 500);
+    	    map.put("message", "failed create suggestion");
+    	    
+        } finally {
+        	System.out.println("here sug4");
+    	    return map;
+        }
+    }
+    
 
     /**
      *  First view the user will access before user send the completed register form

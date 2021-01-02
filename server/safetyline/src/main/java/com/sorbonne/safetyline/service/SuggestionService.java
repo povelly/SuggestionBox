@@ -11,7 +11,7 @@ import com.sorbonne.safetyline.dataAccess.SuggestionDAO;
 import com.sorbonne.safetyline.model.Suggestion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,6 +39,19 @@ public class SuggestionService {
     public List<Suggestion> getSuggestionByDateRange(Date lowerBoundDate, Date upperBoundDate)
     {
         return suggestionDAO.findBySuggestion_creation_dateRange(lowerBoundDate, upperBoundDate);
+    }
+    
+    /**
+     * Creates a suggestion
+     */
+    public void creationSuggestion(String content, String author) {
+    	Suggestion s = new Suggestion();
+    	s.setSuggestionContent(content);
+    	s.setSuggestionCreationDate(new Date(System.currentTimeMillis()));
+    	if (author != null) { s.setSuggestionAuthor(author); }
+    	
+    	suggestionDAO.save(s);
+    	
     }
 
 }
