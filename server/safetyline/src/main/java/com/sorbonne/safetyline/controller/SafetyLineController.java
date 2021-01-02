@@ -93,31 +93,77 @@ public class SafetyLineController {
      * the boolean that indicates if the user is an admin or not
      * @return the HTTP response
      */
-    @PostMapping("/account")
+    @PutMapping("/account/{userId}")
     @ResponseBody
-    public Map<String,Object> creationCompte(@RequestBody UserDTO user)
+    public Map<String,Object> creationCompte(@PathVariable String userId, @RequestBody UserDTO user)
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
-    		System.out.println("bool : " + user.isAdmin());
+    		if(user.getFirstName() == null || user.getLastName() == null) throw new Exception();
     	    if(user.isAdmin())
             {
-                userService.addUser(user.getUsername(), user.getFirstName(), user.getLastName(), true);
+                userService.addUser(userId, user.getFirstName(), user.getLastName(), true);
                 map.put("status", 200);
                 map.put("message", "admin registered");
                 map.put("type", true);
             }
     	    else{
-    	        userService.addUser(user.getUsername(), user.getFirstName(), user.getLastName(), false);
+    	        userService.addUser(userId, user.getFirstName(), user.getLastName(), false);
                 map.put("status", 200);
     	        map.put("message", "user registered");
     	        map.put("type", false);
             }
-    	    map.put("username", user.getUsername());
+    	    map.put("username", userId);
 
         } catch (UsernameAlreadyExists e) {
             map.put("status", 500);
             map.put("message", "username already exists");
+
+        } catch(Exception e) {
+    	    e.printStackTrace();
+    	    map.put("status", 500);
+    	    map.put("message", "failed to register");
+
+        } finally {
+    	    return map;
+        }
+    }
+    
+    /**
+     * Updates the account, can be used for passwords for now
+     * @return the HTTP response
+     */
+    @PostMapping("/account")
+    @ResponseBody
+    public Map<String,Object> updateCompte(@RequestBody UserDTO user)
+    {
+    	HashMap<String, Object> map = new HashMap<>();
+    	try{
+    		Optional<User> userFromDB = userService.getUserById(user.getUsername());
+    		if(!userFromDB.isPresent())
+	            throw new UtilisateurInconnuException();
+    		
+    	    if(user.getPassword() != null)
+            {
+    	    	// Changement de mot de passe
+    	    	userService.updatePassword(user.getUsername(), user.getPassword(),
+    	    			userFromDB.get().getFirstName(), userFromDB.get().getLastName(),
+    	    			userFromDB.get().getAdmin());
+                map.put("status", 200);
+                map.put("message", "password has been updated");
+            }
+    	    else {
+    	    	// Reinitialisation mot de passe
+    	    	userService.forgottenPassword(user.getUsername(), userFromDB.get().getFirstName(), 
+    	    			userFromDB.get().getLastName(), userFromDB.get().getAdmin());
+                map.put("status", 200);
+    	        map.put("message", "new password generated");
+            }
+    	    map.put("username", user.getUsername());
+
+        } catch (UtilisateurInconnuException e) {
+            map.put("status", 500);
+            map.put("message", "unknown user");
 
         } catch(Exception e) {
     	    e.printStackTrace();

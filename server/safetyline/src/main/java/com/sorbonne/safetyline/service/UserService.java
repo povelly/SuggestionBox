@@ -38,7 +38,7 @@ public class UserService {
         userdoa.deleteUserByIdUser(user_id);
         
         /**
-		 * Send email to user with his password
+		 * Send email to user confirming the deletion
 		 */
 		MailJetUtil.send(user_id, "Suppression de compte sur la SuggestionBox de Safetyline",
 				"Bonjour, votre compte Safetyline SuggestionBox " + user_id + " a été supprimé");
@@ -67,6 +67,59 @@ public class UserService {
 				"Bonjour, ci-joint vos identifiants de connexion <br> Identifiant : " + user_id + "<br> Password : "
 						+ password);
     }
+    
+    /**
+     * Generates a new password for a User
+     */
+    public void forgottenPassword(String userId, String firstName, String lastName, boolean admin) 
+    		throws JSONException, MailjetException, MailjetSocketTimeoutException {
+    	String password = PasswordUtil.generateFirstPassword();
+        String hashPassword = PasswordUtil.sha256(password);
+        
+        User u = new User();
+        u.setUserId(userId);
+        u.setFirstName(firstName);
+        u.setLastName(lastName);
+        u.setPassword(hashPassword);
+        u.setSuggestionList(new ArrayList<>());
+        u.setAdmin(admin);
+        userdoa.save(u);
+        
+        /**
+		 * Send email to user with his new password
+		 */
+		MailJetUtil.send(userId, "Réinitialisation de mot de passe sur la SuggestionBox de Safetyline",
+				"Bonjour, suite à votre demande, votre mot de passe a été réinitialisé sur la SuggestionBox <br>"
+				+ "Ci-joint vos nouveaux identifiants de connexion <br> Identifiant : " + userId + "<br> Password : "
+						+ password);
+    }
+    
+    
+    /**
+     * Update a  password for a User
+     */
+    public void updatePassword(String userId, String password, String firstName, String lastName, boolean admin) 
+    		throws JSONException, MailjetException, MailjetSocketTimeoutException {
+        String hashPassword = PasswordUtil.sha256(password);
+        
+        User u = new User();
+        u.setUserId(userId);
+        u.setFirstName(firstName);
+        u.setLastName(lastName);
+        u.setPassword(hashPassword);
+        u.setSuggestionList(new ArrayList<>());
+        u.setAdmin(admin);
+        userdoa.save(u);
+        
+        /**
+		 * Send email to user with his new password
+		 */
+		MailJetUtil.send(userId, "Changement de mot de passe sur la SuggestionBox de Safetyline",
+				"Bonjour, suite à votre demande, votre mot de passe a été modifié sur la SuggestionBox <br>"
+				+ "Si vous n'êtes pas à l'origine de cette demande, veuillez protéger votre compte.");
+    }
+    
+    
 
     /**
      * @see UserDAO#getAllAdmins()
