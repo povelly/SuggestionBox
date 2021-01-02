@@ -32,7 +32,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -78,7 +80,7 @@ public class SafetyLineController {
      */
     @PostMapping("/safetylineConnexion")
     @ResponseBody
-    public Map<String,Object> safetylineConnexion(@RequestBody UserDTO user, HttpServletRequest request)
+    public Map<String,Object> safetylineConnexion(@RequestBody UserDTO user, HttpServletResponse response, HttpServletRequest request)
     {
 
 
@@ -91,7 +93,9 @@ public class SafetyLineController {
     		map.put("username", user.getUsername());
     		map.put("type", list.get(0).getAdmin());
             HttpSession session = request.getSession();
-            session.setAttribute("token_id", session.getId());
+
+            session.setAttribute("token_id", "fdsajklfj");
+            session.setMaxInactiveInterval(1);
     		return map;
     	} else {
     		map.put("status", 404);

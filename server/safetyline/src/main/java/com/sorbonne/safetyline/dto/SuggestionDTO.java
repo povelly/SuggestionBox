@@ -13,6 +13,4 @@ public class SuggestionDTO {
 	
 	private String content;
 	private String author;
-	
-
 }
