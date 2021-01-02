@@ -11,12 +11,9 @@ package com.sorbonne.safetyline.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-<<<<<<< HEAD
 import com.mysql.cj.ServerPreparedQuery;
 import com.sorbonne.safetyline.exception.SessionExpired;
-=======
 import com.sorbonne.safetyline.exception.EmptySuggestionException;
->>>>>>> 2a130960eac9b68caf7fb0ae3c215e20df7b12b3
 import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
 import com.sorbonne.safetyline.exception.UtilisateurInconnuException;
 import com.sorbonne.safetyline.model.Connexion;
