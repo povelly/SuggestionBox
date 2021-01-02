@@ -232,15 +232,12 @@ public class SafetyLineController {
     @ResponseBody
     public Map<String,Object> creationSuggestion(@RequestBody SuggestionDTO sug)
     {
-    	System.out.println("here sug");
     	HashMap<String, Object> map = new HashMap<>();
     	try{
-    		System.out.println("here sug2");
     		if(sug.getContent() == null) throw new EmptySuggestionException();
     		
     	    if(sug.getAuthor() != null)
             {
-    	    	System.out.println("here sug3");
     	    	suggestionService.creationSuggestion(sug.getContent(), sug.getAuthor());
                 map.put("status", 200);
                 map.put("message", "suggestion has been created");
@@ -251,7 +248,6 @@ public class SafetyLineController {
                 map.put("status", 200);
     	        map.put("message", "anonymous suggestion has been created");
             }
-    	    System.out.println("here sug??");
 
         } catch (EmptySuggestionException e) {
             map.put("status", 500);
@@ -263,7 +259,6 @@ public class SafetyLineController {
     	    map.put("message", "failed create suggestion");
     	    
         } finally {
-        	System.out.println("here sug4");
     	    return map;
         }
     }

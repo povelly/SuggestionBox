@@ -52,6 +52,8 @@ public class SuggestionService {
     	
     	suggestionDAO.save(s);
     	
+    	// TODO gérer mail
+    	
     }
 
 }
