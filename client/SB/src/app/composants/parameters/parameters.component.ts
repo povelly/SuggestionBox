@@ -20,7 +20,7 @@ export class ParametersComponent implements OnInit {
         Validators.required,
         Validators.pattern('^(?=.{6,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$')
       ]],
-      newPassword1: ['',[
+      newPassword: ['',[
         Validators.required,
         Validators.pattern('^(?=.{6,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$')
       ]],
@@ -38,6 +38,7 @@ export class ParametersComponent implements OnInit {
       next: x => console.log('reception http'),
       error: err => console.log(err)
     };
+    f.value.username = localStorage.getItem("username");
     this.authService.update(f.value).subscribe(loginObserver);
     //console.log(f2.status);  
     //console.log(f2.value);
