@@ -21,7 +21,8 @@ export class PageComponent implements OnInit {
       content: ['',[
         Validators.required
       ]],
-      anonymous: [false]
+      anonymous: [false],
+      author:[""]
     });
   }
 
