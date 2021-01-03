@@ -47,7 +47,7 @@ export class PageComponent implements OnInit {
     error: err => console.log(err)
     };
     console.log(f.value);
-    if(f.value.anonymous = true){
+    if(f.value.anonymous = false){
       f.value.author = localStorage.getItem("username");
     }
     this.authService.suggestion(f.value).subscribe(loginObserver);
