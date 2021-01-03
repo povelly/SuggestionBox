@@ -74,4 +74,37 @@ body {
     content:"▾";
     font-size: 12px;
   }
+
+  .login-form {
+    background: #E9E9E9;
+    text-align: center;
+  }
+
+  .login-content {
+    padding: 10px;
+    background: #E9E9E9;
+  }
+  .login-form {
+    max-width: 370px;
+    /* width: 400px; */
+    width: 45%;
+    min-width: 300px;
+    margin: auto;
+  }
+  .login-footer {
+    background: #CFCFCF;
+    text-align: center;
+    font-style: italic;
+    font-size: small;
+    padding: 5px;
+  }
+  .login-footer a {
+    color: var(--grey-dark-color);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+
   

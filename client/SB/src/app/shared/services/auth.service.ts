@@ -28,7 +28,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login2(model: any) {
+  login(model: any) {
     return this.http.post(this.authUrl, model).pipe(
       map((response: any) => {
         const user = response;
@@ -45,7 +45,7 @@ export class AuthService {
       })
     )
   }
-  login(model: any) { 
+  login2(model: any) { 
     localStorage.setItem('token', 'token');
     localStorage.setItem('username', model.username);
     localStorage.setItem('admin', 'true');
@@ -106,7 +106,7 @@ export class AuthService {
     return of(true);
   }
 
-  update2(model: any){
+  update(model: any){
     return this.http.post(this.authUrl4, model).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -118,12 +118,12 @@ export class AuthService {
     )
   }
 
-  update(model: any){
+  update2(model: any){
     this.router.navigate(['/home']);
     return of(true);
   }
 
-  create2(model: any){
+  create(model: any){
     return this.http.put(this.authUrl2 + model.username, model).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -135,12 +135,12 @@ export class AuthService {
     )
   }
 
-  create(model: any){
+  create2(model: any){
     this.router.navigate(['/home']);
     return of(true);
   }
 
-  suggestion2(model: any){
+  suggestion(model: any){
     return this.http.post(this.authUrl5, model).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -152,7 +152,7 @@ export class AuthService {
     )
   }
 
-  suggestion(model: any){
+  suggestion2(model: any){
     this.router.navigate(['/home']);
     console.log(model.text);
     return of(true);
