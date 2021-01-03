@@ -96,7 +96,7 @@ public class SafetyLineController {
             HttpSession session = request.getSession();
 
             session.setAttribute("token_id", "fdsajklfj");
-            session.setMaxInactiveInterval(1);
+            session.setMaxInactiveInterval(100);
     		return map;
     	} else {
     		map.put("status", 404);
