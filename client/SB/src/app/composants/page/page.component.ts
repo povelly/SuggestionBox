@@ -18,7 +18,7 @@ export class PageComponent implements OnInit {
 
   ngOnInit(): void {
     this.myForm = this.fb.group({
-      text: ['',[
+      content: ['',[
         Validators.required
       ]],
       anonymous: [false]
@@ -47,7 +47,9 @@ export class PageComponent implements OnInit {
     error: err => console.log(err)
     };
     console.log(f.value);
-    f.value.username = localStorage.getItem("username");
+    if(f.value.anonymous = true){
+      f.value.author = localStorage.getItem("username");
+    }
     this.authService.suggestion(f.value).subscribe(loginObserver);
   }
 
