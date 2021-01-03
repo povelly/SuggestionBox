@@ -13,3 +13,4 @@ services:
   - MYSQL_DATABASE=safetyline
   volumes:
     - ./dump:/docker-entrypoint-initdb.d
+    - /opt/mysql_data:/var/lib/mysql
