@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.ServerPreparedQuery;
 import com.sorbonne.safetyline.exception.SessionExpired;
 import com.sorbonne.safetyline.exception.EmptySuggestionException;
+import com.sorbonne.safetyline.exception.InvalidFormException;
 import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
 import com.sorbonne.safetyline.exception.UtilisateurInconnuException;
 import com.sorbonne.safetyline.model.Connexion;
@@ -115,7 +116,7 @@ public class SafetyLineController {
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
-    		if(user.getFirstName() == null || user.getLastName() == null) throw new Exception();
+    		if(user.getFirstName() == null || user.getLastName() == null) throw new InvalidFormException();
     	    if(user.isAdmin())
             {
                 userService.addUser(userId, user.getFirstName(), user.getLastName(), true);
@@ -134,6 +135,10 @@ public class SafetyLineController {
         } catch (UsernameAlreadyExists e) {
             map.put("status", 500);
             map.put("message", "username already exists");
+            
+        } catch (InvalidFormException e) {
+            map.put("status", 500);
+            map.put("message", "missing content in form");
 
         } catch(Exception e) {
     	    e.printStackTrace();
