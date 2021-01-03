@@ -47,7 +47,7 @@ export class PageComponent implements OnInit {
     next: x => console.log('reception http'),
     error: err => console.log(err)
     };
-    if(f.value.anonymous = false){
+    if(f.value.anonymous == false){
       f.value.author = localStorage.getItem("username");
     }
     console.log(f.value);
