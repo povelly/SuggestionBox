@@ -47,7 +47,7 @@ export class PageComponent implements OnInit {
     error: err => console.log(err)
     };
     console.log(f.value);
-    f.value.username = localStorage.get("username");
+    f.value.username = localStorage.getItem("username");
     this.authService.suggestion(f.value).subscribe(loginObserver);
   }
 
