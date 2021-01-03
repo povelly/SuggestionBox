@@ -13,7 +13,6 @@ export class AuthService {
   authUrl = "http://localhost:8020/safetylineConnexion";
   authUrl2 = "http://localhost:8020/account";
   authUrl3 = "http://localhost:8020/accountDelete";
-  authUrl4 = "http://localhost:8020/update";
   authUrl5 = "http://localhost:8020/suggestion";
 
   private currentUserSubject: BehaviorSubject<any>;
@@ -107,7 +106,7 @@ export class AuthService {
   }
 
   update(model: any){
-    return this.http.post(this.authUrl4, model).pipe(
+    return this.http.post(this.authUrl2, model).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/home']);
@@ -124,7 +123,7 @@ export class AuthService {
   }
 
   create(model: any){
-    return this.http.put(this.authUrl2 + model.username, model).pipe(
+    return this.http.put(this.authUrl2 + "/" + model.username, model).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/home']);
