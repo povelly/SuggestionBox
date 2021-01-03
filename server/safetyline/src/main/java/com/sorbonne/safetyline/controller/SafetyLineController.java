@@ -160,21 +160,26 @@ public class SafetyLineController {
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
-    	    HttpSession session = request.getSession(false);
-    	    if(session == null || !request.isRequestedSessionIdValid())
-            {
-                throw new SessionExpired();
-            }
+    	    
     		Optional<User> userFromDB = userService.getUserById(user.getUsername());
     		if(!userFromDB.isPresent())
 	            throw new UtilisateurInconnuException();
     		
-    	    if(user.getPassword() != null)
+    	    if(user.getOldPassword() != null && user.getNewPassword() != null)
             {
     	    	// Changement de mot de passe
-    	    	userService.updatePassword(user.getUsername(), user.getPassword(),
-    	    			userFromDB.get().getFirstName(), userFromDB.get().getLastName(),
-    	    			userFromDB.get().getAdmin());
+    	    	
+    	    	// Vérification de la session
+    	    	HttpSession session = request.getSession(false);
+        	    if(session == null)
+                {
+                    throw new SessionExpired();
+                }
+        	    
+    	    	userService.updatePassword(user.getUsername(), user.getOldPassword(),
+    	    			user.getNewPassword(), userFromDB.get().getFirstName(), 
+    	    			userFromDB.get().getLastName(), userFromDB.get().getAdmin(), 
+    	    			userFromDB.get().getPassword());
                 map.put("status", 200);
                 map.put("message", "password has been updated");
             }

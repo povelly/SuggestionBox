@@ -17,7 +17,8 @@ public class UserDTO {
 	private boolean admin;
 	private String lastName;
 	private String firstName;
-	// TODO
+	
+	// Used for password modification
 	private String newPassword;
 	private String oldPassword;
 
