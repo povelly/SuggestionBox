@@ -98,25 +98,31 @@ public class UserService {
     /**
      * Update a  password for a User
      */
-    public void updatePassword(String userId, String password, String firstName, String lastName, boolean admin) 
+    public void updatePassword(String userId, String oldPassword, String newPassword, 
+    		String firstName, String lastName, boolean admin, String hashedPasswordFromDB) 
     		throws JSONException, MailjetException, MailjetSocketTimeoutException {
-        String hashPassword = PasswordUtil.sha256(password);
+    	String hashOldPassword = PasswordUtil.sha256(oldPassword);
+    	
+    	if(hashOldPassword.equals(hashedPasswordFromDB)) {
+    		String hashNewPassword = PasswordUtil.sha256(newPassword);
+            
+            User u = new User();
+            u.setUserId(userId);
+            u.setFirstName(firstName);
+            u.setLastName(lastName);
+            u.setPassword(hashNewPassword);
+            u.setSuggestionList(new ArrayList<>());
+            u.setAdmin(admin);
+            userdoa.save(u);
+            
+            /**
+    		 * Send email to user with his new password
+    		 */
+    		MailJetUtil.send(userId, "Changement de mot de passe sur la SuggestionBox de Safetyline",
+    				"Bonjour, suite à votre demande, votre mot de passe a été modifié sur la SuggestionBox <br>"
+    				+ "Si vous n'êtes pas à l'origine de cette demande, veuillez protéger votre compte.");
+    	}
         
-        User u = new User();
-        u.setUserId(userId);
-        u.setFirstName(firstName);
-        u.setLastName(lastName);
-        u.setPassword(hashPassword);
-        u.setSuggestionList(new ArrayList<>());
-        u.setAdmin(admin);
-        userdoa.save(u);
-        
-        /**
-		 * Send email to user with his new password
-		 */
-		MailJetUtil.send(userId, "Changement de mot de passe sur la SuggestionBox de Safetyline",
-				"Bonjour, suite à votre demande, votre mot de passe a été modifié sur la SuggestionBox <br>"
-				+ "Si vous n'êtes pas à l'origine de cette demande, veuillez protéger votre compte.");
     }
     
     
