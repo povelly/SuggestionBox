@@ -47,7 +47,7 @@ export class ParametersComponent implements OnInit {
       next: x => console.log('reception http'),
       error: err => console.log(err)
     };
-    f.value.userid = localStorage.getItem("username");
+    f.value.username = localStorage.getItem("username");
     this.authService.update(f.value).subscribe(loginObserver);
     //console.log(f2.status);  
     //console.log(f2.value);
