@@ -9,10 +9,11 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class AdminComponent implements OnInit {
 
-  modeCreation = true
-  modeSupp = false
-  modeSondage = false
+  modeCreation = true;
+  modeSupp = false;
+  modeSondage = false;
   myForm: FormGroup;
+  suggestions = [];
 
   constructor(private authService: AuthService, private fb: FormBuilder) { }
 
@@ -32,6 +33,9 @@ export class AdminComponent implements OnInit {
       admin: [false]
     });
 
+    //this.authService.getSuggestion().subscribe((response) => this.suggestions = response)
+    this.suggestions = this.authService.getSuggestion();
+    
     this.myForm.valueChanges.subscribe(console.log)
   }
 

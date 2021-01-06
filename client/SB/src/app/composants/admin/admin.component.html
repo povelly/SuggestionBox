@@ -54,5 +54,21 @@
 </div>
 
 <div *ngIf="modeSondage">
-    Mode sondages
+    <h3>Suggestions :</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Contenu</th>
+                <th>Auteur</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor= "let suggestion of suggestions">
+                <td>{{suggestion.text}}</td>
+                <td>{{suggestion.username}}</td>
+                <td>{{suggestion.date}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
