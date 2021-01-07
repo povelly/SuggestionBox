@@ -18,6 +18,7 @@ import com.sorbonne.safetyline.exception.InvalidFormException;
 import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
 import com.sorbonne.safetyline.exception.UtilisateurInconnuException;
 import com.sorbonne.safetyline.model.Connexion;
+import com.sorbonne.safetyline.model.Suggestion;
 import com.sorbonne.safetyline.model.User;
 import com.sorbonne.safetyline.dto.SuggestionDTO;
 import com.sorbonne.safetyline.dto.UserDTO;
@@ -254,6 +255,67 @@ public class SafetyLineController {
     }
     
     /////////////////////////////////// SUGGESTION /////////////////////////////////
+    
+    /**
+     * Get all suggestions
+     * @return the HTTP response
+     */
+    @GetMapping("/suggestions")
+    @ResponseBody
+    public Map<String,Object> getAllSuggestions()
+    {
+    	HashMap<String, Object> map = new HashMap<>();
+    	try{
+    		List<Suggestion> listSuggestion = suggestionService.getAllSuggestions();
+    		if (listSuggestion.isEmpty()) 
+    		{
+    			map.put("status", 500);
+    			map.put("message", "no suggestions in db");
+    		}
+    		map.put("status", 200);
+    		map.put("suggestions", listSuggestion);
+            
+        } catch(Exception e) {
+    	    e.printStackTrace();
+    	    map.put("status", 500);
+    	    map.put("message", "failed to retrieve suggestions");
+    	    
+        } finally {
+    	    return map;
+        }
+    }
+    
+    /**
+     * Get a specific suggestion
+     * @return the HTTP response
+     */
+    @GetMapping("/suggestion/{id}")
+    @ResponseBody
+    public Map<String,Object> getSuggestion(@PathVariable Integer id)
+    {
+    	HashMap<String, Object> map = new HashMap<>();
+    	try{
+    		Optional<Suggestion> suggestionFromDB = suggestionService.getSuggestionById(id);
+    		if(!suggestionFromDB.isPresent())
+	            throw new EmptySuggestionException();
+    		
+    		map.put("status", 200);
+    		map.put("suggestions", suggestionFromDB);
+    		
+    	} catch(EmptySuggestionException e) {
+    	    e.printStackTrace();
+    	    map.put("status", 500);
+    	    map.put("message", "no suggestion for this id");
+            
+        } catch(Exception e) {
+    	    e.printStackTrace();
+    	    map.put("status", 500);
+    	    map.put("message", "failed to retrieve suggestions");
+    	    
+        } finally {
+    	    return map;
+        }
+    }
     
     /**
      * Creates a suggestion

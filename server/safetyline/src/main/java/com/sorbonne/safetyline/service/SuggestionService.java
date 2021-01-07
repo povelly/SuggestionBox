@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SuggestionService {
@@ -24,6 +25,13 @@ public class SuggestionService {
      */
     public List<Suggestion> getAllSuggestions() {
         return suggestionDAO.findAll();
+    }
+    
+    /**
+     * @see SuggestionDAO#findById(Integer)
+     */
+    public Optional<Suggestion> getSuggestionById(Integer id) {
+        return suggestionDAO.findById(id);
     }
 
     /**
