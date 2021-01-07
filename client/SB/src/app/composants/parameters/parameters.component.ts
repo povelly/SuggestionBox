@@ -26,12 +26,21 @@ export class ParametersComponent implements OnInit {
       ]],
       newPassword2: ['',[
         Validators.required,
-        Validators.pattern('^(?=.{6,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$')
+        Validators.pattern('^(?=.{6,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$'),
       ]],
-    });
+    },{validator: this.checkPasswords }
+    
+    );
 
     this.myForm.valueChanges.subscribe(console.log)
   }
+
+  checkPasswords(group: FormGroup) { // here we have the 'passwords' group
+  let pass = group.get('newPassword').value;
+  let newPassword2 = group.get('newPassword2').value;
+
+  return pass === newPassword2 ? null : { notSame: true }     
+}
 
   onSubmit(f: FormGroup){
     const loginObserver = {
