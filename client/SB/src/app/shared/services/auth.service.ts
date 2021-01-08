@@ -83,7 +83,7 @@ export class AuthService {
 
   delete(){
     const body = { 'username': localStorage.getItem('username') };
-    return this.http.post(this.authUrl3, body).pipe(
+    return this.http.post(this.authUrl3, body, {withCredentials: true}).pipe(
       map((response: any) => {
         //console.log(response)
         if (response.status == 200) {
@@ -125,7 +125,7 @@ export class AuthService {
   }
 
   create(model: any){
-    return this.http.put(this.authUrl2 + "/" + model.username, model).pipe(
+    return this.http.put(this.authUrl2 + "/" + model.username, model, {withCredentials: true}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/home']);
@@ -142,7 +142,7 @@ export class AuthService {
   }
 
   suggestion(model: any){
-    return this.http.post(this.authUrl5, model).pipe(
+    return this.http.post(this.authUrl5, model, {withCredentials: true}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/home']);
@@ -160,7 +160,7 @@ export class AuthService {
   }
 
   getSuggestion(){
-    return this.http.get(this.authUrl6).pipe(
+    return this.http.get(this.authUrl6, {withCredentials: true}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
@@ -183,7 +183,7 @@ export class AuthService {
   }
 
   getUsers(){
-    return this.http.get(this.authUrl7).pipe(
+    return this.http.get(this.authUrl7, {withCredentials: true}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
@@ -207,7 +207,7 @@ export class AuthService {
 
   deleteUser(id:any){
     const body = { 'username': id };
-    return this.http.post(this.authUrl3, body).pipe(
+    return this.http.post(this.authUrl3, body, {withCredentials: true}).pipe(
       map((response: any) => {
         //console.log(response)
         if (response.status == 200) {
