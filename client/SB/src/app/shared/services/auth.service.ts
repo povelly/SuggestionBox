@@ -15,6 +15,7 @@ export class AuthService {
   authUrl3 = "http://localhost:8020/accountDelete";
   authUrl5 = "http://localhost:8020/suggestion";
   authUrl6 = "http://localhost:8020/suggestions";
+  authUrl7 = "http://localhost:8020/accounts";
 
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
@@ -181,5 +182,41 @@ export class AuthService {
     ]
   }
 
+  getUsers(){
+    return this.http.get(this.authUrl7).pipe(
+      map((response: any) => {
+        if (response.status == 200) {
+          this.router.navigate(['/admin']);
+          return response;
+        } else {
+          console.log(response.message);
+        }
+      })
+    )
+  }
+
+  getUsers2(){
+    return [
+        {
+          "username":"moi",
+          "text": "J'aime les pommes",
+          "date": 18
+        }   
+    ]
+  }
+
+  deleteUser(id:any){
+    const body = { 'username': id };
+    return this.http.post(this.authUrl3, body).pipe(
+      map((response: any) => {
+        //console.log(response)
+        if (response.status == 200) {
+          this.router.navigate(['/admin']);
+        } else {
+          console.log(response.message);
+        }
+      })
+    )
+  }
 
 }
