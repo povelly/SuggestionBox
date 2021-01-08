@@ -40,10 +40,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
@@ -329,15 +331,17 @@ public class SafetyLineController {
     	try{
     		if(sug.getContent() == null) throw new EmptySuggestionException();
     		
+    		List<User> admins = userService.getAllAdmins();
+    		
     	    if(sug.getAuthor() != null)
             {
-    	    	suggestionService.creationSuggestion(sug.getContent(), sug.getAuthor());
+    	    	suggestionService.creationSuggestion(sug.getContent(), sug.getAuthor(), admins);
                 map.put("status", 200);
                 map.put("message", "suggestion has been created");
             }
     	    else {
     	    	// Suggestion anonyme
-    	    	suggestionService.creationSuggestion(sug.getContent(), null);
+    	    	suggestionService.creationSuggestion(sug.getContent(), null, admins);
                 map.put("status", 200);
     	        map.put("message", "anonymous suggestion has been created");
             }

@@ -7,13 +7,22 @@ package com.sorbonne.safetyline.service;
  *
  */
 
+import com.mailjet.client.errors.MailjetException;
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import com.sorbonne.safetyline.dataAccess.SuggestionDAO;
 import com.sorbonne.safetyline.model.Suggestion;
+import com.sorbonne.safetyline.model.User;
+import com.sorbonne.safetyline.utils.MailJetUtil;
+
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SuggestionService {
@@ -51,8 +60,11 @@ public class SuggestionService {
     
     /**
      * Creates a suggestion
+     * @throws MailjetSocketTimeoutException 
+     * @throws MailjetException 
+     * @throws JSONException 
      */
-    public void creationSuggestion(String content, String author) {
+    public void creationSuggestion(String content, String author, List<User> admins) throws JSONException, MailjetException, MailjetSocketTimeoutException {
     	Suggestion s = new Suggestion();
     	s.setSuggestionContent(content);
     	s.setSuggestionCreationDate(new Date(System.currentTimeMillis()));
@@ -60,8 +72,16 @@ public class SuggestionService {
     	
     	suggestionDAO.save(s);
     	
-    	// TODO gérer mail
-    	
+    	// Send mail to all admin
+	    List<String> adminsMail = admins.stream()
+	    		.map(User::getUserId)
+	    		.collect(Collectors.toCollection(ArrayList::new));
+	    
+	    /**
+		 * Send an email to all the admins
+		 */
+		MailJetUtil.sendMultiple(adminsMail, "Nouvelle suggestion sur la SuggestionBox de Safetyline",
+				"Bonjour, une nouvelle suggestion a été envoyée par un utilisateur");
     }
 
 }
