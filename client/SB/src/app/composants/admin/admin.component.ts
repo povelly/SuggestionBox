@@ -24,10 +24,10 @@ export class AdminComponent implements OnInit {
         Validators.required,
         Validators.email
       ]],
-      nom: ['',[
+      lastName: ['',[
         Validators.required,
       ]],
-      prenom: ['',[
+      firstName: ['',[
         Validators.required,
       ]],
       admin: [false]
