@@ -28,7 +28,10 @@ import com.sorbonne.safetyline.service.UserService;
 import com.sorbonne.safetyline.utils.PasswordUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,6 +42,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.xml.ws.spi.http.HttpHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -256,6 +260,40 @@ public class SafetyLineController {
         }
     }
     
+    /**
+     * Get all users
+     * @return the HTTP response
+     */
+    @GetMapping("/accounts")
+    @ResponseBody
+    public ResponseEntity<HashMap<String, Object>> getAllUsers()
+    {
+    	HashMap<String, Object> map = new HashMap<>();
+    	try{
+    		List<User> listUsers = userService.getAllUsers();
+    		if (listUsers.isEmpty()) 
+    		{
+    			map.put("status", 500);
+    			map.put("message", "no users in db");
+    		}
+    		map.put("status", 200);
+    		
+    		List<UserDTO> listNoPassword = new ArrayList<>();
+    		listUsers.forEach(u -> {
+    			listNoPassword.add(new UserDTO(u.getUserId(), u.getFirstName(), u.getLastName(), u.getAdmin()));
+    		});
+    		map.put("users", listNoPassword);
+            
+        } catch(Exception e) {
+    	    e.printStackTrace();
+    	    map.put("status", 500);
+    	    map.put("message", "failed to retrieve users");
+    	    
+        } finally {
+    	    return new ResponseEntity<>(map, HttpStatus.OK);
+        }
+    }
+    
     /////////////////////////////////// SUGGESTION /////////////////////////////////
     
     /**
@@ -264,7 +302,7 @@ public class SafetyLineController {
      */
     @GetMapping("/suggestions")
     @ResponseBody
-    public Map<String,Object> getAllSuggestions()
+    public ResponseEntity<HashMap<String, Object>> getAllSuggestions()
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
@@ -283,7 +321,7 @@ public class SafetyLineController {
     	    map.put("message", "failed to retrieve suggestions");
     	    
         } finally {
-    	    return map;
+    	    return new ResponseEntity<>(map, HttpStatus.OK);
         }
     }
     

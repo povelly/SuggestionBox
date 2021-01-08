@@ -29,7 +29,7 @@ export class AuthService {
   }
 
   login(model: any) {
-    return this.http.post(this.authUrl, model).pipe(
+    return this.http.post(this.authUrl, model, {withCredentials: true}).pipe(
       map((response: any) => {
         const user = response;
         if (user.status == 200) {
@@ -107,7 +107,7 @@ export class AuthService {
   }
 
   update(model: any){
-    return this.http.post(this.authUrl2, model).pipe(
+    return this.http.post(this.authUrl2, model, {withCredentials: true}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/home']);
