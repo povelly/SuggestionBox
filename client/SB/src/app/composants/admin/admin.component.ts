@@ -24,17 +24,17 @@ export class AdminComponent implements OnInit {
         Validators.required,
         Validators.email
       ]],
-      nom: ['',[
+      lastName: ['',[
         Validators.required,
       ]],
-      prenom: ['',[
+      firstName: ['',[
         Validators.required,
       ]],
       admin: [false]
     });
 
-    //this.authService.getSuggestion().subscribe((response) => this.suggestions = response)
-    this.suggestions = this.authService.getSuggestion();
+    this.authService.getSuggestion().subscribe((response) => this.suggestions = response.suggestions)
+    //this.suggestions = this.authService.getSuggestion();
     
     this.myForm.valueChanges.subscribe(console.log)
   }

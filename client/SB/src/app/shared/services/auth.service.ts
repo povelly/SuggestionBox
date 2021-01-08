@@ -14,6 +14,7 @@ export class AuthService {
   authUrl2 = "http://localhost:8020/account";
   authUrl3 = "http://localhost:8020/accountDelete";
   authUrl5 = "http://localhost:8020/suggestion";
+  authUrl6 = "http://localhost:8020/suggestions";
 
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
@@ -27,7 +28,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login2(model: any) {
+  login(model: any) {
     return this.http.post(this.authUrl, model).pipe(
       map((response: any) => {
         const user = response;
@@ -44,7 +45,7 @@ export class AuthService {
       })
     )
   }
-  login(model: any) { 
+  login2(model: any) { 
     localStorage.setItem('token', 'token');
     localStorage.setItem('username', model.username);
     localStorage.setItem('admin', 'true');
@@ -157,11 +158,12 @@ export class AuthService {
     return of(true);
   }
 
-  getSuggestion2(){
-    return this.http.get(this.authUrl5 + "sug").pipe(
+  getSuggestion(){
+    return this.http.get(this.authUrl6).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
+          return response;
         } else {
           console.log(response.message);
         }
@@ -169,7 +171,7 @@ export class AuthService {
     )
   }
 
-  getSuggestion(){
+  getSuggestion2(){
     return [
         {
           "username":"moi",
