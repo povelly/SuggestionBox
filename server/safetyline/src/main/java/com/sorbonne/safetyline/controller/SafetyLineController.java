@@ -62,7 +62,6 @@ public class SafetyLineController {
     @Autowired
     private SuggestionService suggestionService = new SuggestionService();
 
-
     ////////////////////////////////// USER //////////////////////////////////
     
     /**
@@ -71,7 +70,7 @@ public class SafetyLineController {
      */
     @PostMapping("/safetylineConnexion")
     @ResponseBody
-    public Map<String,Object> safetylineConnexion(@RequestBody UserDTO user, HttpServletResponse response, HttpServletRequest request)
+    public Map<String,Object> safetylineConnexion(@RequestBody UserDTO user,  HttpServletRequest request)
     {
 
 
@@ -101,10 +100,18 @@ public class SafetyLineController {
      */
     @PutMapping("/account/{userId}")
     @ResponseBody
-    public Map<String,Object> creationCompte(@PathVariable String userId, @RequestBody UserDTO user)
+    public Map<String,Object> creationCompte(@PathVariable String userId, @RequestBody UserDTO user, HttpServletRequest request)
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
+    		// Vérification de la session
+	    	HttpSession session = request.getSession(false);
+
+    	    if(session == null)
+            {
+                throw new SessionExpired();
+            }
+    	    
     		if(user.getFirstName() == null || user.getLastName() == null) throw new InvalidFormException();
     	    if(user.isAdmin())
             {
@@ -206,10 +213,19 @@ public class SafetyLineController {
      */
     @PostMapping("/accountDelete")
     @ResponseBody
-    public Map<String,Object> suppressionCompte(@RequestBody UserDTO user)
+    public Map<String,Object> suppressionCompte(@RequestBody UserDTO user, HttpServletRequest request)
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
+    		
+    		// Vérification de la session
+	    	HttpSession session = request.getSession(false);
+
+    	    if(session == null)
+            {
+                throw new SessionExpired();
+            }
+    	    
     		Optional<User> userFromDB = userService.getUserById(user.getUsername());
     		if(!userFromDB.isPresent())
 	            throw new UtilisateurInconnuException();
@@ -249,10 +265,18 @@ public class SafetyLineController {
      */
     @GetMapping("/accounts")
     @ResponseBody
-    public ResponseEntity<HashMap<String, Object>> getAllUsers()
+    public ResponseEntity<HashMap<String, Object>> getAllUsers(HttpServletRequest request)
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
+    		// Vérification de la session
+	    	HttpSession session = request.getSession(false);
+
+    	    if(session == null)
+            {
+                throw new SessionExpired();
+            }
+    	    
     		List<User> listUsers = userService.getAllUsers();
     		if (listUsers.isEmpty()) 
     		{
@@ -285,10 +309,18 @@ public class SafetyLineController {
      */
     @GetMapping("/suggestions")
     @ResponseBody
-    public ResponseEntity<HashMap<String, Object>> getAllSuggestions()
+    public ResponseEntity<HashMap<String, Object>> getAllSuggestions(HttpServletRequest request)
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
+    		// Vérification de la session
+	    	HttpSession session = request.getSession(false);
+
+    	    if(session == null)
+            {
+                throw new SessionExpired();
+            }
+    	    
     		List<Suggestion> listSuggestion = suggestionService.getAllSuggestions();
     		if (listSuggestion.isEmpty()) 
     		{
@@ -297,6 +329,10 @@ public class SafetyLineController {
     		}
     		map.put("status", 200);
     		map.put("suggestions", listSuggestion);
+    		
+    	} catch(SessionExpired s) {
+    	    map.put("status", 500);
+    	    map.put("message", "your session expired or has never been created");
             
         } catch(Exception e) {
     	    e.printStackTrace();
@@ -308,37 +344,6 @@ public class SafetyLineController {
         }
     }
     
-    /**
-     * Get a specific suggestion
-     * @return the HTTP response
-     */
-    @GetMapping("/suggestion/{id}")
-    @ResponseBody
-    public Map<String,Object> getSuggestion(@PathVariable Integer id)
-    {
-    	HashMap<String, Object> map = new HashMap<>();
-    	try{
-    		Optional<Suggestion> suggestionFromDB = suggestionService.getSuggestionById(id);
-    		if(!suggestionFromDB.isPresent())
-	            throw new EmptySuggestionException();
-    		
-    		map.put("status", 200);
-    		map.put("suggestions", suggestionFromDB);
-    		
-    	} catch(EmptySuggestionException e) {
-    	    e.printStackTrace();
-    	    map.put("status", 500);
-    	    map.put("message", "no suggestion for this id");
-            
-        } catch(Exception e) {
-    	    e.printStackTrace();
-    	    map.put("status", 500);
-    	    map.put("message", "failed to retrieve suggestions");
-    	    
-        } finally {
-    	    return map;
-        }
-    }
     
     /**
      * Creates a suggestion
@@ -346,10 +351,18 @@ public class SafetyLineController {
      */
     @PostMapping("/suggestion")
     @ResponseBody
-    public Map<String,Object> creationSuggestion(@RequestBody SuggestionDTO sug)
+    public Map<String,Object> creationSuggestion(@RequestBody SuggestionDTO sug, HttpServletRequest request)
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
+    		// Vérification de la session
+	    	HttpSession session = request.getSession(false);
+
+    	    if(session == null)
+            {
+                throw new SessionExpired();
+            }
+    	    
     		if(sug.getContent() == null) throw new EmptySuggestionException();
     		
     		List<User> admins = userService.getAllAdmins();
@@ -379,30 +392,5 @@ public class SafetyLineController {
         } finally {
     	    return map;
         }
-    }
-    
-
-    /**
-     *  First view the user will access before user send the completed register form
-     * @param user      User emtpy
-     * @return          the register form view and model
-     */
-    @GetMapping("/safetylineRegisterForm")
-    public ModelAndView registerForm(User user) {
-        String viewName = "safetylineRegisterForm";
-        return new ModelAndView(viewName, new HashMap<>());
-    }
-
-    /**
-     *  Called after user completed the register form
-     * @param user      The user containing every info sent by the user
-     * @return          the view and update with form content
-     */
-    @PostMapping("/safetylineRegisterSubmit")
-    public ModelAndView registerSubmit(@Valid User user, BindingResult bindingResult)
-    {
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/safetylineHome");
-        return new ModelAndView(redirectView);
     }
 }
