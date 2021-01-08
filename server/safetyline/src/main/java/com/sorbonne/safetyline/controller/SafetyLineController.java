@@ -303,9 +303,10 @@ public class SafetyLineController {
      */
     @GetMapping("/suggestions")
     @ResponseBody
-    public ResponseEntity<HashMap<String, Object>> getAllSuggestions(HttpServletRequest request)
+    public ResponseEntity<HashMap<String, Object>> getAllSuggestions(@RequestBody SuggestionDTO suggestion, HttpServletRequest request)
     {
     	HashMap<String, Object> map = new HashMap<>();
+    	System.out.println("date end"+suggestion.getEnd());
     	try{
     		// Vérification de la session
 	    	HttpSession session = request.getSession(false);
@@ -315,7 +316,8 @@ public class SafetyLineController {
                 throw new SessionExpired();
             }
     	    
-    		List<Suggestion> listSuggestion = suggestionService.getAllSuggestions();
+    		List<Suggestion> listSuggestion = suggestionService.getSuggestions(suggestion.getAuthor(),
+                    suggestion.getContent(), suggestion.getBegin(),suggestion.getEnd());//suggestionService.getAllSuggestions();
     		if (listSuggestion.isEmpty()) 
     		{
     			map.put("status", 500);
