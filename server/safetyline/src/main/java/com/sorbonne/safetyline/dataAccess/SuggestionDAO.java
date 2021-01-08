@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SuggestionDAO extends JpaRepository<Suggestion, Integer> {
@@ -15,6 +16,12 @@ public interface SuggestionDAO extends JpaRepository<Suggestion, Integer> {
      */
     @Query(value = "SELECT * FROM suggestion",nativeQuery = true)
     public List<Suggestion> findAll();
+    
+    /**
+     * @return              one suggestion equal to the given id
+     */
+    @Query(value = "SELECT * FROM suggestion where suggestion_id = ?1",nativeQuery = true)
+    public Optional<Suggestion> findById(Integer id);
 
     /**
      * author may have submitted more suggestions but decided not to sign them
