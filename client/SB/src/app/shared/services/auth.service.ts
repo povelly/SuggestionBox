@@ -14,6 +14,7 @@ export class AuthService {
   authUrl2 = "http://localhost:8020/account";
   authUrl3 = "http://localhost:8020/accountDelete";
   authUrl5 = "http://localhost:8020/suggestion";
+  authUrl6 = "http://localhost:8020/suggestion";
 
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
