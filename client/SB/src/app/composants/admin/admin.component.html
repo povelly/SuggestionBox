@@ -61,10 +61,10 @@
         </thead>
         <tbody>
             <tr *ngFor= "let user of users">
-                <td>{{user.id}}</td>
+                <td>{{user.username}}</td>
                 <td>{{user.firstName}}</td>
                 <td>{{user.lastName}}</td>
-                <button onclick="suppUser(user.id)">Supprimer</button>
+                <button onclick="suppUser(user.username)">Supprimer</button>
             </tr>
         </tbody>
     </table>
