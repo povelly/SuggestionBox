@@ -62,24 +62,7 @@ public class SafetyLineController {
     @Autowired
     private SuggestionService suggestionService = new SuggestionService();
 
-    /**
-     *
-     * @return          Home of safetyline
-     */
-    @RequestMapping(value="/safetylineHome" , produces = {MediaType.APPLICATION_JSON_VALUE}, method = RequestMethod.GET)
-    public JsonNode getUserId() throws JsonProcessingException {
-        //name of html file inside template
-        //String viewName = "safetylineHome";
-        //Map<String, String> model = new HashMap<String, String>();
-        //model.put("name1", "name2");
-        //JSONParser parser = new JSONParser();
-        //return (JSONObject) parser.parse("OK");
-        String f ="fdjklsf";
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode actualObj = mapper.readTree("{\"k1\":\"v1\",\"k2\":\"v2\"}");
-        return actualObj;
-    }
-    
+
     ////////////////////////////////// USER //////////////////////////////////
     
     /**
@@ -418,48 +401,8 @@ public class SafetyLineController {
     @PostMapping("/safetylineRegisterSubmit")
     public ModelAndView registerSubmit(@Valid User user, BindingResult bindingResult)
     {
-
-
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl("/safetylineHome");
         return new ModelAndView(redirectView);
-    }
-
-    @RequestMapping(value= "/safetylineUserTest", method = RequestMethod.GET)
-    public String testUserDB()  {
-        //userService.deleteUserById_user("user2");
-        List<User> users = userService.getAllUsers();
-        if (users.isEmpty())
-        {
-            System.out.println("users empty");
-            return "";
-        }
-        //List<User> admins = userDoa.getAllAdmins();//
-        for (User user: users)
-            System.out.println(user);
-        User user = users.get(0);
-        //userService.deleteUserById_user("user2");
-        //userService.getAllChoicesUser("mathieumemmi");
-        //List<User> userfindall =userService.getAllAdmins();
-        //System.out.println(userfindall);
-        //Optional<User> findUser = userService.findByUser_id("mathieumemmi");
-        //System.out.println(findUser);
-        //String lowerBoundRangeDateS = "2020/10/29 16:40:22";
-        //String upperBoundRangeDateS = "2020/10/31 19:00:00";
-        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        //LocalDateTime lowerBoundRangeDate = LocalDateTime.of(2020,10,29,16,40,21);
-        //LocalDateTime upperBoundRangeDate = LocalDateTime.of(2020,10,30,18,0,0);
-
-        //System.out.println("print all suggestions between "+ lowerBoundRangeDate +" and "
-        //        + upperBoundRangeDate +
-         //       userService.getSuggestionByDateRange
-         //               (java.sql.Date.valueOf(lowerBoundRangeDate.toLocalDate()),java.sql.Date.valueOf(upperBoundRangeDate.toLocalDate())));
-        //System.out.println(user);
-        System.out.println(user.getSuggestionList());
-        //List<Choice> choices = userService.getAllChoices();
-
-
-        //System.out.println(userService.getSuggestionByAuthor("joe"));
-        return "fjsjkl";
     }
 }
