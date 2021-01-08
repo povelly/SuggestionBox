@@ -27,7 +27,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login2(model: any) {
+  login(model: any) {
     return this.http.post(this.authUrl, model).pipe(
       map((response: any) => {
         const user = response;
@@ -44,7 +44,7 @@ export class AuthService {
       })
     )
   }
-  login(model: any) { 
+  login2(model: any) { 
     localStorage.setItem('token', 'token');
     localStorage.setItem('username', model.username);
     localStorage.setItem('admin', 'true');
@@ -157,11 +157,12 @@ export class AuthService {
     return of(true);
   }
 
-  getSuggestion2(){
-    return this.http.get(this.authUrl5 + "sug").pipe(
+  getSuggestion(){
+    return this.http.get(this.authUrl5).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
+          return response;
         } else {
           console.log(response.message);
         }
@@ -169,7 +170,7 @@ export class AuthService {
     )
   }
 
-  getSuggestion(){
+  getSuggestion2(){
     return [
         {
           "username":"moi",
