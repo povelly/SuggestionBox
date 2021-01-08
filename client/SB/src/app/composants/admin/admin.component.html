@@ -50,7 +50,24 @@
 </div>
 
 <div *ngIf="modeSupp">
-    Mode suppression
+    <h3>Suggestions :</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Adresse mail</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor= "let user of users">
+                <td>{{user.id}}</td>
+                <td>{{user.firstName}}</td>
+                <td>{{user.lastName}}</td>
+                <button onclick="suppUser(user.id)">Supprimer</button>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 <div *ngIf="modeSondage">

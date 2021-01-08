@@ -14,6 +14,7 @@ export class AdminComponent implements OnInit {
   modeSondage = false;
   myForm: FormGroup;
   suggestions = [];
+  users = [];
 
   constructor(private authService: AuthService, private fb: FormBuilder) { }
 
@@ -34,6 +35,7 @@ export class AdminComponent implements OnInit {
     });
 
     this.authService.getSuggestion().subscribe((response) => this.suggestions = response.suggestions)
+    this.authService.getUsers().subscribe((response) => this.users = response.users)
     //this.suggestions = this.authService.getSuggestion();
     
     this.myForm.valueChanges.subscribe(console.log)
@@ -64,6 +66,15 @@ export class AdminComponent implements OnInit {
     };
     console.log(f.value);
     this.authService.create(f.value).subscribe(loginObserver);
+  }
+
+  suppUser(id:any){
+    const loginObserver = {
+      next: x => console.log('reception http'),
+      error: err => console.log(err)
+      };
+      console.log(id);
+      this.authService.deleteUser(id).subscribe(loginObserver);
   }
 
 }
