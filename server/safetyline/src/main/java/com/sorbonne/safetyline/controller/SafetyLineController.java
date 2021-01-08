@@ -92,11 +92,10 @@ public class SafetyLineController {
     	{
     		map.put("status", 200);
     		map.put("message", "user found");
+
     		map.put("username", user.getUsername());
     		map.put("type", list.get(0).getAdmin());
             HttpSession session = request.getSession();
-
-            session.setAttribute("token_id", "fdsajklfj");
             session.setMaxInactiveInterval(100);
     		return map;
     	} else {
@@ -172,6 +171,7 @@ public class SafetyLineController {
     	    	
     	    	// Vérification de la session
     	    	HttpSession session = request.getSession(false);
+
         	    if(session == null)
                 {
                     throw new SessionExpired();
