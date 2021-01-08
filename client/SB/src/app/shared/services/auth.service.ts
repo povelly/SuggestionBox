@@ -14,7 +14,7 @@ export class AuthService {
   authUrl2 = "http://localhost:8020/account";
   authUrl3 = "http://localhost:8020/accountDelete";
   authUrl5 = "http://localhost:8020/suggestion";
-  authUrl6 = "http://localhost:8020/suggestion";
+  authUrl6 = "http://localhost:8020/suggestions";
 
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
@@ -159,7 +159,7 @@ export class AuthService {
   }
 
   getSuggestion(){
-    return this.http.get(this.authUrl5).pipe(
+    return this.http.get(this.authUrl6).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
