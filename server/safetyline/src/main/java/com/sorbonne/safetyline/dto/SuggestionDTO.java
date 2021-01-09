@@ -13,4 +13,9 @@ public class SuggestionDTO {
 	
 	private String content;
 	private String author;
+	// interval search begin
+	private Date begin;
+	// interval search end
+	private Date end;
+
 }

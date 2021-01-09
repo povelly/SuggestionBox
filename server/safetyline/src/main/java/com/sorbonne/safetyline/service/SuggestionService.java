@@ -18,16 +18,28 @@ import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class SuggestionService {
     @Autowired
     private SuggestionDAO suggestionDAO;
+
+
+    public List<Suggestion> getSuggestions(String author, String content, Date begin, Date end){
+        Set<Suggestion> results     = new HashSet<>();
+        List<Suggestion> authorRes  = suggestionDAO.findBySuggestion_author(author);
+        end = end==null?new Date(System.currentTimeMillis()):end;
+        List<Suggestion> dateRes = begin!=null?suggestionDAO
+                .findBySuggestion_creation_dateRange(begin, end):new ArrayList<>();
+        results = authorRes.stream().distinct().filter(dateRes::contains)
+                .collect(Collectors.toSet());
+        List<Suggestion> res = new ArrayList<>();
+        res.addAll(results);
+        return res;
+    }
 
     /**
      * @see SuggestionDAO#findAll()
