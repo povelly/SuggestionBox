@@ -64,7 +64,8 @@
                 <td>{{user.username}}</td>
                 <td>{{user.firstName}}</td>
                 <td>{{user.lastName}}</td>
-                <button onclick="suppUser(user.username)">Supprimer</button>
+                <!--<button onclick()="suppUser(user.username)">Supprimer</button>-->
+                <button (click)="suppUser(user.username)">Supprimer</button>
             </tr>
         </tbody>
     </table>
