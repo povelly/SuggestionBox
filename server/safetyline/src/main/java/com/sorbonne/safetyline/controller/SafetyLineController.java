@@ -123,7 +123,7 @@ public class SafetyLineController {
     	    map.put("username", userId);
     	    
     	} catch(SessionExpired s) {
-    	    map.put("status", 500);
+    	    map.put("status", 440);
     	    map.put("message", "your session expired or has never been created");
 
         } catch (UsernameAlreadyExists e) {
@@ -188,7 +188,7 @@ public class SafetyLineController {
     	    map.put("username", user.getUsername());
 
         } catch(SessionExpired s) {
-    	    map.put("status", 500);
+    	    map.put("status", 440);
     	    map.put("message", "your session expired or has never been created");
         }
     	catch (UtilisateurInconnuException e) {
@@ -244,7 +244,7 @@ public class SafetyLineController {
     	    map.put("username", user.getUsername());
     	    
     	} catch(SessionExpired s) {
-    	    map.put("status", 500);
+    	    map.put("status", 440);
     	    map.put("message", "your session expired or has never been created");
 
         } catch (UtilisateurInconnuException e) {
@@ -294,7 +294,7 @@ public class SafetyLineController {
     		map.put("users", listNoPassword);
     		
     	} catch(SessionExpired s) {
-    	    map.put("status", 500);
+    	    map.put("status", 440);
     	    map.put("message", "your session expired or has never been created");
             
         } catch(Exception e) {
@@ -339,7 +339,7 @@ public class SafetyLineController {
     		map.put("suggestions", listSuggestion);
     		
     	} catch(SessionExpired s) {
-    	    map.put("status", 500);
+    	    map.put("status", 440);
     	    map.put("message", "your session expired or has never been created");
             
         } catch(Exception e) {
@@ -389,7 +389,7 @@ public class SafetyLineController {
             }
     	    
     	} catch(SessionExpired s) {
-    	    map.put("status", 500);
+    	    map.put("status", 440);
     	    map.put("message", "your session expired or has never been created");
 
         } catch (EmptySuggestionException e) {
