@@ -29,7 +29,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(model: any) {
+  login2(model: any) {
     return this.http.post(this.authUrl, model, {withCredentials: true}).pipe(
       map((response: any) => {
         const user = response;
@@ -46,7 +46,7 @@ export class AuthService {
       })
     )
   }
-  login2(model: any) { 
+  login(model: any) { 
     localStorage.setItem('token', 'token');
     localStorage.setItem('username', model.username);
     localStorage.setItem('admin', 'true');
@@ -182,7 +182,7 @@ export class AuthService {
     ]
   }
 
-  getUsers(){
+  getUsers2(){
     return this.http.get(this.authUrl7, {withCredentials: true}).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -195,13 +195,13 @@ export class AuthService {
     )
   }
 
-  getUsers2(){
+  getUsers(){
     return [
         {
           "username":"moi",
-          "text": "J'aime les pommes",
-          "date": 18
-        }   
+          "firstName": "J'aime les pommes",
+          "lastName": 18
+        }  
     ]
   }
 

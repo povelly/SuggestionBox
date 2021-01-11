@@ -2,11 +2,10 @@
     <ul>
         <li><a (click)="boutonSondages()" type="button" class="btn btn-primary">Consultation des sondages</a></li>
         <li><a (click)="boutonSupp()" type="button" class="btn btn-primary">Remerciment d'un collaborateur</a></li>
-        <li><a (click)="boutonCreation()" type="button" class="btn btn-primary">Ajout d'un collaborateur</a></li>
+        <li><a (click)="boutonCreation()" type="button" class="btn btn-primary">Ajout d'un salarié</a></li>
         <li style="float: left"><a href="/home">SafetyLine</a></li>
     </ul>
   </nav>
-<button routerLink="/home" type="button" class="btn btn-primary">Cancel</button>
 
 <div *ngIf="modeCreation">
     <div class="login-form">
@@ -20,19 +19,19 @@
                     <p>
                         <input formControlName="username" 
                         name="username"
-                        placeholder="Email">
+                        placeholder="exemple@mail.com">
                     </p>
                     <label for="resetPasswordEmail">Nom</label>
                     <p>
                         <input formControlName="lastName" 
                         name="nom"
-                        placeholder="Nom">
+                        placeholder="Dupont">
                     </p>
                     <label for="resetPasswordEmail">Prenom</label>
                     <p>
                         <input formControlName="firstName" 
                         name="Prenom"
-                        placeholder="Prenom">
+                        placeholder="Jean">
                     </p>
                 </div>
                 <div>
@@ -43,20 +42,21 @@
                 [disabled]="myForm.invalid"
                 class="btn btn-primary">Envoyer inscription </button>
     
-                <button routerLink="/login" type="button" class="btn btn-primary">Cancel</button>
+                <button routerLink="/home" type="button" class="btn btn-primary">Cancel</button>
             </form>
         </div>
     </div>
 </div>
 
 <div *ngIf="modeSupp">
-    <h3>Suggestions :</h3>
+    <h3>Utilisateurs:</h3>
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Adresse mail</th>
                 <th>Nom</th>
                 <th>Prenom</th>
+                <th>Séparation</th>
             </tr>
         </thead>
         <tbody>
