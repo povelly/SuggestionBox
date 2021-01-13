@@ -33,7 +33,7 @@ nav ul::after {
   display: table;
   clear: both;
 }
-nav a {
+nav a, .profil {
   cursor : pointer;
   display: block;
   text-decoration: none;
@@ -44,7 +44,7 @@ nav a {
   padding-right: 20px;
   background: var(--primary-color);
 }
-nav a:hover {
+nav a:hover, .profil:hover {
   color: white;
   background: var(--secondary-color);
   border-bottom: 3px solid white;
@@ -65,7 +65,7 @@ nav > ul li:hover .under {
   width: 100%;
   text-align: left;
 }
-.under a {
+.under a, .under .profil {
   padding: 10px;
   border-bottom: none;
   background-color: rgb(43, 50, 116);
@@ -137,4 +137,9 @@ td {
 }
 td:hover {
   background: #D9F;
+}
+
+mat-icon{
+  font-family: 'Material Icons' !important;
+  cursor : pointer;
 }

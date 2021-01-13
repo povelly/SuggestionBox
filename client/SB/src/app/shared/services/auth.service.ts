@@ -29,7 +29,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login2(model: any) {
+  login(model: any) {
     return this.http.post(this.authUrl, model, {withCredentials: true}).pipe(
       map((response: any) => {
         const user = response;
@@ -46,7 +46,7 @@ export class AuthService {
       })
     )
   }
-  login(model: any) { 
+  login2(model: any) { 
     localStorage.setItem('token', 'token');
     localStorage.setItem('username', model.username);
     localStorage.setItem('admin', 'true');
@@ -182,7 +182,7 @@ export class AuthService {
     ]
   }
 
-  getUsers2(){
+  getUsers(){
     return this.http.get(this.authUrl7, {withCredentials: true}).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -195,7 +195,7 @@ export class AuthService {
     )
   }
 
-  getUsers(){
+  getUsers2(){
     return [
         {
           "username":"moi",

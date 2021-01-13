@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, NgForm, FormBuilder, Validators } from '@angular/forms';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -15,8 +18,15 @@ export class AdminComponent implements OnInit {
   myForm: FormGroup;
   suggestions = [];
   users = [];
+  cond = localStorage.getItem('admin')=='true';
 
-  constructor(private authService: AuthService, private fb: FormBuilder) { }
+  constructor(private router: Router, private authService: AuthService, private fb: FormBuilder,iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+    
+    iconRegistry.addSvgIcon(
+      'thumbs-up',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/examples/thumbup-icon.svg'));
+
+  }
 
   ngOnInit(): void {
 
@@ -35,11 +45,13 @@ export class AdminComponent implements OnInit {
     });
 
     this.authService.getSuggestion().subscribe((response) => this.suggestions = response.suggestions)
-    //this.authService.getUsers().subscribe((response) => this.users = response.users)
+    this.authService.getUsers().subscribe((response) => this.users = response.users)
     //this.suggestions = this.authService.getSuggestion();
-    this.users = this.authService.getUsers();
+    //this.users = this.authService.getUsers();
     
     this.myForm.valueChanges.subscribe(console.log)
+
+    
   }
 
   boutonCreation(){
@@ -74,8 +86,23 @@ export class AdminComponent implements OnInit {
       next: x => console.log('reception http'),
       error: err => console.log(err)
       };
-      console.log(id);
+      //console.log(id);
       this.authService.deleteUser(id).subscribe(loginObserver);
+  }
+
+  clicSurBouton(){
+    const loginObserver = {
+      next: x => console.log('reception http'),
+      error: err => console.log(err)
+    };
+    this.authService.delete().subscribe(loginObserver);
+  }
+
+  cancel(){
+    localStorage.clear()
+    //console.log(localStorage)
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
 }
