@@ -71,19 +71,13 @@ public class UserService {
     /**
      * Generates a new password for a User
      */
-    public void forgottenPassword(String userId, String firstName, String lastName, boolean admin) 
+    public void forgottenPassword(String userId, User user) 
     		throws JSONException, MailjetException, MailjetSocketTimeoutException {
     	String password = PasswordUtil.generateFirstPassword();
         String hashPassword = PasswordUtil.sha256(password);
         
-        User u = new User();
-        u.setUserId(userId);
-        u.setFirstName(firstName);
-        u.setLastName(lastName);
-        u.setPassword(hashPassword);
-        u.setSuggestionList(new ArrayList<>());
-        u.setAdmin(admin);
-        userdoa.save(u);
+        user.setPassword(hashPassword);
+        userdoa.save(user);
         
         /**
 		 * Send email to user with his new password
@@ -99,21 +93,15 @@ public class UserService {
      * Update a  password for a User
      */
     public void updatePassword(String userId, String oldPassword, String newPassword, 
-    		String firstName, String lastName, boolean admin, String hashedPasswordFromDB) 
+    		User user) 
     		throws JSONException, MailjetException, MailjetSocketTimeoutException {
     	String hashOldPassword = PasswordUtil.sha256(oldPassword);
     	
-    	if(hashOldPassword.equals(hashedPasswordFromDB)) {
+    	if(hashOldPassword.equals(user.getPassword())) {
     		String hashNewPassword = PasswordUtil.sha256(newPassword);
             
-            User u = new User();
-            u.setUserId(userId);
-            u.setFirstName(firstName);
-            u.setLastName(lastName);
-            u.setPassword(hashNewPassword);
-            u.setSuggestionList(new ArrayList<>());
-            u.setAdmin(admin);
-            userdoa.save(u);
+            user.setPassword(hashNewPassword);
+            userdoa.save(user);
             
             /**
     		 * Send email to user with his new password

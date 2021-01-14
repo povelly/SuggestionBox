@@ -15,6 +15,7 @@ import com.mysql.cj.ServerPreparedQuery;
 import com.sorbonne.safetyline.exception.SessionExpired;
 import com.sorbonne.safetyline.exception.EmptySuggestionException;
 import com.sorbonne.safetyline.exception.InvalidFormException;
+import com.sorbonne.safetyline.exception.LastAdminException;
 import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
 import com.sorbonne.safetyline.exception.UtilisateurInconnuException;
 import com.sorbonne.safetyline.model.Connexion;
@@ -172,16 +173,13 @@ public class SafetyLineController {
                 }
         	    
     	    	userService.updatePassword(user.getUsername(), user.getOldPassword(),
-    	    			user.getNewPassword(), userFromDB.get().getFirstName(), 
-    	    			userFromDB.get().getLastName(), userFromDB.get().getAdmin(), 
-    	    			userFromDB.get().getPassword());
+    	    			user.getNewPassword(), userFromDB.get());
                 map.put("status", 200);
                 map.put("message", "password has been updated");
             }
     	    else {
     	    	// Reinitialisation mot de passe
-    	    	userService.forgottenPassword(user.getUsername(), userFromDB.get().getFirstName(), 
-    	    			userFromDB.get().getLastName(), userFromDB.get().getAdmin());
+    	    	userService.forgottenPassword(user.getUsername(), userFromDB.get());
                 map.put("status", 200);
     	        map.put("message", "new password generated");
             }
@@ -230,8 +228,10 @@ public class SafetyLineController {
 
     	    if(userFromDB.get().getAdmin())
             {
-    	    	int nb = 0;
-    	    	// on compte le nombre d'admins if(nb < 2) throw new LastAdminException()
+    	    	int nb = userService.getAllAdmins().size();
+    	    	if (nb < 2) { 
+    	    		throw new LastAdminException(); 
+    	    	}
                 userService.deleteUserByIdUser(user.getUsername());
                 map.put("status", 200);
                 map.put("message", "admin deleted, there are " + (nb-1) + " admins left.");
@@ -250,7 +250,11 @@ public class SafetyLineController {
         } catch (UtilisateurInconnuException e) {
             map.put("status", 500);
             map.put("message", "unknown username");
-            // catch LastAdminException
+            
+        } catch(LastAdminException e) {
+    	    map.put("status", 500);
+    	    map.put("message", "you're trying to delete the last admin account");
+    	    
         } catch(Exception e) {
     	    e.printStackTrace();
     	    map.put("status", 500);
@@ -313,7 +317,7 @@ public class SafetyLineController {
      * Get all suggestions
      * @return the HTTP response
      */
-    @GetMapping("/suggestions")
+    @PostMapping("/suggestions")
     @ResponseBody
     public ResponseEntity<HashMap<String, Object>> getAllSuggestions(@RequestBody SuggestionDTO suggestion, HttpServletRequest request)
     {
@@ -328,8 +332,16 @@ public class SafetyLineController {
                 throw new SessionExpired();
             }
     	    
-    		List<Suggestion> listSuggestion = suggestionService.getSuggestions(suggestion.getAuthor(),
-                    suggestion.getContent(), suggestion.getBegin(),suggestion.getEnd());//suggestionService.getAllSuggestions();
+    	    List<Suggestion> listSuggestion;
+    	    
+    	    if (suggestion.getBegin() != null && suggestion.getEnd() != null) {
+    	    	 listSuggestion = suggestionService.getSuggestions(suggestion.getAuthor(),
+                        suggestion.getContent(), suggestion.getBegin(),suggestion.getEnd());
+    	    } else {
+    	    	listSuggestion = suggestionService.getAllSuggestions();
+    	    }
+    	    
+    		
     		if (listSuggestion.isEmpty()) 
     		{
     			map.put("status", 500);
