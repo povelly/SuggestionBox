@@ -417,4 +417,39 @@ public class SafetyLineController {
     	    return map;
         }
     }
+
+	/////////////////////////////////// STRAWPOLL /////////////////////////////////
+
+	@GetMapping("/createStrawpoll")
+	@ResponseBody
+	public Map<String,Object> createStrawpoll(HttpServletRequest request)
+	{
+		HashMap<String, Object> map = new HashMap<>();
+		try{
+			// Vérification de la session
+			HttpSession session = request.getSession(false);
+
+			if(session == null)
+			{
+				throw new SessionExpired();
+			}
+
+			strawpollService.createStrawpoll("mytitle", "user@mail.com",null);
+			strawpollService.insertChoice(9,"my content");
+			map.put("status", 200);
+			map.put("message", "strawpoll has been created");
+
+		} catch(SessionExpired s) {
+			map.put("status", 440);
+			map.put("message", "your session expired or has never been created");
+
+		} catch(Exception e) {
+			e.printStackTrace();
+			map.put("status", 500);
+			map.put("message", "failed create suggestion");
+
+		} finally {
+			return map;
+		}
+	}
 }

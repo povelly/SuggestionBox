@@ -6,12 +6,16 @@ package com.sorbonne.safetyline.service;
  * Service offering strawpolls manipulation methods
  *
  */
+import com.sorbonne.safetyline.dataAccess.ChoiceDAO;
 import com.sorbonne.safetyline.dataAccess.StrawpollDAO;
+import com.sorbonne.safetyline.model.Choice;
 import com.sorbonne.safetyline.model.Strawpoll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.util.Calendar;
+import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -19,6 +23,37 @@ import java.util.List;
 public class StrawpollService {
     @Autowired
     private StrawpollDAO strawpollDAO;
+
+    @Autowired
+    private ChoiceDAO choiceDAO;
+
+    /**
+     * It is possible to create an empty strawpoll
+     * @param title         title of the suggestion
+     * @param author        author of the suggestion his user_id/mail
+     * @return              true if insertion worked
+     */
+    public Strawpoll createStrawpoll(String title, String author, Date expiracy){
+        Strawpoll strawpoll = new Strawpoll();
+        strawpoll.setTitle(title);
+        //strawpoll.setAuthor(author);
+        Date now = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(now);
+        cal.add(Calendar.HOUR, 2);
+
+        Date expirationDate = expiracy!=null?expiracy
+                : cal.getTime();
+        strawpoll.setDeadlineTime(expirationDate);
+        return strawpollDAO.save(strawpoll);
+    }
+
+    public Choice insertChoice(int strawpollId, String content){
+        Choice choice = new Choice();
+        choice.setChoiceContent(content);
+        choice.setStrawpollId(strawpollId);
+        return choiceDAO.save(choice);
+    }
 
     /**
      * @see StrawpollDAO#findAll()

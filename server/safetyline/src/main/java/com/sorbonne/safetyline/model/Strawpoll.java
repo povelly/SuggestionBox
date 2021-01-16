@@ -1,7 +1,11 @@
 package com.sorbonne.safetyline.model;
 
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -12,6 +16,7 @@ public class Strawpoll
     @Column( name="strawpoll_id", length = 11)
     private int strawpollId;
     @Column( name="strawpoll_creation_date")
+    @CreationTimestamp
     private Date creationDate;
     @Column( name="strawpoll_expiration_date")
     private Date deadlineTime;
@@ -26,6 +31,17 @@ public class Strawpoll
     @MapsId("strawpollId")
     @JoinColumn(name = "strawpoll_id")
     private List<Choice> choices;
+
+
+    @Column(name="strawpoll_author")
+    private String author;
+
+    public String getAuthor() {
+        return author;
+    }
+    public void setAuthor(String author){
+        this.author = author;
+    }
 
     public int getStrawpollId() {
         return strawpollId;
@@ -59,11 +75,11 @@ public class Strawpoll
         this.title = title;
     }
 
-    public List<Choice> getChoices() {
-        return choices;
-    }
-
-    public void setChoices(List<Choice> choices) {
-        this.choices = choices;
-    }
+//    public List<Choice> getChoices() {
+//        return choices;
+//    }
+//
+//    public void setChoices(List<Choice> choices) {
+//        this.choices = choices;
+//    }
 }

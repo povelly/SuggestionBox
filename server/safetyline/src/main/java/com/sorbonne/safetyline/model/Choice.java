@@ -1,4 +1,7 @@
 package com.sorbonne.safetyline.model;
+import org.hibernate.annotations.WhereJoinTable;
+import org.springframework.data.jpa.repository.Query;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -18,9 +21,15 @@ public class Choice
     @ManyToOne(targetEntity = Strawpoll.class)
     @JoinColumn(name = "strawpoll_id", insertable = false, updatable = false)
     private Strawpoll strawpoll;
-    @ManyToOne
-    private User user;
 
+//    @ManyToOne
+//    @MapsId("strawpollId")
+//    @JoinColumn(name = "strawpoll_id")
+//    private User user;
+//    @ManyToMany(mappedBy = "user_id")
+//    @JoinColumn(name="user_id", referencedColumnName = "strawpoll_id"),
+//
+//    private List<User> users;
     public int getChoiceId() {
         return choiceId;
     }
@@ -61,11 +70,11 @@ public class Choice
         this.strawpoll = strawpoll;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 }
