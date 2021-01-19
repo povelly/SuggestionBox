@@ -8,17 +8,11 @@ package com.sorbonne.safetyline.controller;
  *
  */
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mysql.cj.ServerPreparedQuery;
-import com.sorbonne.safetyline.exception.SessionExpired;
 import com.sorbonne.safetyline.exception.EmptySuggestionException;
 import com.sorbonne.safetyline.exception.InvalidFormException;
 import com.sorbonne.safetyline.exception.LastAdminException;
 import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
 import com.sorbonne.safetyline.exception.UtilisateurInconnuException;
-import com.sorbonne.safetyline.model.Connexion;
 import com.sorbonne.safetyline.model.Suggestion;
 import com.sorbonne.safetyline.model.User;
 import com.sorbonne.safetyline.dto.SuggestionDTO;
@@ -29,14 +23,9 @@ import com.sorbonne.safetyline.service.UserService;
 import com.sorbonne.safetyline.utils.PasswordUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -45,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @CrossOrigin
 @RestController
@@ -57,6 +48,7 @@ public class SafetyLineController {
     @Autowired
     private SuggestionService suggestionService = new SuggestionService();
 
+	private static final Logger LOGGER  = LoggerFactory.getLogger(SafetyLineController.class);
     ////////////////////////////////// USER //////////////////////////////////
     
     /**
@@ -99,14 +91,6 @@ public class SafetyLineController {
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
-    		// Vérification de la session
-	    	HttpSession session = request.getSession(false);
-
-    	    if(session == null)
-            {
-                throw new SessionExpired();
-            }
-    	    
     		if(user.getFirstName() == null || user.getLastName() == null) throw new InvalidFormException();
     	    if(user.isAdmin())
             {
@@ -123,11 +107,7 @@ public class SafetyLineController {
             }
     	    map.put("username", userId);
     	    
-    	} catch(SessionExpired s) {
-    	    map.put("status", 440);
-    	    map.put("message", "your session expired or has never been created");
-
-        } catch (UsernameAlreadyExists e) {
+    	} catch (UsernameAlreadyExists e) {
             map.put("status", 500);
             map.put("message", "username already exists");
             
@@ -136,7 +116,6 @@ public class SafetyLineController {
             map.put("message", "missing content in form");
 
         } catch(Exception e) {
-    	    e.printStackTrace();
     	    map.put("status", 500);
     	    map.put("message", "failed to register");
 
@@ -162,16 +141,7 @@ public class SafetyLineController {
     		
     	    if(user.getOldPassword() != null && user.getNewPassword() != null)
             {
-    	    	// Changement de mot de passe
-    	    	
-    	    	// Vérification de la session
-    	    	HttpSession session = request.getSession(false);
 
-        	    if(session == null)
-                {
-                    throw new SessionExpired();
-                }
-        	    
     	    	userService.updatePassword(user.getUsername(), user.getOldPassword(),
     	    			user.getNewPassword(), userFromDB.get());
                 map.put("status", 200);
@@ -185,16 +155,11 @@ public class SafetyLineController {
             }
     	    map.put("username", user.getUsername());
 
-        } catch(SessionExpired s) {
-    	    map.put("status", 440);
-    	    map.put("message", "your session expired or has never been created");
-        }
-    	catch (UtilisateurInconnuException e) {
+        } catch (UtilisateurInconnuException e) {
             map.put("status", 500);
             map.put("message", "unknown user");
 
         } catch(Exception e) {
-    	    e.printStackTrace();
     	    map.put("status", 500);
     	    map.put("message", "failed to register");
 
@@ -213,15 +178,6 @@ public class SafetyLineController {
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
-    		
-    		// Vérification de la session
-	    	HttpSession session = request.getSession(false);
-
-    	    if(session == null)
-            {
-                throw new SessionExpired();
-            }
-    	    
     		Optional<User> userFromDB = userService.getUserById(user.getUsername());
     		if(!userFromDB.isPresent())
 	            throw new UtilisateurInconnuException();
@@ -243,11 +199,7 @@ public class SafetyLineController {
             }
     	    map.put("username", user.getUsername());
     	    
-    	} catch(SessionExpired s) {
-    	    map.put("status", 440);
-    	    map.put("message", "your session expired or has never been created");
-
-        } catch (UtilisateurInconnuException e) {
+    	} catch (UtilisateurInconnuException e) {
             map.put("status", 500);
             map.put("message", "unknown username");
             
@@ -256,7 +208,6 @@ public class SafetyLineController {
     	    map.put("message", "you're trying to delete the last admin account");
     	    
         } catch(Exception e) {
-    	    e.printStackTrace();
     	    map.put("status", 500);
     	    map.put("message", "failed to register");
 
@@ -275,14 +226,6 @@ public class SafetyLineController {
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
-    		// Vérification de la session
-	    	HttpSession session = request.getSession(false);
-
-    	    if(session == null)
-            {
-                throw new SessionExpired();
-            }
-    	    
     		List<User> listUsers = userService.getAllUsers();
     		if (listUsers.isEmpty()) 
     		{
@@ -297,12 +240,7 @@ public class SafetyLineController {
     		});
     		map.put("users", listNoPassword);
     		
-    	} catch(SessionExpired s) {
-    	    map.put("status", 440);
-    	    map.put("message", "your session expired or has never been created");
-            
-        } catch(Exception e) {
-    	    e.printStackTrace();
+    	} catch(Exception e) {
     	    map.put("status", 500);
     	    map.put("message", "failed to retrieve users");
     	    
@@ -324,14 +262,6 @@ public class SafetyLineController {
     	HashMap<String, Object> map = new HashMap<>();
     	System.out.println("date end"+suggestion.getEnd());
     	try{
-    		// Vérification de la session
-	    	HttpSession session = request.getSession(false);
-
-    	    if(session == null)
-            {
-                throw new SessionExpired();
-            }
-    	    
     	    List<Suggestion> listSuggestion;
     	    
     	    if (suggestion.getBegin() != null && suggestion.getEnd() != null) {
@@ -350,12 +280,7 @@ public class SafetyLineController {
     		map.put("status", 200);
     		map.put("suggestions", listSuggestion);
     		
-    	} catch(SessionExpired s) {
-    	    map.put("status", 440);
-    	    map.put("message", "your session expired or has never been created");
-            
-        } catch(Exception e) {
-    	    e.printStackTrace();
+    	} catch(Exception e) {
     	    map.put("status", 500);
     	    map.put("message", "failed to retrieve suggestions");
     	    
@@ -375,14 +300,6 @@ public class SafetyLineController {
     {
     	HashMap<String, Object> map = new HashMap<>();
     	try{
-    		// Vérification de la session
-	    	HttpSession session = request.getSession(false);
-
-    	    if(session == null)
-            {
-                throw new SessionExpired();
-            }
-    	    
     		if(sug.getContent() == null) throw new EmptySuggestionException();
     		
     		List<User> admins = userService.getAllAdmins();
@@ -400,16 +317,11 @@ public class SafetyLineController {
     	        map.put("message", "anonymous suggestion has been created");
             }
     	    
-    	} catch(SessionExpired s) {
-    	    map.put("status", 440);
-    	    map.put("message", "your session expired or has never been created");
-
-        } catch (EmptySuggestionException e) {
+    	} catch (EmptySuggestionException e) {
             map.put("status", 500);
             map.put("message", "empty suggestion");
             
         } catch(Exception e) {
-    	    e.printStackTrace();
     	    map.put("status", 500);
     	    map.put("message", "failed create suggestion");
     	    
@@ -426,25 +338,12 @@ public class SafetyLineController {
 	{
 		HashMap<String, Object> map = new HashMap<>();
 		try{
-			// Vérification de la session
-			HttpSession session = request.getSession(false);
-
-			if(session == null)
-			{
-				throw new SessionExpired();
-			}
-
 			strawpollService.createStrawpoll("mytitle", "user@mail.com",null);
 			strawpollService.insertChoice(9,"my content");
 			map.put("status", 200);
 			map.put("message", "strawpoll has been created");
 
-		} catch(SessionExpired s) {
-			map.put("status", 440);
-			map.put("message", "your session expired or has never been created");
-
 		} catch(Exception e) {
-			e.printStackTrace();
 			map.put("status", 500);
 			map.put("message", "failed create suggestion");
 
