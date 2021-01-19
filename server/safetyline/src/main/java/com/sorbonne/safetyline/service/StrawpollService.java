@@ -8,6 +8,9 @@ package com.sorbonne.safetyline.service;
  */
 import com.sorbonne.safetyline.dataAccess.ChoiceDAO;
 import com.sorbonne.safetyline.dataAccess.StrawpollDAO;
+import com.sorbonne.safetyline.exception.EmptyChoice;
+import com.sorbonne.safetyline.exception.EmptyStrawpoll;
+import com.sorbonne.safetyline.exception.StrawpollNotExists;
 import com.sorbonne.safetyline.model.Choice;
 import com.sorbonne.safetyline.model.Strawpoll;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -33,7 +37,10 @@ public class StrawpollService {
      * @param author        author of the suggestion his user_id/mail
      * @return              true if insertion worked
      */
-    public Strawpoll createStrawpoll(String title, String author, Date expiracy){
+    public Strawpoll createStrawpoll(String title, String author, Date expiracy, List<String> choices)
+    throws EmptyStrawpoll {
+        if(choices==null)
+            throw new EmptyStrawpoll();
         Strawpoll strawpoll = new Strawpoll();
         strawpoll.setTitle(title);
         //strawpoll.setAuthor(author);
@@ -48,11 +55,16 @@ public class StrawpollService {
         return strawpollDAO.save(strawpoll);
     }
 
-    public Choice insertChoice(int strawpollId, String content){
+    public Optional<Strawpoll> insertChoice(int strawpollId, String content) throws StrawpollNotExists, EmptyChoice{
+        if(!strawpollDAO.existsById(strawpollId))
+            throw new StrawpollNotExists();
+        if(content==null || content=="")
+            throw new EmptyChoice();
         Choice choice = new Choice();
         choice.setChoiceContent(content);
         choice.setStrawpollId(strawpollId);
-        return choiceDAO.save(choice);
+        choiceDAO.save(choice);
+        return strawpollDAO.findById(strawpollId);
     }
 
     /**

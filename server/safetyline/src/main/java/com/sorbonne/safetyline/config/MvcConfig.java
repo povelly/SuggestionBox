@@ -1,6 +1,6 @@
 package com.sorbonne.safetyline.config;
 
-import com.sorbonne.safetyline.interceptor.LoginInterceptor;
+import com.sorbonne.safetyline.interceptor.SessionInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -15,7 +15,7 @@ public class MvcConfig implements WebMvcConfigurer
 	}
 	@Override
 	public void addInterceptors(InterceptorRegistry registry){
-		registry.addInterceptor(new LoginInterceptor())
+		registry.addInterceptor(new SessionInterceptor())
 				.addPathPatterns("/accounts","/account", "/accoundDelete",
 						"/suggestions", "/suggestion","/createStrawpoll", "/account/{userId}");
 	}

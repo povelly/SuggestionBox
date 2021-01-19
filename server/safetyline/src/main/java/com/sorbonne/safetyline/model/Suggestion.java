@@ -1,5 +1,7 @@
 package com.sorbonne.safetyline.model;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,8 +24,8 @@ public class Suggestion {
     private String suggestionContent;
 
 
-    @NotNull(message = "the date of submission of the suggestion cannot be null")
     @Column( name="suggestion_creation_date")
+    @CreationTimestamp
     private Date suggestionCreationDate;
 
     @Column( name="suggestion_author")

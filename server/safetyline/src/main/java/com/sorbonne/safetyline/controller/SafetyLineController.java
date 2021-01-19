@@ -8,11 +8,15 @@ package com.sorbonne.safetyline.controller;
  *
  */
 
+import com.mailjet.client.errors.MailjetException;
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
+import com.sorbonne.safetyline.dto.StrawpollDTO;
 import com.sorbonne.safetyline.exception.EmptySuggestionException;
 import com.sorbonne.safetyline.exception.InvalidFormException;
 import com.sorbonne.safetyline.exception.LastAdminException;
 import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
 import com.sorbonne.safetyline.exception.UtilisateurInconnuException;
+import com.sorbonne.safetyline.model.Strawpoll;
 import com.sorbonne.safetyline.model.Suggestion;
 import com.sorbonne.safetyline.model.User;
 import com.sorbonne.safetyline.dto.SuggestionDTO;
@@ -29,11 +33,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,27 +64,20 @@ public class SafetyLineController {
      */
     @PostMapping("/safetylineConnexion")
     @ResponseBody
-    public Map<String,Object> safetylineConnexion(@RequestBody UserDTO user,  HttpServletRequest request)
+    public String safetylineConnexion(@RequestBody UserDTO user,  HttpServletRequest request)
     {
-
-
-    	HashMap<String, Object> map = new HashMap<>();
+		String res=null;
     	List<User> list = userService.authentifyUser(user.getUsername(), PasswordUtil.sha256(user.getPassword()));
     	if (!list.isEmpty())
     	{
-    		map.put("status", 200);
-    		map.put("message", "user found");
-
-    		map.put("username", user.getUsername());
-    		map.put("type", list.get(0).getAdmin());
             HttpSession session = request.getSession();
             session.setMaxInactiveInterval(100);
-    		return map;
+            LOGGER.info("authentified user");
     	} else {
-    		map.put("status", 404);
-    		map.put("message", "user not found");
-    		return map;
+    		res ="User not found";
+    		LOGGER.error(res);
     	}
+    	return res;
     }
     
     /**
@@ -87,40 +87,24 @@ public class SafetyLineController {
      */
     @PutMapping("/account/{userId}")
     @ResponseBody
-    public Map<String,Object> creationCompte(@PathVariable String userId, @RequestBody UserDTO user, HttpServletRequest request)
+    public String creationCompte(@PathVariable String userId, @RequestBody UserDTO user, HttpServletRequest request)
     {
     	HashMap<String, Object> map = new HashMap<>();
+    	String res = null;
     	try{
     		if(user.getFirstName() == null || user.getLastName() == null) throw new InvalidFormException();
-    	    if(user.isAdmin())
-            {
-                userService.addUser(userId, user.getFirstName(), user.getLastName(), true);
-                map.put("status", 200);
-                map.put("message", "admin registered");
-                map.put("type", true);
-            }
-    	    else{
-    	        userService.addUser(userId, user.getFirstName(), user.getLastName(), false);
-                map.put("status", 200);
-    	        map.put("message", "user registered");
-    	        map.put("type", false);
-            }
-    	    map.put("username", userId);
-    	    
+    		userService.addUser(userId, user.getFirstName(), user.getLastName(), true);
     	} catch (UsernameAlreadyExists e) {
-            map.put("status", 500);
-            map.put("message", "username already exists");
+            res = "username already exists";
             
         } catch (InvalidFormException e) {
-            map.put("status", 500);
-            map.put("message", "missing content in form");
+            res = "invalid form";
 
         } catch(Exception e) {
-    	    map.put("status", 500);
-    	    map.put("message", "failed to register");
+    	    res = "exception occured";
 
         } finally {
-    	    return map;
+    	    return res;
         }
     }
     
@@ -130,9 +114,9 @@ public class SafetyLineController {
      */
     @PostMapping("/account")
     @ResponseBody
-    public Map<String,Object> updateCompte(@RequestBody UserDTO user, HttpServletRequest request)
+    public String updateCompte(@RequestBody UserDTO user, HttpServletRequest request)
     {
-    	HashMap<String, Object> map = new HashMap<>();
+    	String res = null;
     	try{
     	    
     		Optional<User> userFromDB = userService.getUserById(user.getUsername());
@@ -144,76 +128,68 @@ public class SafetyLineController {
 
     	    	userService.updatePassword(user.getUsername(), user.getOldPassword(),
     	    			user.getNewPassword(), userFromDB.get());
-                map.put("status", 200);
-                map.put("message", "password has been updated");
+    	    	LOGGER.info("password updated");
             }
     	    else {
     	    	// Reinitialisation mot de passe
     	    	userService.forgottenPassword(user.getUsername(), userFromDB.get());
-                map.put("status", 200);
-    	        map.put("message", "new password generated");
+    	    	LOGGER.info("password reinitialized");
             }
-    	    map.put("username", user.getUsername());
 
         } catch (UtilisateurInconnuException e) {
-            map.put("status", 500);
-            map.put("message", "unknown user");
+            res = "unknown user";
+            LOGGER.error(res);
 
         } catch(Exception e) {
-    	    map.put("status", 500);
-    	    map.put("message", "failed to register");
+    	    res = "error occured in server";
+    	    LOGGER.error(res);
 
         } finally {
-    	    return map;
+    	    return res;
         }
     }
     
     /**
      * Deletes an account using the email
-     * @return the HTTP response
+     * @return the null if everything was ok otherwise return the error (string)
      */
     @PostMapping("/accountDelete")
     @ResponseBody
-    public Map<String,Object> suppressionCompte(@RequestBody UserDTO user, HttpServletRequest request)
+    public String suppressionCompte(@RequestBody UserDTO user, HttpServletRequest request)
     {
-    	HashMap<String, Object> map = new HashMap<>();
-    	try{
-    		Optional<User> userFromDB = userService.getUserById(user.getUsername());
+		String res=null;
+		Optional<User> userFromDB = userService.getUserById(user.getUsername());
+		try{
+
     		if(!userFromDB.isPresent())
 	            throw new UtilisateurInconnuException();
 
     	    if(userFromDB.get().getAdmin())
             {
     	    	int nb = userService.getAllAdmins().size();
-    	    	if (nb < 2) { 
-    	    		throw new LastAdminException(); 
+    	    	if (nb < 2) {
+    	    		throw new LastAdminException();
     	    	}
                 userService.deleteUserByIdUser(user.getUsername());
-                map.put("status", 200);
-                map.put("message", "admin deleted, there are " + (nb-1) + " admins left.");
             }
     	    else{
     	    	userService.deleteUserByIdUser(user.getUsername());
-                map.put("status", 200);
-                map.put("message", "user has been deleted");
-            }
-    	    map.put("username", user.getUsername());
-    	    
-    	} catch (UtilisateurInconnuException e) {
-            map.put("status", 500);
-            map.put("message", "unknown username");
-            
-        } catch(LastAdminException e) {
-    	    map.put("status", 500);
-    	    map.put("message", "you're trying to delete the last admin account");
-    	    
-        } catch(Exception e) {
-    	    map.put("status", 500);
-    	    map.put("message", "failed to register");
-
-        } finally {
-    	    return map;
-        }
+			}
+		}catch(UtilisateurInconnuException u){
+			LOGGER.error("The user does not exist");
+			res="The user does not exist";
+		}catch(LastAdminException l){
+			LOGGER.error("One admin has to exists in order to create count");
+			res="One admin has to exists in order to create count";
+		}catch(MailjetException | MailjetSocketTimeoutException c ){
+			LOGGER.error("An error occured with mailJet");
+			res="An error occured with mailJet";
+		}catch(Exception e){
+			LOGGER.error("An other error occured");
+			res="Another error occured";
+		} finally {
+			return res;
+		}
     }
     
     /**
@@ -222,31 +198,16 @@ public class SafetyLineController {
      */
     @GetMapping("/accounts")
     @ResponseBody
-    public ResponseEntity<HashMap<String, Object>> getAllUsers(HttpServletRequest request)
+    public ResponseEntity<List<UserDTO>> getAllUsers(HttpServletRequest request)
     {
-    	HashMap<String, Object> map = new HashMap<>();
-    	try{
-    		List<User> listUsers = userService.getAllUsers();
-    		if (listUsers.isEmpty()) 
-    		{
-    			map.put("status", 500);
-    			map.put("message", "no users in db");
-    		}
-    		map.put("status", 200);
-    		
-    		List<UserDTO> listNoPassword = new ArrayList<>();
-    		listUsers.forEach(u -> {
-    			listNoPassword.add(new UserDTO(u.getUserId(), u.getFirstName(), u.getLastName(), u.getAdmin()));
-    		});
-    		map.put("users", listNoPassword);
-    		
-    	} catch(Exception e) {
-    	    map.put("status", 500);
-    	    map.put("message", "failed to retrieve users");
-    	    
-        } finally {
-    	    return new ResponseEntity<>(map, HttpStatus.OK);
-        }
+		List<UserDTO> result = new ArrayList<>();
+		try{
+			result = userService.getAllUsers().stream().parallel()
+					.map(u -> new UserDTO(u.getUserId(), u.getFirstName(), u.getLastName(), u.getAdmin())).collect(Collectors.toList());
+		} catch(Exception e){
+			LOGGER.info("error occured");
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
     }
     
     /////////////////////////////////// SUGGESTION /////////////////////////////////
@@ -257,36 +218,21 @@ public class SafetyLineController {
      */
     @PostMapping("/suggestions")
     @ResponseBody
-    public ResponseEntity<HashMap<String, Object>> getAllSuggestions(@RequestBody SuggestionDTO suggestion, HttpServletRequest request)
+    public ResponseEntity<List<SuggestionDTO>> getAllSuggestions(@RequestBody SuggestionDTO suggestion, HttpServletRequest request)
     {
-    	HashMap<String, Object> map = new HashMap<>();
-    	System.out.println("date end"+suggestion.getEnd());
+		List<SuggestionDTO> listSuggestions = new ArrayList<>();
     	try{
-    	    List<Suggestion> listSuggestion;
-    	    
-    	    if (suggestion.getBegin() != null && suggestion.getEnd() != null) {
-    	    	 listSuggestion = suggestionService.getSuggestions(suggestion.getAuthor(),
-                        suggestion.getContent(), suggestion.getBegin(),suggestion.getEnd());
-    	    } else {
-    	    	listSuggestion = suggestionService.getAllSuggestions();
-    	    }
-    	    
-    		
-    		if (listSuggestion.isEmpty()) 
-    		{
-    			map.put("status", 500);
-    			map.put("message", "no suggestions in db");
-    		}
-    		map.put("status", 200);
-    		map.put("suggestions", listSuggestion);
-    		
+			listSuggestions = suggestionService
+					.getSuggestions(suggestion.getAuthor(), suggestion.getBegin(), suggestion.getEnd())
+					.stream().parallel().map(s -> new SuggestionDTO(s.getSuggestionContent(), s.getSuggestionAuthor(), s.getSuggestionCreationDate(), suggestion.getEnd()))
+					.collect(Collectors.toList());
+
     	} catch(Exception e) {
-    	    map.put("status", 500);
-    	    map.put("message", "failed to retrieve suggestions");
+    	    LOGGER.error("Exception");
     	    
-        } finally {
-    	    return new ResponseEntity<>(map, HttpStatus.OK);
-        }
+        } finally{
+			return new ResponseEntity<>(listSuggestions, HttpStatus.OK);
+		}
     }
     
     
@@ -296,49 +242,40 @@ public class SafetyLineController {
      */
     @PostMapping("/suggestion")
     @ResponseBody
-    public Map<String,Object> creationSuggestion(@RequestBody SuggestionDTO sug, HttpServletRequest request)
+    public String creationSuggestion(@RequestBody SuggestionDTO sug)
     {
-    	HashMap<String, Object> map = new HashMap<>();
+    	String res= null;
     	try{
     		if(sug.getContent() == null) throw new EmptySuggestionException();
     		
     		List<User> admins = userService.getAllAdmins();
-    		
-    	    if(sug.getAuthor() != null)
-            {
-    	    	suggestionService.creationSuggestion(sug.getContent(), sug.getAuthor(), admins);
-                map.put("status", 200);
-                map.put("message", "suggestion has been created");
-            }
-    	    else {
-    	    	// Suggestion anonyme
-    	    	suggestionService.creationSuggestion(sug.getContent(), null, admins);
-                map.put("status", 200);
-    	        map.put("message", "anonymous suggestion has been created");
-            }
-    	    
+
+    		suggestionService.creationSuggestion(sug.getContent(), sug.getAuthor(), admins);
+
+    	    LOGGER.info("suggestion created");
     	} catch (EmptySuggestionException e) {
-            map.put("status", 500);
-            map.put("message", "empty suggestion");
-            
+            res = "Error empty suggestion";
+            LOGGER.error(res);
         } catch(Exception e) {
-    	    map.put("status", 500);
-    	    map.put("message", "failed create suggestion");
-    	    
-        } finally {
-    	    return map;
-        }
+    	    res = "Server Error";
+			LOGGER.error(res);
+        } finally{
+			return res;
+		}
+
     }
 
 	/////////////////////////////////// STRAWPOLL /////////////////////////////////
 
 	@GetMapping("/createStrawpoll")
 	@ResponseBody
-	public Map<String,Object> createStrawpoll(HttpServletRequest request)
+	public Map<String,Object> createStrawpoll(@RequestBody StrawpollDTO strawpollDTO)
 	{
 		HashMap<String, Object> map = new HashMap<>();
 		try{
-			strawpollService.createStrawpoll("mytitle", "user@mail.com",null);
+			strawpollService.createStrawpoll(strawpollDTO.getTitle(),
+					strawpollDTO.getAuthor(),strawpollDTO.getExpirationDate(),
+					strawpollDTO.getChoices());
 			strawpollService.insertChoice(9,"my content");
 			map.put("status", 200);
 			map.put("message", "strawpoll has been created");
@@ -350,5 +287,11 @@ public class SafetyLineController {
 		} finally {
 			return map;
 		}
+	}
+
+	@GetMapping("/insertChoices")
+	@ResponseBody
+	public ResponseEntity<Strawpoll> insertStrawpoll(@RequestBody StrawpollDTO strawpoll){
+
 	}
 }

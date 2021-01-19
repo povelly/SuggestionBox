@@ -28,12 +28,14 @@ public class SuggestionService {
     private SuggestionDAO suggestionDAO;
 
 
-    public List<Suggestion> getSuggestions(String author, String content, Date begin, Date end){
+    public List<Suggestion> getSuggestions(String author, Date begin, Date end){
+        if(author==null && begin==null && end==null)
+            return getAllSuggestions();
         Set<Suggestion> results     = new HashSet<>();
         List<Suggestion> authorRes  = suggestionDAO.findBySuggestion_author(author);
-        end = end==null?new Date(System.currentTimeMillis()):end;
-        List<Suggestion> dateRes = begin!=null?suggestionDAO
-                .findBySuggestion_creation_dateRange(begin, end):new ArrayList<>();
+        end = end==null?new Date(Long.MAX_VALUE):end;
+        begin = begin==null?new Date(Long.MIN_VALUE):begin;
+        List<Suggestion> dateRes = suggestionDAO.findBySuggestion_creation_dateRange(begin, end);
         results = authorRes.stream().distinct().filter(dateRes::contains)
                 .collect(Collectors.toSet());
         List<Suggestion> res = new ArrayList<>();
@@ -79,13 +81,11 @@ public class SuggestionService {
     public void creationSuggestion(String content, String author, List<User> admins) throws JSONException, MailjetException, MailjetSocketTimeoutException {
     	Suggestion s = new Suggestion();
     	s.setSuggestionContent(content);
-    	s.setSuggestionCreationDate(new Date(System.currentTimeMillis()));
-    	if (author != null) { s.setSuggestionAuthor(author); }
-    	
+    	s.setSuggestionAuthor(author);
     	suggestionDAO.save(s);
     	
     	// Send mail to all admin
-	    List<String> adminsMail = admins.stream()
+	    List<String> adminsMail = admins.stream().parallel()
 	    		.map(User::getUserId)
 	    		.collect(Collectors.toCollection(ArrayList::new));
 	    
