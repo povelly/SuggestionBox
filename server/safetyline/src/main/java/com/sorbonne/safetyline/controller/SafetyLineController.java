@@ -16,8 +16,6 @@ import com.sorbonne.safetyline.exception.InvalidFormException;
 import com.sorbonne.safetyline.exception.LastAdminException;
 import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
 import com.sorbonne.safetyline.exception.UtilisateurInconnuException;
-import com.sorbonne.safetyline.model.Strawpoll;
-import com.sorbonne.safetyline.model.Suggestion;
 import com.sorbonne.safetyline.model.User;
 import com.sorbonne.safetyline.dto.SuggestionDTO;
 import com.sorbonne.safetyline.dto.UserDTO;
@@ -25,19 +23,15 @@ import com.sorbonne.safetyline.service.StrawpollService;
 import com.sorbonne.safetyline.service.SuggestionService;
 import com.sorbonne.safetyline.service.UserService;
 import com.sorbonne.safetyline.utils.PasswordUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -64,7 +58,7 @@ public class SafetyLineController {
      */
     @PostMapping("/safetylineConnexion")
     @ResponseBody
-    public String safetylineConnexion(@RequestBody UserDTO user,  HttpServletRequest request)
+    public ResponseEntity<String> safetylineConnexion(@RequestBody UserDTO user,  HttpServletRequest request)
     {
 		String res=null;
     	List<User> list = userService.authentifyUser(user.getUsername(), PasswordUtil.sha256(user.getPassword()));
@@ -77,7 +71,7 @@ public class SafetyLineController {
     		res ="User not found";
     		LOGGER.error(res);
     	}
-    	return res;
+    	return new ResponseEntity<>(res, HttpStatus.OK);
     }
     
     /**
@@ -87,7 +81,7 @@ public class SafetyLineController {
      */
     @PutMapping("/account/{userId}")
     @ResponseBody
-    public String creationCompte(@PathVariable String userId, @RequestBody UserDTO user, HttpServletRequest request)
+    public ResponseEntity<String> creationCompte(@PathVariable String userId, @RequestBody UserDTO user, HttpServletRequest request)
     {
     	HashMap<String, Object> map = new HashMap<>();
     	String res = null;
@@ -104,7 +98,7 @@ public class SafetyLineController {
     	    res = "exception occured";
 
         } finally {
-    	    return res;
+    	    return new ResponseEntity<>(res, HttpStatus.OK);
         }
     }
     
@@ -114,7 +108,7 @@ public class SafetyLineController {
      */
     @PostMapping("/account")
     @ResponseBody
-    public String updateCompte(@RequestBody UserDTO user, HttpServletRequest request)
+    public ResponseEntity<String> updateCompte(@RequestBody UserDTO user, HttpServletRequest request)
     {
     	String res = null;
     	try{
@@ -145,7 +139,7 @@ public class SafetyLineController {
     	    LOGGER.error(res);
 
         } finally {
-    	    return res;
+    	    return new ResponseEntity<>(res, HttpStatus.OK);
         }
     }
     
@@ -155,7 +149,7 @@ public class SafetyLineController {
      */
     @PostMapping("/accountDelete")
     @ResponseBody
-    public String suppressionCompte(@RequestBody UserDTO user, HttpServletRequest request)
+    public ResponseEntity<String> suppressionCompte(@RequestBody UserDTO user, HttpServletRequest request)
     {
 		String res=null;
 		Optional<User> userFromDB = userService.getUserById(user.getUsername());
@@ -188,7 +182,7 @@ public class SafetyLineController {
 			LOGGER.error("An other error occured");
 			res="Another error occured";
 		} finally {
-			return res;
+			return new ResponseEntity<>(res, HttpStatus.OK);
 		}
     }
     
@@ -242,11 +236,11 @@ public class SafetyLineController {
      */
     @PostMapping("/suggestion")
     @ResponseBody
-    public String creationSuggestion(@RequestBody SuggestionDTO sug)
+    public ResponseEntity<String> creationSuggestion(@RequestBody SuggestionDTO sug)
     {
     	String res= null;
     	try{
-    		if(sug.getContent() == null) throw new EmptySuggestionException();
+    		if(sug.getContent() == null || sug.getContent().equals("")) throw new EmptySuggestionException();
     		
     		List<User> admins = userService.getAllAdmins();
 
@@ -260,38 +254,32 @@ public class SafetyLineController {
     	    res = "Server Error";
 			LOGGER.error(res);
         } finally{
-			return res;
+			return new ResponseEntity<>(res, HttpStatus.OK);
 		}
 
     }
 
 	/////////////////////////////////// STRAWPOLL /////////////////////////////////
 
-	@GetMapping("/createStrawpoll")
+	@PutMapping("/createStrawpoll")
 	@ResponseBody
-	public Map<String,Object> createStrawpoll(@RequestBody StrawpollDTO strawpollDTO)
+	public ResponseEntity<String> createStrawpoll(@RequestBody StrawpollDTO strawpollDTO)
 	{
-		HashMap<String, Object> map = new HashMap<>();
+		String res = null;
 		try{
+			System.out.println(strawpollDTO.getChoices());
 			strawpollService.createStrawpoll(strawpollDTO.getTitle(),
 					strawpollDTO.getAuthor(),strawpollDTO.getExpirationDate(),
 					strawpollDTO.getChoices());
-			strawpollService.insertChoice(9,"my content");
-			map.put("status", 200);
-			map.put("message", "strawpoll has been created");
+			LOGGER.info("strawpoll has been created");
 
 		} catch(Exception e) {
-			map.put("status", 500);
-			map.put("message", "failed create suggestion");
+			res="failed create suggestion";
 
 		} finally {
-			return map;
+			return new ResponseEntity<>(res, HttpStatus.OK);
 		}
 	}
 
-	@GetMapping("/insertChoices")
-	@ResponseBody
-	public ResponseEntity<Strawpoll> insertStrawpoll(@RequestBody StrawpollDTO strawpoll){
 
-	}
 }

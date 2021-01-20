@@ -13,6 +13,7 @@ import java.util.List;
 public class Strawpoll
 {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column( name="strawpoll_id", length = 11)
     private int strawpollId;
     @Column( name="strawpoll_creation_date")

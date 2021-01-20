@@ -16,11 +16,10 @@ import com.sorbonne.safetyline.model.Strawpoll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -43,28 +42,32 @@ public class StrawpollService {
             throw new EmptyStrawpoll();
         Strawpoll strawpoll = new Strawpoll();
         strawpoll.setTitle(title);
-        //strawpoll.setAuthor(author);
+        strawpoll.setAuthor(author);
         Date now = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(now);
-        cal.add(Calendar.HOUR, 2);
-
-        Date expirationDate = expiracy!=null?expiracy
-                : cal.getTime();
+        cal.add(Calendar.MONTH, 2);
+        Date expirationDate = expiracy!=null?expiracy:cal.getTime();
         strawpoll.setDeadlineTime(expirationDate);
-        return strawpollDAO.save(strawpoll);
+        Strawpoll s = strawpollDAO.save(strawpoll);
+        List<Choice> choicesRes = new ArrayList<>();
+        if(choices!=null){
+            for(String choice: choices){
+                choicesRes.add(instantianteChoice(choice, strawpoll));
+            }
+        }
+        choicesRes.stream().parallel().map(c -> choiceDAO.save(c)).collect(Collectors.toList());
+        return strawpoll;
     }
 
-    public Optional<Strawpoll> insertChoice(int strawpollId, String content) throws StrawpollNotExists, EmptyChoice{
-        if(!strawpollDAO.existsById(strawpollId))
-            throw new StrawpollNotExists();
-        if(content==null || content=="")
-            throw new EmptyChoice();
-        Choice choice = new Choice();
-        choice.setChoiceContent(content);
-        choice.setStrawpollId(strawpollId);
-        choiceDAO.save(choice);
-        return strawpollDAO.findById(strawpollId);
+    public Choice instantianteChoice(String content, Strawpoll strawpoll){
+        if(content == null || content.equals(""))
+            return null;
+        Choice c = new Choice();
+        c.setStrawpollId(strawpoll.getStrawpollId());
+        c.setStrawpoll(strawpoll);
+        c.setChoiceContent(content);
+        return c;
     }
 
     /**
