@@ -32,7 +32,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
         if(session==null)
         {
             //return false;
-            throw new SessionExpired("your session expired please connect");
+            throw new SessionExpired("Your session expired please connect");
         }
 
 

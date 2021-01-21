@@ -66,7 +66,7 @@ public class SafetyLineController {
     	{
             HttpSession session = request.getSession();
             session.setMaxInactiveInterval(100);
-            LOGGER.info("authentified user");
+            LOGGER.info("Authentified user");
     	} else {
     		res ="User not found";
     		LOGGER.error(res);
@@ -89,13 +89,16 @@ public class SafetyLineController {
     		if(user.getFirstName() == null || user.getLastName() == null) throw new InvalidFormException();
     		userService.addUser(userId, user.getFirstName(), user.getLastName(), true);
     	} catch (UsernameAlreadyExists e) {
-            res = "username already exists";
+            res = "Username already exists";
+            LOGGER.error(res);
             
         } catch (InvalidFormException e) {
-            res = "invalid form";
+            res = "Invalid form";
+            LOGGER.error(res);
 
         } catch(Exception e) {
     	    res = "exception occured";
+    	    LOGGER.error(res);
 
         } finally {
     	    return new ResponseEntity<>(res, HttpStatus.OK);
@@ -119,10 +122,9 @@ public class SafetyLineController {
     		
     	    if(user.getOldPassword() != null && user.getNewPassword() != null)
             {
-
     	    	userService.updatePassword(user.getUsername(), user.getOldPassword(),
     	    			user.getNewPassword(), userFromDB.get());
-    	    	LOGGER.info("password updated");
+    	    	LOGGER.info("Password updated");
             }
     	    else {
     	    	// Reinitialisation mot de passe
@@ -131,7 +133,7 @@ public class SafetyLineController {
             }
 
         } catch (UtilisateurInconnuException e) {
-            res = "unknown user";
+            res = "Unknown user";
             LOGGER.error(res);
 
         } catch(Exception e) {
@@ -173,8 +175,8 @@ public class SafetyLineController {
 			LOGGER.error("The user does not exist");
 			res="The user does not exist";
 		}catch(LastAdminException l){
-			LOGGER.error("One admin has to exists in order to create count");
-			res="One admin has to exists in order to create count";
+			LOGGER.error("Can't delete the last admin's account");
+			res="Can't delete the last admin's account";
 		}catch(MailjetException | MailjetSocketTimeoutException c ){
 			LOGGER.error("An error occured with mailJet");
 			res="An error occured with mailJet";
@@ -246,7 +248,7 @@ public class SafetyLineController {
 
     		suggestionService.creationSuggestion(sug.getContent(), sug.getAuthor(), admins);
 
-    	    LOGGER.info("suggestion created");
+    	    LOGGER.info("Suggestion created");
     	} catch (EmptySuggestionException e) {
             res = "Error empty suggestion";
             LOGGER.error(res);
@@ -271,10 +273,10 @@ public class SafetyLineController {
 			strawpollService.createStrawpoll(strawpollDTO.getTitle(),
 					strawpollDTO.getAuthor(),strawpollDTO.getExpirationDate(),
 					strawpollDTO.getChoices());
-			LOGGER.info("strawpoll has been created");
+			LOGGER.info("Strawpoll has been created");
 
 		} catch(Exception e) {
-			res="failed create suggestion";
+			res="Failed to create the strawpoll";
 
 		} finally {
 			return new ResponseEntity<>(res, HttpStatus.OK);

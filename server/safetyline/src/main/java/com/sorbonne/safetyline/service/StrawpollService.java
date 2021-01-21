@@ -40,16 +40,21 @@ public class StrawpollService {
     throws EmptyStrawpoll {
         if(choices==null)
             throw new EmptyStrawpoll();
+        
         Strawpoll strawpoll = new Strawpoll();
         strawpoll.setTitle(title);
         strawpoll.setAuthor(author);
+        
         Date now = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(now);
         cal.add(Calendar.MONTH, 2);
-        Date expirationDate = expiracy!=null?expiracy:cal.getTime();
+        Date expirationDate = expiracy != null ? expiracy : cal.getTime();
         strawpoll.setDeadlineTime(expirationDate);
+        
         Strawpoll s = strawpollDAO.save(strawpoll);
+        
+        // We create the choices and save them in the DB
         List<Choice> choicesRes = new ArrayList<>();
         if(choices!=null){
             for(String choice: choices){
@@ -60,6 +65,12 @@ public class StrawpollService {
         return strawpoll;
     }
 
+    /**
+     * Creates a Choice based on parameters from a Strawpoll
+     * @param content,		the content of the choice
+     * @param strawpoll,	the strawpoll containing the choice
+     * @return
+     */
     public Choice instantianteChoice(String content, Strawpoll strawpoll){
         if(content == null || content.equals(""))
             return null;
