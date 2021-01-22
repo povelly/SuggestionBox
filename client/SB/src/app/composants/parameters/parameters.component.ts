@@ -32,7 +32,7 @@ export class ParametersComponent implements OnInit {
     
     );
 
-    this.myForm.valueChanges.subscribe(console.log)
+    //this.myForm.valueChanges.subscribe(console.log)
   }
 
   checkPasswords(group: FormGroup) { // here we have the 'passwords' group
@@ -48,8 +48,6 @@ export class ParametersComponent implements OnInit {
       error: err => console.log(err)
     };
     f.value.username = localStorage.getItem("username");
-    this.authService.update(f.value).subscribe(loginObserver);
-    //console.log(f2.status);  
-    //console.log(f2.value);
+    this.authService.update(f.value).then(/*loginObserver*/);
   }
 }

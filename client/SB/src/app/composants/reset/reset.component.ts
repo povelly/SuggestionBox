@@ -29,16 +29,8 @@ export class ResetComponent implements OnInit {
       next: x => console.log('reception http'),
       error: err => console.log(err)
     };
-    this.authService.reset(f2.value).subscribe(loginObserver);
-    console.log(f2.value);  
-    console.log(f2.valid);
+    this.authService.reset(f2.value).then(/*loginObserver*/);
 
-
-  }
-
-  onSubmit(f: NgForm) {
-    console.log(f.value);  // { first: '', last: '' }
-    console.log(f.valid);  // false
   }
 
 }

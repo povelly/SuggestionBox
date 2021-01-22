@@ -27,7 +27,6 @@ export class LoginFormComponent implements OnInit {
       ]],
     });
 
-    this.myForm.valueChanges.subscribe(console.log)
   }
 
   onSubmit2(f2: FormGroup){
@@ -36,13 +35,12 @@ export class LoginFormComponent implements OnInit {
       error: err => console.log(err)
     };
     this.authService.login(f2.value).subscribe(loginObserver);
-    //console.log(f2.status);  
-    //console.log(f2.value);
+    //this.authService.login(f2.value).then();
 
 
   }
 
-  onSubmit(f: NgForm) {
+  /*onSubmit(f: NgForm) {
     const loginObserver = {
       next: x => console.log('reception http'),
       error: err => console.log(err)
@@ -53,5 +51,5 @@ export class LoginFormComponent implements OnInit {
     //console.log(f.value);  // { first: '', last: '' }
     //console.log(f.valid);  // false
   }
-
+*/
 }

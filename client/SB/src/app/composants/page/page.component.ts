@@ -15,7 +15,7 @@ export class PageComponent implements OnInit {
   cond = localStorage.getItem('admin')=='true';
   myForm: FormGroup;
 
-
+//crer un nouvel objet 
   ngOnInit(): void {
     this.myForm = this.fb.group({
       content: ['',[
@@ -27,22 +27,22 @@ export class PageComponent implements OnInit {
   }
 
 
-  clicSurBouton(){
+  clicSurBouton():void{
     const loginObserver = {
       next: x => console.log('reception http'),
       error: err => console.log(err)
     };
-    this.authService.delete().subscribe(loginObserver);
+    this.authService.delete().then(/*loginObserver*/);
   }
 
-  cancel(){
+  cancel():void{
     localStorage.clear()
     //console.log(localStorage)
     this.authService.logout();
     this.router.navigate(['/login']);
   }
 
-  sugg(f: FormGroup){
+  sugg(f: FormGroup):void{
     const loginObserver = {
     next: x => console.log('reception http'),
     error: err => console.log(err)
@@ -50,8 +50,8 @@ export class PageComponent implements OnInit {
     if(f.value.anonymous == false){
       f.value.author = localStorage.getItem("username");
     }
-    console.log(f.value);
-    this.authService.suggestion(f.value).subscribe(loginObserver);
+    //console.log(f.value);
+    this.authService.suggestion(f.value).then(/*loginObserver*/);
   }
 
 }

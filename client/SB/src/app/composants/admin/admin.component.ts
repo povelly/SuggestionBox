@@ -44,12 +44,12 @@ export class AdminComponent implements OnInit {
       admin: [false]
     });
 
-    this.authService.getSuggestion().subscribe((response) => this.suggestions = response.suggestions)
-    this.authService.getUsers().subscribe((response) => this.users = response.users)
-    //this.suggestions = this.authService.getSuggestion();
-    //this.users = this.authService.getUsers();
+    //this.authService.getSuggestion().subscribe((response) => this.suggestions = response.suggestions)
+    //this.authService.getUsers().subscribe((response) => this.users = response.users)
+    this.suggestions = this.authService.getSuggestion();
+    this.users = this.authService.getUsers();
     
-    this.myForm.valueChanges.subscribe(console.log)
+    //this.myForm.valueChanges.subscribe(console.log)
 
     
   }
@@ -77,8 +77,8 @@ export class AdminComponent implements OnInit {
     next: x => console.log('reception http'),
     error: err => console.log(err)
     };
-    console.log(f.value);
-    this.authService.create(f.value).subscribe(loginObserver);
+    //console.log(f.value);
+    this.authService.create(f.value).then(/*loginObserver*/);
   }
 
   suppUser(id:any){
@@ -95,7 +95,7 @@ export class AdminComponent implements OnInit {
       next: x => console.log('reception http'),
       error: err => console.log(err)
     };
-    this.authService.delete().subscribe(loginObserver);
+    this.authService.delete().then(/*loginObserver*/);
   }
 
   cancel(){

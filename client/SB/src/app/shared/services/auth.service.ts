@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+//import { FormGroup } from '@angular/forms';
 
 
 @Injectable({
@@ -10,12 +11,12 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
-  authUrl = "http://localhost:8020/safetylineConnexion";
-  authUrl2 = "http://localhost:8020/account";
+  authUrl = "http://localhost:8020/";
+  /*authUrl2 = "http://localhost:8020/account";
   authUrl3 = "http://localhost:8020/accountDelete";
   authUrl5 = "http://localhost:8020/suggestion";
   authUrl6 = "http://localhost:8020/suggestions";
-  authUrl7 = "http://localhost:8020/accounts";
+  authUrl7 = "http://localhost:8020/accounts";*/
 
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
@@ -29,8 +30,8 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(model: any) {
-    return this.http.post(this.authUrl, model, {withCredentials: true}).pipe(
+  login2(model: any) {
+    return this.http.post(this.authUrl + "safetylineConnexion", model, {withCredentials: true}).pipe(
       map((response: any) => {
         const user = response;
         if (user.status == 200) {
@@ -44,9 +45,9 @@ export class AuthService {
           console.log(user.message);
         }
       })
-    )
+    ).toPromise()
   }
-  login2(model: any) { 
+  login(model: any) { 
     localStorage.setItem('token', 'token');
     localStorage.setItem('username', model.username);
     localStorage.setItem('admin', 'true');
@@ -59,7 +60,7 @@ export class AuthService {
   }
 
   reset(model: any){
-    return this.http.post(this.authUrl2, model).pipe(
+    return this.http.post(this.authUrl + "account", model).pipe(
       map((response: any) => {
         if (response.status == 200) {
           //localStorage.removeItem('username');  //Peut remplacer par un clean
@@ -70,7 +71,7 @@ export class AuthService {
           console.log(response.message);
         }
       })
-    )
+    ).toPromise()
   }
 
   reset2(model: any){
@@ -83,7 +84,7 @@ export class AuthService {
 
   delete(){
     const body = { 'username': localStorage.getItem('username') };
-    return this.http.post(this.authUrl3, body, {withCredentials: true}).pipe(
+    return this.http.post(this.authUrl + "accountDelete", body, {withCredentials: true}).pipe(
       map((response: any) => {
         //console.log(response)
         if (response.status == 200) {
@@ -95,11 +96,11 @@ export class AuthService {
           console.log(response.message);
         }
       })
-    )
+    ).toPromise()
   }
 
   delete2(){
-    console.log('Nous supprimons le compte: ' + localStorage.getItem('username'))
+    //console.log('Nous supprimons le compte: ' + localStorage.getItem('username'))
     //localStorage.removeItem('username');  //Peut remplacer par un clean
     //localStorage.removeItem('admin');
     localStorage.clear();
@@ -108,7 +109,7 @@ export class AuthService {
   }
 
   update(model: any){
-    return this.http.post(this.authUrl2, model, {withCredentials: true}).pipe(
+    return this.http.post(this.authUrl + "account", model, {withCredentials: true}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/home']);
@@ -116,7 +117,7 @@ export class AuthService {
           console.log(response.message);
         }
       })
-    )
+    ).toPromise()
   }
 
   update2(model: any){
@@ -125,7 +126,7 @@ export class AuthService {
   }
 
   create(model: any){
-    return this.http.put(this.authUrl2 + "/" + model.username, model, {withCredentials: true}).pipe(
+    return this.http.put(this.authUrl+ "account" + "/" + model.username, model, {withCredentials: true}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/home']);
@@ -133,7 +134,7 @@ export class AuthService {
           console.log(response.message);
         }
       })
-    )
+    ).toPromise()
   }
 
   create2(model: any){
@@ -142,7 +143,7 @@ export class AuthService {
   }
 
   suggestion(model: any){
-    return this.http.post(this.authUrl5, model, {withCredentials: true}).pipe(
+    return this.http.post(this.authUrl + "suggestion", model, {withCredentials: true}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/home']);
@@ -150,7 +151,7 @@ export class AuthService {
           console.log(response.message);
         }
       })
-    )
+    ).toPromise()
   }
 
   suggestion2(model: any){
@@ -159,8 +160,8 @@ export class AuthService {
     return of(true);
   }
 
-  getSuggestion(){
-    return this.http.post(this.authUrl6,{}, {withCredentials: true}).pipe(
+  getSuggestion2(){
+    return this.http.post(this.authUrl + "suggestions",{}, {withCredentials: true}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
@@ -172,7 +173,7 @@ export class AuthService {
     )
   }
 
-  getSuggestion2(){
+  getSuggestion(){
     return [
         {
           "username":"moi",
@@ -182,8 +183,8 @@ export class AuthService {
     ]
   }
 
-  getUsers(){
-    return this.http.get(this.authUrl7, {withCredentials: true}).pipe(
+  getUsers2(){
+    return this.http.get(this.authUrl + "accounts", {withCredentials: true}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
@@ -195,7 +196,7 @@ export class AuthService {
     )
   }
 
-  getUsers2(){
+  getUsers(){
     return [
         {
           "username":"moi",
@@ -207,7 +208,7 @@ export class AuthService {
 
   deleteUser(id:any){
     const body = { 'username': id };
-    return this.http.post(this.authUrl3, body, {withCredentials: true}).pipe(
+    return this.http.post(this.authUrl + "accountDelete", body, {withCredentials: true}).pipe(
       map((response: any) => {
         //console.log(response)
         if (response.status == 200) {
