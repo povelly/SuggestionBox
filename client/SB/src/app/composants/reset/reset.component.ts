@@ -24,7 +24,7 @@ export class ResetComponent implements OnInit {
     this.myForm.valueChanges.subscribe(console.log)
   }
 
-  onSubmit2(f2: FormGroup){
+  onSubmit2(f2: FormGroup):void{
     const loginObserver = {
       next: x => console.log('reception http'),
       error: err => console.log(err)

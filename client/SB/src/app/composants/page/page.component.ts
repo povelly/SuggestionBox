@@ -12,7 +12,7 @@ export class PageComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) { }
 
-  cond = localStorage.getItem('admin')=='true';
+  cond = sessionStorage.getItem('admin')=='true';
   myForm: FormGroup;
 
 //crer un nouvel objet 
@@ -36,8 +36,8 @@ export class PageComponent implements OnInit {
   }
 
   cancel():void{
-    localStorage.clear()
-    //console.log(localStorage)
+    sessionStorage.clear()
+    //console.log(sessionStorage)
     this.authService.logout();
     this.router.navigate(['/login']);
   }
@@ -48,7 +48,7 @@ export class PageComponent implements OnInit {
     error: err => console.log(err)
     };
     if(f.value.anonymous == false){
-      f.value.author = localStorage.getItem("username");
+      f.value.author = sessionStorage.getItem("username");
     }
     //console.log(f.value);
     this.authService.suggestion(f.value).then(/*loginObserver*/);

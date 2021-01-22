@@ -54,25 +54,25 @@ export class AdminComponent implements OnInit {
     
   }
 
-  boutonCreation(){
+  boutonCreation():void{
     this.modeCreation = true
     this.modeSupp = false
     this.modeSondage = false
   }
 
-  boutonSupp(){
+  boutonSupp():void{
     this.modeCreation = false
     this.modeSupp = true
     this.modeSondage = false
   }
 
-  boutonSondages(){
+  boutonSondages():void{
     this.modeCreation = false
     this.modeSupp = false
     this.modeSondage = true
   }
 
-  creation(f: FormGroup){
+  creation(f: FormGroup):void{
     const loginObserver = {
     next: x => console.log('reception http'),
     error: err => console.log(err)
@@ -81,7 +81,7 @@ export class AdminComponent implements OnInit {
     this.authService.create(f.value).then(/*loginObserver*/);
   }
 
-  suppUser(id:any){
+  suppUser(id:any):void{
     const loginObserver = {
       next: x => console.log('reception http'),
       error: err => console.log(err)
@@ -90,7 +90,7 @@ export class AdminComponent implements OnInit {
       this.authService.deleteUser(id).subscribe(loginObserver);
   }
 
-  clicSurBouton(){
+  clicSurBouton():void{
     const loginObserver = {
       next: x => console.log('reception http'),
       error: err => console.log(err)
@@ -98,7 +98,7 @@ export class AdminComponent implements OnInit {
     this.authService.delete().then(/*loginObserver*/);
   }
 
-  cancel(){
+  cancel():void{
     localStorage.clear()
     //console.log(localStorage)
     this.authService.logout();

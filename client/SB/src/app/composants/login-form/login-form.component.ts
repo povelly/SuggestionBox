@@ -29,15 +29,13 @@ export class LoginFormComponent implements OnInit {
 
   }
 
-  onSubmit2(f2: FormGroup){
+  onSubmit2(f2: FormGroup):void{
     const loginObserver = {
       next: x => console.log('reception http'),
       error: err => console.log(err)
     };
     this.authService.login(f2.value).subscribe(loginObserver);
     //this.authService.login(f2.value).then();
-
-
   }
 
   /*onSubmit(f: NgForm) {

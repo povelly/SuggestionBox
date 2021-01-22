@@ -35,19 +35,19 @@ export class ParametersComponent implements OnInit {
     //this.myForm.valueChanges.subscribe(console.log)
   }
 
-  checkPasswords(group: FormGroup) { // here we have the 'passwords' group
+  checkPasswords(group: FormGroup):{ notSame: boolean }{ // here we have the 'passwords' group
   let pass = group.get('newPassword').value;
   let newPassword2 = group.get('newPassword2').value;
 
   return pass === newPassword2 ? null : { notSame: true }     
 }
 
-  onSubmit(f: FormGroup){
+  onSubmit(f: FormGroup):void{
     const loginObserver = {
       next: x => console.log('reception http'),
       error: err => console.log(err)
     };
-    f.value.username = localStorage.getItem("username");
+    f.value.username = sessionStorage.getItem("username");
     this.authService.update(f.value).then(/*loginObserver*/);
   }
 }

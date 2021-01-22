@@ -22,7 +22,7 @@ export class AuthService {
   public currentUser: Observable<any>;
 
   constructor(private http: HttpClient,private router: Router) { 
-    this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('user')));
+    this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(sessionStorage.getItem('user')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
@@ -31,14 +31,14 @@ export class AuthService {
   }
 
   login2(model: any) {
-    return this.http.post(this.authUrl + "safetylineConnexion", model, {withCredentials: true}).pipe(
+    return this.http.post(this.authUrl + "safetylineConnexion", model).pipe(
       map((response: any) => {
         const user = response;
         if (user.status == 200) {
-          localStorage.setItem('user', JSON.stringify(user));
-          //localStorage.setItem('token', user.token);
-          localStorage.setItem('username', user.username);
-          localStorage.setItem('admin', user.type);
+          sessionStorage.setItem('user', JSON.stringify(user));
+          //sessionStorage.setItem('token', user.token);
+          sessionStorage.setItem('username', user.username);
+          sessionStorage.setItem('admin', user.type);
           this.currentUserSubject.next(user);
           this.router.navigate(['/home']);
         } else {
@@ -48,9 +48,9 @@ export class AuthService {
     ).toPromise()
   }
   login(model: any) { 
-    localStorage.setItem('token', 'token');
-    localStorage.setItem('username', model.username);
-    localStorage.setItem('admin', 'true');
+    sessionStorage.setItem('token', 'token');
+    sessionStorage.setItem('username', model.username);
+    sessionStorage.setItem('admin', 'true');
     this.router.navigate(['/home']);
     return of(true);
   }
@@ -63,9 +63,10 @@ export class AuthService {
     return this.http.post(this.authUrl + "account", model).pipe(
       map((response: any) => {
         if (response.status == 200) {
-          //localStorage.removeItem('username');  //Peut remplacer par un clean
-          //localStorage.removeItem('admin');
-          localStorage.clear();
+
+          //sessionStorage.removeItem('username');  //Peut remplacer par un clean
+          //sessionStorage.removeItem('admin');
+          sessionStorage.clear();
           this.router.navigate(['/login']);
         } else {
           console.log(response.message);
@@ -75,22 +76,22 @@ export class AuthService {
   }
 
   reset2(model: any){
-    //localStorage.removeItem('username');  //Peut remplacer par un clean
-    //localStorage.removeItem('admin');
-    localStorage.clear();
+    //sessionStorage.removeItem('username');  //Peut remplacer par un clean
+    //sessionStorage.removeItem('admin');
+    sessionStorage.clear();
     this.router.navigate(['/login']);
     return of(true);
   }
 
   delete(){
-    const body = { 'username': localStorage.getItem('username') };
-    return this.http.post(this.authUrl + "accountDelete", body, {withCredentials: true}).pipe(
+    const body = { 'username': sessionStorage.getItem('username') };
+    return this.http.post(this.authUrl + "accountDelete", body).pipe(
       map((response: any) => {
         //console.log(response)
         if (response.status == 200) {
-          //localStorage.removeItem('username');  //Peut remplacer par un clean
-          //localStorage.removeItem('admin');
-          localStorage.clear();
+          //sessionStorage.removeItem('username');  //Peut remplacer par un clean
+          //sessionStorage.removeItem('admin');
+          sessionStorage.clear();
           this.router.navigate(['/login']);
         } else {
           console.log(response.message);
@@ -100,16 +101,16 @@ export class AuthService {
   }
 
   delete2(){
-    //console.log('Nous supprimons le compte: ' + localStorage.getItem('username'))
-    //localStorage.removeItem('username');  //Peut remplacer par un clean
-    //localStorage.removeItem('admin');
-    localStorage.clear();
+    //console.log('Nous supprimons le compte: ' + sessionStorage.getItem('username'))
+    //sessionStorage.removeItem('username');  //Peut remplacer par un clean
+    //sessionStorage.removeItem('admin');
+    sessionStorage.clear();
     this.router.navigate(['/login']);
     return of(true);
   }
 
   update(model: any){
-    return this.http.post(this.authUrl + "account", model, {withCredentials: true}).pipe(
+    return this.http.post(this.authUrl + "account", model).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/home']);
@@ -126,7 +127,7 @@ export class AuthService {
   }
 
   create(model: any){
-    return this.http.put(this.authUrl+ "account" + "/" + model.username, model, {withCredentials: true}).pipe(
+    return this.http.put(this.authUrl+ "account" + "/" + model.username, model).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/home']);
@@ -143,7 +144,7 @@ export class AuthService {
   }
 
   suggestion(model: any){
-    return this.http.post(this.authUrl + "suggestion", model, {withCredentials: true}).pipe(
+    return this.http.post(this.authUrl + "suggestion", model).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/home']);
@@ -161,7 +162,7 @@ export class AuthService {
   }
 
   getSuggestion2(){
-    return this.http.post(this.authUrl + "suggestions",{}, {withCredentials: true}).pipe(
+    return this.http.post(this.authUrl + "suggestions",{}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
@@ -184,7 +185,7 @@ export class AuthService {
   }
 
   getUsers2(){
-    return this.http.get(this.authUrl + "accounts", {withCredentials: true}).pipe(
+    return this.http.get(this.authUrl + "accounts").pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
@@ -208,7 +209,7 @@ export class AuthService {
 
   deleteUser(id:any){
     const body = { 'username': id };
-    return this.http.post(this.authUrl + "accountDelete", body, {withCredentials: true}).pipe(
+    return this.http.post(this.authUrl + "accountDelete", body).pipe(
       map((response: any) => {
         //console.log(response)
         if (response.status == 200) {
