@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 //import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { logMod } from 'src/app/shared/models/logMod-model';
 
 @Component({
   selector: 'app-login-form',
@@ -12,6 +13,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginFormComponent implements OnInit {
 
   myForm: FormGroup;
+  logmod1: logMod; 
 
   constructor(private authService: AuthService, private fb: FormBuilder) { }
 
@@ -34,8 +36,9 @@ export class LoginFormComponent implements OnInit {
       next: x => console.log('reception http'),
       error: err => console.log(err)
     };
-    this.authService.login(f2.value).subscribe(loginObserver);
-    //this.authService.login(f2.value).then();
+    this.logmod1 = new logMod(f2.value.username, f2.value.password)
+    this.authService.login(this.logmod1).subscribe(loginObserver);
+    //this.authService.login2(this.logmod1).then();
   }
 
   /*onSubmit(f: NgForm) {

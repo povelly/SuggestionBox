@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { upMod } from 'src/app/shared/models/upMod-model';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class ParametersComponent implements OnInit {
 
   myForm: FormGroup;
+  upmod1: upMod;
 
   constructor(private authService: AuthService, private fb: FormBuilder) { }
 
@@ -48,6 +50,7 @@ export class ParametersComponent implements OnInit {
       error: err => console.log(err)
     };
     f.value.username = sessionStorage.getItem("username");
-    this.authService.update(f.value).then(/*loginObserver*/);
+    this.upmod1 = new upMod(f.value.oldPassword, f.value.newPassword, f.value.newPassword2)
+    this.authService.update(this.upmod1).then(/*loginObserver*/);
   }
 }

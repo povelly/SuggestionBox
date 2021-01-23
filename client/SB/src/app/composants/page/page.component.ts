@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { FormGroup, NgForm, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { addSuggMod } from 'src/app/shared/models/addSuggMod-model';
 
 @Component({
   selector: 'app-page',
@@ -9,6 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./page.component.css']
 })
 export class PageComponent implements OnInit {
+
+  addsuggmod1: addSuggMod;
 
   constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) { }
 
@@ -50,7 +53,7 @@ export class PageComponent implements OnInit {
     if(f.value.anonymous == false){
       f.value.author = sessionStorage.getItem("username");
     }
-    //console.log(f.value);
+    this.addsuggmod1 = new addSuggMod(f.value.content, f.value.annonymous, f.value.author)
     this.authService.suggestion(f.value).then(/*loginObserver*/);
   }
 

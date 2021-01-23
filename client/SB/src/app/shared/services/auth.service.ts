@@ -3,6 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { logMod } from '../models/logMod-model';
+import { addUsrMod } from '../models/addUsrMod-model';
+import { addSuggMod } from '../models/addSuggMod-model';
+import { upMod } from '../models/upMod-model';
+import { resMod } from '../models/resMod-model';
 //import { FormGroup } from '@angular/forms';
 
 
@@ -30,7 +35,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login2(model: any) {
+  login2(model:logMod ) {
     return this.http.post(this.authUrl + "safetylineConnexion", model).pipe(
       map((response: any) => {
         const user = response;
@@ -47,7 +52,7 @@ export class AuthService {
       })
     ).toPromise()
   }
-  login(model: any) { 
+  login(model: logMod) { 
     sessionStorage.setItem('token', 'token');
     sessionStorage.setItem('username', model.username);
     sessionStorage.setItem('admin', 'true');
@@ -59,7 +64,7 @@ export class AuthService {
     this.currentUserSubject.next(null);
   }
 
-  reset(model: any){
+  reset(model: resMod){
     return this.http.post(this.authUrl + "account", model).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -75,7 +80,7 @@ export class AuthService {
     ).toPromise()
   }
 
-  reset2(model: any){
+  reset2(model: resMod){
     //sessionStorage.removeItem('username');  //Peut remplacer par un clean
     //sessionStorage.removeItem('admin');
     sessionStorage.clear();
@@ -109,7 +114,7 @@ export class AuthService {
     return of(true);
   }
 
-  update(model: any){
+  update(model: upMod){
     return this.http.post(this.authUrl + "account", model).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -121,12 +126,12 @@ export class AuthService {
     ).toPromise()
   }
 
-  update2(model: any){
+  update2(model: upMod){
     this.router.navigate(['/home']);
     return of(true);
   }
 
-  create(model: any){
+  create(model: addUsrMod){
     return this.http.put(this.authUrl+ "account" + "/" + model.username, model).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -138,12 +143,12 @@ export class AuthService {
     ).toPromise()
   }
 
-  create2(model: any){
+  create2(model: addUsrMod){
     this.router.navigate(['/home']);
     return of(true);
   }
 
-  suggestion(model: any){
+  suggestion(model: addSuggMod){
     return this.http.post(this.authUrl + "suggestion", model).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -155,9 +160,9 @@ export class AuthService {
     ).toPromise()
   }
 
-  suggestion2(model: any){
+  suggestion2(model: addSuggMod){
     this.router.navigate(['/home']);
-    console.log(model.text);
+    //console.log(model.text);
     return of(true);
   }
 
@@ -207,7 +212,7 @@ export class AuthService {
     ]
   }
 
-  deleteUser(id:any){
+  deleteUser(id:string){
     const body = { 'username': id };
     return this.http.post(this.authUrl + "accountDelete", body).pipe(
       map((response: any) => {
@@ -218,7 +223,7 @@ export class AuthService {
           console.log(response.message);
         }
       })
-    )
+    ).toPromise()
   }
 
 }

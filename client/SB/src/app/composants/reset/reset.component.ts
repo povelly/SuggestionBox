@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, NgForm, FormBuilder, Validators } from '@angular/forms';
+import { resMod } from 'src/app/shared/models/resMod-model';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -9,6 +10,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class ResetComponent implements OnInit {
 
+  resmod1:resMod;
   myForm: FormGroup;
 
   constructor(private authService: AuthService, private fb: FormBuilder) { }
@@ -29,7 +31,8 @@ export class ResetComponent implements OnInit {
       next: x => console.log('reception http'),
       error: err => console.log(err)
     };
-    this.authService.reset(f2.value).then(/*loginObserver*/);
+    this.resmod1 = new resMod(f2.value.username)
+    this.authService.reset(this.resmod1).then(/*loginObserver*/);
 
   }
 
