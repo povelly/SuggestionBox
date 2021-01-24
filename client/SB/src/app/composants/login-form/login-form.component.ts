@@ -37,8 +37,8 @@ export class LoginFormComponent implements OnInit {
       error: err => console.log(err)
     };
     this.logmod1 = new logMod(f2.value.username, f2.value.password)
-    this.authService.login(this.logmod1).subscribe(loginObserver);
-    //this.authService.login2(this.logmod1).then();
+    //this.authService.login(this.logmod1).subscribe(loginObserver);
+    this.authService.login(this.logmod1).then();
   }
 
   /*onSubmit(f: NgForm) {

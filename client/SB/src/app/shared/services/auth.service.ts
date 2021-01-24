@@ -35,16 +35,16 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login2(model:logMod ) {
+  login(model:logMod) {
     return this.http.post(this.authUrl + "safetylineConnexion", model).pipe(
       map((response: any) => {
         const user = response;
         if (user.status == 200) {
-          sessionStorage.setItem('user', JSON.stringify(user));
+          //sessionStorage.setItem('user', JSON.stringify(user));
           //sessionStorage.setItem('token', user.token);
           sessionStorage.setItem('username', user.username);
-          sessionStorage.setItem('admin', user.type);
-          this.currentUserSubject.next(user);
+          sessionStorage.setItem('admin', user.admin);
+          //this.currentUserSubject.next(user);
           this.router.navigate(['/home']);
         } else {
           console.log(user.message);
@@ -52,7 +52,8 @@ export class AuthService {
       })
     ).toPromise()
   }
-  login(model: logMod) { 
+
+  login2(model: logMod) { 
     sessionStorage.setItem('token', 'token');
     sessionStorage.setItem('username', model.username);
     sessionStorage.setItem('admin', 'true');
