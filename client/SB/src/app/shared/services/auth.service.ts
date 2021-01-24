@@ -40,6 +40,7 @@ export class AuthService {
       map((response: any) => {
         const user = response;
         if (user.status == 200) {
+          console.log("res.status = ok")
           //sessionStorage.setItem('user', JSON.stringify(user));
           //sessionStorage.setItem('token', user.token);
           sessionStorage.setItem('username', user.username);
@@ -47,7 +48,8 @@ export class AuthService {
           //this.currentUserSubject.next(user);
           this.router.navigate(['/home']);
         } else {
-          console.log(user.message);
+          console.log("res.status = ko")
+          //console.log(user.message);
         }
       })
     ).toPromise()
