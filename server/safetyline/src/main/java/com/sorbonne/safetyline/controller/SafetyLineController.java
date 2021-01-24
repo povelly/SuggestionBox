@@ -58,18 +58,25 @@ public class SafetyLineController {
      */
     @PostMapping("/safetylineConnexion")
     @ResponseBody
-    public ResponseEntity<String> safetylineConnexion(@RequestBody UserDTO user,  HttpServletRequest request)
+    public ResponseEntity<UserDTO> safetylineConnexion(@RequestBody UserDTO user,  HttpServletRequest request)
     {
-		String res=null;
-    	List<User> list = userService.authentifyUser(user.getUsername(), PasswordUtil.sha256(user.getPassword()));
-    	if (!list.isEmpty())
+		//String res=null;
+    	List<User> users = userService.authentifyUser(user.getUsername(), PasswordUtil.sha256(user.getPassword()));
+    	UserDTO res = new UserDTO();
+    	if (!users.isEmpty())
     	{
+
             HttpSession session = request.getSession();
             session.setMaxInactiveInterval(100);
             LOGGER.info("Authentified user");
+            User user1 = users.get(0);
+			res.setAdmin(user1.getAdmin());
+			res.setFirstName(user1.getFirstName());
+			res.setLastName(user1.getFirstName());
+			res.setUsername(user1.getUserId());
     	} else {
-    		res ="User not found";
-    		LOGGER.error(res);
+    		//res ="User not found";
+    		LOGGER.error(res.toString());
     	}
     	return new ResponseEntity<>(res, HttpStatus.OK);
     }
