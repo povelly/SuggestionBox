@@ -35,12 +35,11 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(model:logMod) {
+  login(model:logMod){
     return this.http.post(this.authUrl + "safetylineConnexion", model, {observe : 'response'}).pipe(
       map((response: any) => {
         const user = response;
         if (user.status == 200) {
-          console.log("res.status = ok")
           //sessionStorage.setItem('user', JSON.stringify(user));
           //sessionStorage.setItem('token', user.token);
           sessionStorage.setItem('username', user.username);
@@ -63,21 +62,18 @@ export class AuthService {
     return of(true);
   }
 
-  logout(){
-    this.currentUserSubject.next(null);
-  }
+  /*logout(){
+    //this.currentUserSubject.next(null);
+  }*/
 
   reset(model: resMod){
     return this.http.post(this.authUrl + "account", model).pipe(
-      map((response: any) => {
-        if (response.status == 200) {
-
-          //sessionStorage.removeItem('username');  //Peut remplacer par un clean
-          //sessionStorage.removeItem('admin');
+      map((response: string) => {
+        if (response == "") {
           sessionStorage.clear();
           this.router.navigate(['/login']);
         } else {
-          console.log(response.message);
+          console.log(response);
         }
       })
     ).toPromise()
@@ -94,15 +90,15 @@ export class AuthService {
   delete(){
     const body = { 'username': sessionStorage.getItem('username') };
     return this.http.post(this.authUrl + "accountDelete", body).pipe(
-      map((response: any) => {
+      map((response: string) => {
         //console.log(response)
-        if (response.status == 200) {
+        if (response == "") {
           //sessionStorage.removeItem('username');  //Peut remplacer par un clean
           //sessionStorage.removeItem('admin');
           sessionStorage.clear();
           this.router.navigate(['/login']);
         } else {
-          console.log(response.message);
+          console.log(response);
         }
       })
     ).toPromise()
@@ -119,11 +115,11 @@ export class AuthService {
 
   update(model: upMod){
     return this.http.post(this.authUrl + "account", model).pipe(
-      map((response: any) => {
-        if (response.status == 200) {
+      map((response: string) => {
+        if (response == "") {
           this.router.navigate(['/home']);
         } else {
-          console.log(response.message);
+          console.log(response);
         }
       })
     ).toPromise()
@@ -136,11 +132,11 @@ export class AuthService {
 
   create(model: addUsrMod){
     return this.http.put(this.authUrl+ "account" + "/" + model.username, model).pipe(
-      map((response: any) => {
-        if (response.status == 200) {
+      map((response: string) => {
+        if (response == "") {
           this.router.navigate(['/home']);
         } else {
-          console.log(response.message);
+          console.log(response);
         }
       })
     ).toPromise()
@@ -153,11 +149,11 @@ export class AuthService {
 
   suggestion(model: addSuggMod){
     return this.http.post(this.authUrl + "suggestion", model).pipe(
-      map((response: any) => {
-        if (response.status == 200) {
+      map((response: string) => {
+        if (response == "") {
           this.router.navigate(['/home']);
         } else {
-          console.log(response.message);
+          console.log(response);
         }
       })
     ).toPromise()
@@ -170,7 +166,7 @@ export class AuthService {
   }
 
   getSuggestion2(){
-    return this.http.post(this.authUrl + "suggestions",{}).pipe(
+    return this.http.post(this.authUrl + "suggestions",{observe : 'response'}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
@@ -193,7 +189,7 @@ export class AuthService {
   }
 
   getUsers2(){
-    return this.http.get(this.authUrl + "accounts").pipe(
+    return this.http.get(this.authUrl + "accounts",{observe : 'response'}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
@@ -218,12 +214,12 @@ export class AuthService {
   deleteUser(id:string){
     const body = { 'username': id };
     return this.http.post(this.authUrl + "accountDelete", body).pipe(
-      map((response: any) => {
+      map((response: string) => {
         //console.log(response)
-        if (response.status == 200) {
+        if (response == "") {
           this.router.navigate(['/admin']);
         } else {
-          console.log(response.message);
+          console.log(response);
         }
       })
     ).toPromise()

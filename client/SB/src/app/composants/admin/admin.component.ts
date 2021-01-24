@@ -104,7 +104,7 @@ export class AdminComponent implements OnInit {
   cancel():void{
     sessionStorage.clear()
     //console.log(localStorage)
-    this.authService.logout();
+    //this.authService.logout();
     this.router.navigate(['/login']);
   }
 
