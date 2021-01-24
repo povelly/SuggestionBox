@@ -16,7 +16,7 @@ export class InterceptorService implements HttpInterceptor{
     //let currentUser = this.authService.currentUserValue;
 //    if (currentUser && currentUser.token) {
       request = request.clone({
-          withCredentials : true
+          withCredentials : true   
       });
 
     return next.handle(request);

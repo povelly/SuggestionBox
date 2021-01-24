@@ -36,7 +36,7 @@ export class AuthService {
   }
 
   login(model:logMod) {
-    return this.http.post(this.authUrl + "safetylineConnexion", model).pipe(
+    return this.http.post(this.authUrl + "safetylineConnexion", model, {observe : 'response'}).pipe(
       map((response: any) => {
         const user = response;
         if (user.status == 200) {
