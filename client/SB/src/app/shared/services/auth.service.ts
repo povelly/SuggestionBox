@@ -115,7 +115,7 @@ export class AuthService {
   }
 
   update(model: upMod){
-    return this.http.post(this.authUrl + "account", model).pipe(
+    return this.http.post(this.authUrl + "account", model, {withCredentials : true}).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/home']);
