@@ -14,11 +14,12 @@ export class InterceptorService implements HttpInterceptor{
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // add authorization header with jwt token if available
     //let currentUser = this.authService.currentUserValue;
-//    if (currentUser && currentUser.token) {
+    if (false) {
       request = request.clone({
           //withCredentials : true   
       });
+    }
       console.log("Intercepted")
     return next.handle(request);
-}
+  }
 }
