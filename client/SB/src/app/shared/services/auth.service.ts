@@ -46,6 +46,7 @@ export class AuthService {
           sessionStorage.setItem('username', user.username);
           sessionStorage.setItem('admin', user.admin);
           //this.currentUserSubject.next(user);
+          console.log(sessionStorage.getItem("username"))
           this.router.navigate(['/home']);
         } else {
           console.log("res.status = ko")
