@@ -43,9 +43,10 @@ export class AuthService {
         if (user.status == 200) {
           //sessionStorage.setItem('user', JSON.stringify(user));
           //sessionStorage.setItem('token', user.token);
-          sessionStorage.setItem('username', user.username);
-          sessionStorage.setItem('admin', user.admin);
+          sessionStorage.setItem('username', user.body.username);
+          sessionStorage.setItem('admin', user.body.admin);
           //this.currentUserSubject.next(user);
+          //console.log(localStorage.getItem("username"))
           this.router.navigate(['/home']);
         } else {
           console.log("res.status = ko")
@@ -115,7 +116,7 @@ export class AuthService {
   }
 
   update(model: upMod){
-    return this.http.post(this.authUrl + "account", model, {withCredentials:true}).pipe(
+    return this.http.post(this.authUrl + "account", model).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/home']);
