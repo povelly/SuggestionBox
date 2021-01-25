@@ -93,7 +93,7 @@ export class AuthService {
     return this.http.post(this.authUrl + "accountDelete", body).pipe(
       map((response: string) => {
         //console.log(response)
-        if (response == "") {
+        if (response == null) {
           //sessionStorage.removeItem('username');  //Peut remplacer par un clean
           //sessionStorage.removeItem('admin');
           sessionStorage.clear();
@@ -117,7 +117,7 @@ export class AuthService {
   update(model: upMod){
     return this.http.post(this.authUrl + "account", model).pipe(
       map((response: string) => {
-        if (response == "") {
+        if (response == null) {
           this.router.navigate(['/home']);
         } else {
           console.log(response);
@@ -134,7 +134,7 @@ export class AuthService {
   create(model: addUsrMod){
     return this.http.put(this.authUrl+ "account" + "/" + model.username, model).pipe(
       map((response: string) => {
-        if (response == "") {
+        if (response == null) {
           this.router.navigate(['/home']);
         } else {
           console.log(response);
@@ -151,7 +151,7 @@ export class AuthService {
   suggestion(model: addSuggMod){
     return this.http.post(this.authUrl + "suggestion", model).pipe(
       map((response: string) => {
-        if (response == "") {
+        if (response == null) {
           this.router.navigate(['/home']);
         } else {
           console.log(response);
