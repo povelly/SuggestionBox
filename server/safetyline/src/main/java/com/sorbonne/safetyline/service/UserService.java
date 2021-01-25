@@ -67,7 +67,8 @@ public class UserService {
 				"Bonjour, ci-joint vos identifiants de connexion <br> Identifiant : " + user_id + "<br> Password : "
 						+ password);
     }
-    
+
+    @Transactional
     /**
      * Generates a new password for a User
      */
@@ -88,7 +89,7 @@ public class UserService {
 						+ password);
     }
     
-    
+    @Transactional
     /**
      * Update a  password for a User
      */
