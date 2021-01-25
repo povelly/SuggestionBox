@@ -1,13 +1,13 @@
 export class upMod{
     
+    username: string;
     oldPassword: string;
     newPassword: string;
-    newPassword2: string;
 
-    constructor(oldPassword:string, newPassword: string, newPassword2: string){
+    constructor(username: string, oldPassword:string, newPassword: string){
         this.oldPassword = oldPassword;
         this.newPassword = newPassword;
-        this.newPassword2 = newPassword2;
+        this.username = username;
     }
 
 }
