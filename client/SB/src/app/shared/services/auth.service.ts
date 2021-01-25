@@ -71,9 +71,11 @@ export class AuthService {
     return this.http.post(this.authUrl + "forgetPassword", model).pipe(
       map((response: string) => {
         if (response == "") {
+          console.log("response = vide")
           sessionStorage.clear();
           this.router.navigate(['/login']);
         } else {
+          console.log("response != void")
           console.log(response);
         }
       })
