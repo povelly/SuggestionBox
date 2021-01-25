@@ -8,6 +8,7 @@ import { addUsrMod } from '../models/addUsrMod-model';
 import { addSuggMod } from '../models/addSuggMod-model';
 import { upMod } from '../models/upMod-model';
 import { resMod } from '../models/resMod-model';
+import { promise } from 'protractor';
 //import { FormGroup } from '@angular/forms';
 
 
@@ -35,7 +36,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(model:logMod){
+  login(model:logMod):Promise<void>{
     return this.http.post(this.authUrl + "safetylineConnexion", model, {observe : 'response'}).pipe(
       map((response: any) => {
         const user = response;
@@ -67,7 +68,7 @@ export class AuthService {
   }*/
 
   reset(model: resMod){
-    return this.http.post(this.authUrl + "account", model).pipe(
+    return this.http.post(this.authUrl + "forgetPassword", model).pipe(
       map((response: string) => {
         if (response == "") {
           sessionStorage.clear();
