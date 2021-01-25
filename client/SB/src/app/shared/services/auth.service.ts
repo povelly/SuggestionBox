@@ -70,12 +70,10 @@ export class AuthService {
   reset(model: resMod){
     return this.http.post(this.authUrl + "forgetPassword", model).pipe(
       map((response: string) => {
-        if (response == "") {
-          console.log("response = vide")
+        if (response == null) {
           sessionStorage.clear();
           this.router.navigate(['/login']);
         } else {
-          console.log("response != void")
           console.log(response);
         }
       })
