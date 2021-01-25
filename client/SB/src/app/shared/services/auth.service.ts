@@ -115,7 +115,7 @@ export class AuthService {
   }
 
   update(model: upMod){
-    return this.http.post(this.authUrl + "account", model, {withCredentials:true}).pipe(
+    return this.http.post(this.authUrl + "account", model).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/home']);
@@ -149,7 +149,7 @@ export class AuthService {
   }
 
   suggestion(model: addSuggMod){
-    return this.http.post(this.authUrl + "suggestion", model, {withCredentials:true}).pipe(
+    return this.http.post(this.authUrl + "suggestion", model).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/home']);
