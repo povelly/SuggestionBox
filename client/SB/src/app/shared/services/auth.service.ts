@@ -43,10 +43,10 @@ export class AuthService {
         if (user.status == 200) {
           //sessionStorage.setItem('user', JSON.stringify(user));
           //sessionStorage.setItem('token', user.token);
-          localStorage.setItem('username', user.username);
-          localStorage.setItem('admin', user.admin);
+          sessionStorage.setItem('username', user.body.username);
+          sessionStorage.setItem('admin', user.body.admin);
           //this.currentUserSubject.next(user);
-          console.log(localStorage.getItem("username"))
+          //console.log(localStorage.getItem("username"))
           this.router.navigate(['/home']);
         } else {
           console.log("res.status = ko")
