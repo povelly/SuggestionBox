@@ -18,7 +18,7 @@ export class InterceptorService implements HttpInterceptor{
       request = request.clone({
           withCredentials : true   
       });
-
+      console.log("Intercepted")
     return next.handle(request);
 }
 }

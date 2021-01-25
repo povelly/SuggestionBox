@@ -23,7 +23,7 @@ export class ResetComponent implements OnInit {
       ]]
     });
 
-    this.myForm.valueChanges.subscribe(console.log)
+    //this.myForm.valueChanges.subscribe(console.log)
   }
 
   onSubmit2(f2: FormGroup):void{
