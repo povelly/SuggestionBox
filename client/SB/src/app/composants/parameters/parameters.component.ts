@@ -50,7 +50,7 @@ export class ParametersComponent implements OnInit {
       error: err => console.log(err)
     };
     f.value.username = sessionStorage.getItem("username");
-    this.upmod1 = new upMod(f.value.oldPassword, f.value.newPassword, f.value.newPassword2)
+    this.upmod1 = new upMod(f.value.username, f.value.oldPassword, f.value.newPassword)
     this.authService.update(this.upmod1).then(/*loginObserver*/);
   }
 }
