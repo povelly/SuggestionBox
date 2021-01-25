@@ -122,24 +122,15 @@ public class SafetyLineController {
     {
     	String res = null;
     	try{
-    	    
-    		Optional<User> userFromDB = userService.getUserById(user.getUsername());
-    		if(!userFromDB.isPresent())
-	            throw new UtilisateurInconnuException();
-    		
-    	    if(user.getOldPassword() != null && user.getNewPassword() != null)
-            {
-    	    	userService.updatePassword(user.getUsername(), user.getOldPassword(),
-    	    			user.getNewPassword(), userFromDB.get());
-    	    	LOGGER.info("Password updated");
-            }
-    	    else {
-    	    	// Reinitialisation mot de passe
-    	    	userService.forgottenPassword(user.getUsername(), userFromDB.get());
-    	    	LOGGER.info("password reinitialized");
-            }
+			Optional<User> userFromDB = userService.getUserById(user.getUsername());
+			if (!userFromDB.isPresent())
+				throw new UtilisateurInconnuException();
 
-        } catch (UtilisateurInconnuException e) {
+			userService.updatePassword(user.getUsername(), user.getOldPassword(), user.getNewPassword(),
+					userFromDB.get());
+			LOGGER.info("Password updated");
+
+		} catch (UtilisateurInconnuException e) {
             res = "Unknown user";
             LOGGER.error(res);
 
@@ -151,6 +142,39 @@ public class SafetyLineController {
     	    return new ResponseEntity<>(res, HttpStatus.OK);
         }
     }
+    
+    /**
+     * Updates the account, can be used for passwords for now
+     * @return the HTTP response
+     */
+    @PostMapping("/forgetPassword")
+    @ResponseBody
+    public ResponseEntity<String> forgetPassword(@RequestBody UserDTO user)
+    {
+    	String res = null;
+    	try{
+    		Optional<User> userFromDB = userService.getUserById(user.getUsername());
+			if (!userFromDB.isPresent())
+				throw new UtilisateurInconnuException();
+
+			// Reinitialisation mot de passe
+			userService.forgottenPassword(user.getUsername(), userFromDB.get());
+			LOGGER.info("Password reinitialized");
+
+		} catch (UtilisateurInconnuException e) {
+            res = "Unknown user";
+            LOGGER.error(res);
+
+        } catch(Exception e) {
+    	    res = "error occured in server";
+    	    LOGGER.error(res);
+
+        } finally {
+    	    return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+    }
+    
+    
     
     /**
      * Deletes an account using the email
