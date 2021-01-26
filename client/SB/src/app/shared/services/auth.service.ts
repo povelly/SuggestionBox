@@ -171,9 +171,9 @@ export class AuthService {
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
-          return response;
+          return response.body;
         } else {
-          console.log(response.message);
+          console.log(response);
         }
       })
     )
@@ -194,9 +194,9 @@ export class AuthService {
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
-          return response;
+          return response.body;
         } else {
-          console.log(response.message);
+          console.log(response);
         }
       })
     )
