@@ -78,6 +78,7 @@ public class SafetyLineController {
     	} else {
     		//res ="User not found";
     		LOGGER.error(res.toString());
+    		return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
     	}
     	return new ResponseEntity<>(res, HttpStatus.OK);
     }
