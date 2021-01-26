@@ -55,6 +55,7 @@ export class PageComponent implements OnInit {
     }
     this.addsuggmod1 = new addSuggMod(f.value.content, f.value.annonymous, f.value.author)
     this.authService.suggestion(this.addsuggmod1).then(/*loginObserver*/);
+    //this.authService.suggestion(this.addsuggmod1).subscribe(loginObserver);
   }
 
 }

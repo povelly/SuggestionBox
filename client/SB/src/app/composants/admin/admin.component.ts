@@ -47,10 +47,11 @@ export class AdminComponent implements OnInit {
       admin: [false]
     });
 
-    //this.authService.getSuggestion().subscribe((response) => this.suggestions = response.suggestions)
-    //this.authService.getUsers().subscribe((response) => this.users = response.users)
-    this.suggestions = this.authService.getSuggestion();
-    this.users = this.authService.getUsers();
+    this.authService.getSuggestion().subscribe((response) => this.suggestions = response)
+    this.authService.getUsers().subscribe((response) => this.users = response)
+    console.log("this.suggestion = " + this.suggestions)
+    //this.suggestions = this.authService.getSuggestion();
+    //this.users = this.authService.getUsers();
     
     //this.myForm.valueChanges.subscribe(console.log)
 

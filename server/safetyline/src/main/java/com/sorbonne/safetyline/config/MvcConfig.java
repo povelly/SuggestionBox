@@ -11,8 +11,9 @@ public class MvcConfig implements WebMvcConfigurer
 {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowCredentials(true);
+		registry.addMapping("/**").allowedOrigins("http://localhost:4200").allowCredentials(true);
 	}
+	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry){
 		registry.addInterceptor(new SessionInterceptor())

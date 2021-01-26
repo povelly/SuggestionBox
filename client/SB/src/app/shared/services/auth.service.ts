@@ -42,10 +42,9 @@ export class AuthService {
         const user = response;
         if (user.status == 200) {
           //sessionStorage.setItem('user', JSON.stringify(user));
-          //sessionStorage.setItem('token', user.token);
           sessionStorage.setItem('username', user.body.username);
           sessionStorage.setItem('admin', user.body.admin);
-          //this.currentUserSubject.next(user);
+          this.currentUserSubject.next(user);
           //console.log(localStorage.getItem("username"))
           this.router.navigate(['/home']);
         } else {
@@ -167,20 +166,20 @@ export class AuthService {
     return of(true);
   }
 
-  getSuggestion2(){
-    return this.http.post(this.authUrl + "suggestions",{observe : 'response'}).pipe(
+  getSuggestion(){
+    return this.http.post(this.authUrl + "suggestions",{},{observe : 'response'}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
-          return response;
+          return response.body;
         } else {
-          console.log(response.message);
+          console.log(response);
         }
       })
     )
   }
 
-  getSuggestion(){
+  getSuggestion2(){
     return [
         {
           "username":"moi",
@@ -190,20 +189,20 @@ export class AuthService {
     ]
   }
 
-  getUsers2(){
+  getUsers(){
     return this.http.get(this.authUrl + "accounts",{observe : 'response'}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
-          return response;
+          return response.body;
         } else {
-          console.log(response.message);
+          console.log(response);
         }
       })
     )
   }
 
-  getUsers(){
+  getUsers2(){
     return [
         {
           "username":"moi",
