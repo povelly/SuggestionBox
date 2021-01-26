@@ -41,7 +41,7 @@ export class AuthService {
       map((response: any) => {
         const user = response;
         if (user.status == 200) {
-          //sessionStorage.setItem('user', JSON.stringify(user));
+          sessionStorage.setItem('user', JSON.stringify(user));
           //sessionStorage.setItem('token', user.token);
           sessionStorage.setItem('username', user.body.username);
           sessionStorage.setItem('admin', user.body.admin);
