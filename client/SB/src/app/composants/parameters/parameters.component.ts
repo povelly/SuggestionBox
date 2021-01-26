@@ -51,7 +51,7 @@ export class ParametersComponent implements OnInit {
     };
     f.value.username = sessionStorage.getItem("username");
     this.upmod1 = new upMod(f.value.username, f.value.oldPassword, f.value.newPassword)
-    //this.authService.update(this.upmod1).then(/*loginObserver*/);
-    this.authService.update(this.upmod1).subscribe(loginObserver);
+    this.authService.update(this.upmod1).then(/*loginObserver*/);
+    //this.authService.update(this.upmod1).subscribe(loginObserver);
   }
 }

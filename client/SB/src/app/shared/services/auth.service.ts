@@ -41,7 +41,7 @@ export class AuthService {
       map((response: any) => {
         const user = response;
         if (user.status == 200) {
-          sessionStorage.setItem('user', JSON.stringify(user));
+          //sessionStorage.setItem('user', JSON.stringify(user));
           sessionStorage.setItem('username', user.body.username);
           sessionStorage.setItem('admin', user.body.admin);
           this.currentUserSubject.next(user);
@@ -115,7 +115,7 @@ export class AuthService {
   }
 
   update(model: upMod){
-    return this.http.post(this.authUrl + "account", model, {withCredentials:true}).pipe(
+    return this.http.post(this.authUrl + "account", model).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/home']);
@@ -123,7 +123,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    )/*.toPromise()*/
+    ).toPromise()
   }
 
   update2(model: upMod){
@@ -149,7 +149,7 @@ export class AuthService {
   }
 
   suggestion(model: addSuggMod){
-    return this.http.post(this.authUrl + "suggestion", model, {withCredentials:true}).pipe(
+    return this.http.post(this.authUrl + "suggestion", model).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/home']);
@@ -157,7 +157,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    )/*.toPromise()*/
+    ).toPromise()
   }
 
   suggestion2(model: addSuggMod){
