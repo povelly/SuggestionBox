@@ -14,6 +14,7 @@ import com.sorbonne.safetyline.dto.StrawpollDTO;
 import com.sorbonne.safetyline.exception.EmptySuggestionException;
 import com.sorbonne.safetyline.exception.InvalidFormException;
 import com.sorbonne.safetyline.exception.LastAdminException;
+import com.sorbonne.safetyline.exception.SessionExpired;
 import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
 import com.sorbonne.safetyline.exception.UtilisateurInconnuException;
 import com.sorbonne.safetyline.model.User;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -65,9 +67,8 @@ public class SafetyLineController {
     	UserDTO res = new UserDTO();
     	if (!users.isEmpty())
     	{
-
             HttpSession session = request.getSession();
-            session.setMaxInactiveInterval(100);
+            session.setMaxInactiveInterval(1000);
             LOGGER.info("Authentified user");
             User user1 = users.get(0);
 			res.setAdmin(user1.getAdmin());
