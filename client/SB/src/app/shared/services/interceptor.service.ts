@@ -15,7 +15,7 @@ export class InterceptorService implements HttpInterceptor{
     // add authorization header with jwt token if available
     //let currentUser = this.authService.currentUserValue;
       request = request.clone({
-          withCredentials : true   
+          //withCredentials : true   
       });
       console.log("Intercepted")
     return next.handle(request);

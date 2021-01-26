@@ -116,7 +116,7 @@ export class AuthService {
   }
 
   update(model: upMod){
-    return this.http.post(this.authUrl + "account", model).pipe(
+    return this.http.post(this.authUrl + "account", model, {withCredentials:true}).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/home']);
@@ -124,7 +124,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    )/*.toPromise()*/
   }
 
   update2(model: upMod){
@@ -150,7 +150,7 @@ export class AuthService {
   }
 
   suggestion(model: addSuggMod){
-    return this.http.post(this.authUrl + "suggestion", model).pipe(
+    return this.http.post(this.authUrl + "suggestion", model, {withCredentials:true}).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/home']);
@@ -158,7 +158,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    )/*.toPromise()*/
   }
 
   suggestion2(model: addSuggMod){
