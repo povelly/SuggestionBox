@@ -171,8 +171,10 @@ export class AuthService {
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
+          console.log("response.body =" + response.body)
           return response.body;
         } else {
+          console.log("error")
           console.log(response);
         }
       })
