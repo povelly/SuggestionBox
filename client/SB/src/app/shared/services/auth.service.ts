@@ -166,7 +166,7 @@ export class AuthService {
     return of(true);
   }
 
-  getSuggestion2(){
+  getSuggestion(){
     return this.http.post(this.authUrl + "suggestions",{observe : 'response'}).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -179,7 +179,7 @@ export class AuthService {
     )
   }
 
-  getSuggestion(){
+  getSuggestion2(){
     return [
         {
           "username":"moi",
@@ -189,7 +189,7 @@ export class AuthService {
     ]
   }
 
-  getUsers2(){
+  getUsers(){
     return this.http.get(this.authUrl + "accounts",{observe : 'response'}).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -202,7 +202,7 @@ export class AuthService {
     )
   }
 
-  getUsers(){
+  getUsers2(){
     return [
         {
           "username":"moi",
