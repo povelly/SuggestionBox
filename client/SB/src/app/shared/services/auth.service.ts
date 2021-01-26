@@ -167,7 +167,7 @@ export class AuthService {
   }
 
   getSuggestion(){
-    return this.http.post(this.authUrl + "suggestions",{observe : 'response'}).pipe(
+    return this.http.post(this.authUrl + "suggestions",{},{observe : 'response'}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           this.router.navigate(['/admin']);
