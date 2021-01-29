@@ -39,7 +39,7 @@ export class SondageComponent implements OnInit {
   }
   onSubmit(f: FormGroup):void{
     this.addsondmod1 = new addSondMod(f.value.title, sessionStorage.getItem("username"), f.value.expirationDate, f.value.choice1, f.value.choice2, f.value.choice3, f.value.choice4, f.value.choice5);
-    //this.authService.addSondage(this.addsondmod1).then();
+    this.authService.addSondage(this.addsondmod1).then();
   }
 }
 
