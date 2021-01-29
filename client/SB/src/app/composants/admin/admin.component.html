@@ -11,6 +11,7 @@
             </ul>
           </li>
         <li><a (click)="boutonSondages()" type="button" class="btn btn-primary">Consultation des sondages</a></li>
+        <li><a (click)="boutonSuggestions()" type="button" class="btn btn-primary">Consultation des suggestions</a></li>
         <li><a (click)="boutonSupp()" type="button" class="btn btn-primary">Remerciment d'un collaborateur</a></li>
         <li><a (click)="boutonCreation()" type="button" class="btn btn-primary">Ajout d'un salarié</a></li>
         <li style="float: left"><a href="/home">SafetyLine</a></li>
@@ -83,7 +84,7 @@
     </table>
 </div>
 
-<div *ngIf="modeSondage">
+<div *ngIf="modeSuggestions">
     <h3>Suggestions :</h3>
     <table class="table table-bordered">
         <thead>
@@ -101,4 +102,9 @@
             </tr>
         </tbody>
     </table>
+</div>
+
+<div *ngIf="modeSondage">
+    <h3>Sondages :</h3>
+    <button routerLink="/sondage" type="button" class="btn btn-primary">Créer un sondage</button>
 </div>

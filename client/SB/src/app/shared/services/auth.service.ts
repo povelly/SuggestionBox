@@ -9,6 +9,7 @@ import { addSuggMod } from '../models/addSuggMod-model';
 import { upMod } from '../models/upMod-model';
 import { resMod } from '../models/resMod-model';
 import { promise } from 'protractor';
+import { addSondMod } from '../models/addSondMod-model';
 //import { FormGroup } from '@angular/forms';
 
 
@@ -36,7 +37,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(model:logMod):Promise<void>{
+  login2(model:logMod):Promise<void>{
     return this.http.post(this.authUrl + "safetylineConnexion", model, {observe : 'response'}).pipe(
       map((response: any) => {
         const user = response;
@@ -55,12 +56,12 @@ export class AuthService {
     ).toPromise()
   }
 
-  login2(model: logMod) { 
+  login(model: logMod) { 
     sessionStorage.setItem('token', 'token');
     sessionStorage.setItem('username', model.username);
     sessionStorage.setItem('admin', 'true');
     this.router.navigate(['/home']);
-    return of(true);
+    return of(true).toPromise();
   }
 
   /*logout(){
@@ -218,6 +219,18 @@ export class AuthService {
       map((response: string) => {
         //console.log(response)
         if (response == "") {
+          this.router.navigate(['/admin']);
+        } else {
+          console.log(response);
+        }
+      })
+    ).toPromise()
+  }
+
+  addSondage(model: addSondMod){
+    return this.http.put(this.authUrl+ "createStrawpoll" , model).pipe(
+      map((response: string) => {
+        if (response == null) {
           this.router.navigate(['/admin']);
         } else {
           console.log(response);

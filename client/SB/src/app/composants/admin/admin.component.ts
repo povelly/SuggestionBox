@@ -16,6 +16,8 @@ export class AdminComponent implements OnInit {
   modeCreation = true;
   modeSupp = false;
   modeSondage = false;
+  modeSuggestions = false;
+  
   myForm: FormGroup;
   suggestions = [];
   users = [];
@@ -49,7 +51,7 @@ export class AdminComponent implements OnInit {
 
     this.authService.getSuggestion().subscribe((response) => this.suggestions = response)
     this.authService.getUsers().subscribe((response) => this.users = response)
-    console.log("this.suggestion = " + this.suggestions)
+    //console.log("this.suggestion = " + this.suggestions)
     //this.suggestions = this.authService.getSuggestion();
     //this.users = this.authService.getUsers();
     
@@ -62,18 +64,28 @@ export class AdminComponent implements OnInit {
     this.modeCreation = true
     this.modeSupp = false
     this.modeSondage = false
+    this.modeSuggestions = false
   }
 
   boutonSupp():void{
     this.modeCreation = false
     this.modeSupp = true
     this.modeSondage = false
+    this.modeSuggestions = false
   }
 
   boutonSondages():void{
     this.modeCreation = false
     this.modeSupp = false
     this.modeSondage = true
+    this.modeSuggestions = false
+  }
+
+  boutonSuggestions():void{
+    this.modeCreation = false
+    this.modeSupp = false
+    this.modeSondage = false
+    this.modeSuggestions = true
   }
 
   creation(f: FormGroup):void{
