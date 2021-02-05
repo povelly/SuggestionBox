@@ -17,11 +17,13 @@ export class AdminComponent implements OnInit {
   modeSupp = false;
   modeSondage = false;
   modeSuggestions = false;
+  consultationRes = false;
   
   myForm: FormGroup;
   suggestions = [];
   users = [];
   resSondages=[];
+  resSondage = null;
   cond = sessionStorage.getItem('admin')=='true';
   addusrmod1: addUsrMod; 
 
@@ -56,8 +58,8 @@ export class AdminComponent implements OnInit {
     //this.suggestions = this.authService.getSuggestion();
     //this.users = this.authService.getUsers();
 
-    //this.authService.getSondage().then((response) => this.sondages = response)
-    this.resSondages = this.authService.getResSondage2();
+    this.authService.getResSondage().then((response) => this.resSondages = response)
+    //this.resSondages = this.authService.getResSondage2();
     
     //this.myForm.valueChanges.subscribe(console.log)
 
@@ -127,6 +129,11 @@ export class AdminComponent implements OnInit {
 
   suppSond(sondage:any):void{
     this.authService.deleteSondage(sondage.idStrawpoll);
+  }
+
+  consResSond(sondage: any):void{
+    this.resSondage = sondage;
+    this.consultationRes = true;
   }
 
 }

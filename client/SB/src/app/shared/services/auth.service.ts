@@ -317,17 +317,20 @@ export class AuthService {
               {
                   "idChoice": 1,
                   "idStrawpoll": 1,
-                  "content": "ANDROID"
+                  "content": "ANDROID",
+                  "votersCount": 2
               },
               {
                   "idChoice": 2,
                   "idStrawpoll": 1,
-                  "content": "STL"
+                  "content": "STL",
+                  "votersCount": 1
               },
               {
                   "idChoice": 3,
                   "idStrawpoll": 1,
-                  "content": "RES"
+                  "content": "RES",
+                  "votersCount": 1
               }
           ]
       }
