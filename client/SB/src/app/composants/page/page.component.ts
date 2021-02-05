@@ -81,13 +81,14 @@ export class PageComponent implements OnInit {
   }
 
   reponse(f: FormGroup):void{
-    console.log(f.value)
+    //console.log(f.value)
     let reponses:string[] = []
-    if (f.value.rep0) reponses.push(this.sondage.choices[0])
-    if (f.value.rep1) reponses.push(this.sondage.choices[1])
-    if (f.value.rep2) reponses.push(this.sondage.choices[2])
-    if (f.value.rep3) reponses.push(this.sondage.choices[3])
-    if (f.value.rep4) reponses.push(this.sondage.choices[4])
+    if (f.value.rep0) reponses.push(this.sondage.choices[0].idChoice)
+    if (f.value.rep1) reponses.push(this.sondage.choices[1].idChoice)
+    if (f.value.rep2) reponses.push(this.sondage.choices[2].idChoice)
+    if (f.value.rep3) reponses.push(this.sondage.choices[3].idChoice)
+    if (f.value.rep4) reponses.push(this.sondage.choices[4].idChoice)
+    console.log(reponses)
     this.repsondmod1 = new repSondMod(this.sondage.idStrawpoll, sessionStorage.getItem("username"), reponses)
     console.log(this.repsondmod1)
     //this.authService.repSondage(this.repsondmod1).then();
@@ -97,7 +98,6 @@ export class PageComponent implements OnInit {
 
   consSond(sondage: any):void{
     this.sondage = sondage;
-
     this.consultation = true;
   }
 

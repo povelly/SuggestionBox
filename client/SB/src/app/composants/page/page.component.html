@@ -56,7 +56,7 @@
           </div>
           <div *ngFor="let choix of sondage.choices; index as i" >
             <input formControlName="rep{{i}}" type="checkbox" id="rep" name="rep">
-            <label for="choix">{{choix}}</label>
+            <label for="choix">{{choix.content}}</label>
           </div>
           <button type="submit" [disabled]="myForm2.invalid" class="btn btn-primary">Soumettre la réponse </button>
           <!--<button routerLink="/login" type="button" class="btn btn-primary">Cancel</button>-->

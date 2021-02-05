@@ -258,28 +258,30 @@ export class AuthService {
           "title": "Le meilleur master info ?",
           "author": "suggestionboxsafetyline1@gmail.com",
           "expirationDate": "2021-02-01T00:00:00.000+00:00",
+          "choicesContent": null,
+          "idStrawpoll": 1,
           "choices": [
-              "ANDROID",
-              "STL",
-              "RES"
-          ],
-          "idStrawpoll": 1
-      },
-      {
-          "title": "Temps de pause midi",
-          "author": "suggestionboxsafetyline1@gmail.com",
-          "expirationDate": "2021-02-01T00:00:00.000+00:00",
-          "choices": [
-              "2H",
-              "30min",
-              "1H"
-          ],
-          "idStrawpoll": 2
+              {
+                  "idChoice": 1,
+                  "idStrawpoll": 1,
+                  "content": "ANDROID"
+              },
+              {
+                  "idChoice": 2,
+                  "idStrawpoll": 1,
+                  "content": "STL"
+              },
+              {
+                  "idChoice": 3,
+                  "idStrawpoll": 1,
+                  "content": "RES"
+              }
+          ]
       }
   ]
   }
   repSondage(model:repSondMod):Promise<void>{
-    return this.http.post(this.authUrl + "reponse", model).pipe(
+    return this.http.post(this.authUrl + "vote", model).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/home']);
