@@ -108,20 +108,15 @@ public class StrawpollService {
     	String author = voteDTO.getAuthor();
     	
     	// We check if the user already voted for this poll
-    	/*List<Choice> c = voteDAO.getVoteListForOneUser(voteDTO.getId(), author);
-    	c.forEach(a -> System.out.println(a.getChoiceId() + " -> " + a.getChoiceContent()));
-    	if(!c.isEmpty()) {
+    	if(!choiceDAO.getVoteListForOneUser(voteDTO.getId(), author).isEmpty()) {
     		throw new AlreadyVotedException();
     	} else {
     		// The user hasn't voted yet
     		for (String choiceId : voteDTO.getReponses()) {
         		voteDAO.saveVote(author, Integer.parseInt(choiceId));
     		}
-    	}*/
-    	// The user hasn't voted yet
-		for (String choiceId : voteDTO.getReponses()) {
-    		voteDAO.saveVote(author, Integer.parseInt(choiceId));
-		}
+    	}
+
     }
 
     /**
