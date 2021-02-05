@@ -78,8 +78,7 @@ public class StrawpollService {
                 choicesRes.add(instantianteChoice(choice, strawpoll));
             }
         }
-
-        choicesRes.stream().parallel().map(c -> choiceDAO.save(c)).collect(Collectors.toList());
+        choiceDAO.saveAll(choicesRes);
         return strawpoll;
     }
 
