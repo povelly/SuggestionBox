@@ -109,6 +109,40 @@ body {
   a:hover {
     text-decoration: underline;
   }
+  table {
+    border-collapse: collapse;
+    width:70%;
+    margin-left:15%;
+  }
+  th {
+    text-align: center;
+    background: var(--secondary-color);
+    border-bottom: 2px solid black;
+    padding: 5px;
+    color: #DDD;
+  }
+  tr:nth-child(even) {
+    background: #DDD;
+  }
+  tr:nth-child(odd) {
+    background: #EEE;
+  }
+  tr:hover {
+    background: #DBF;
+  }
+  td {
+    text-align: center;
+    /*min-width: 200px;*/
+    padding: 3px;
+  }
+  td:hover {
+    background: #D9F;
+  }
+  
+  mat-icon{
+    font-family: 'Material Icons' !important;
+    cursor : pointer;
+  }
 
 
   

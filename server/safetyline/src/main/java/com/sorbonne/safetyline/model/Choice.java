@@ -9,7 +9,7 @@ import java.util.List;
 @Table( name="choice", schema = "safetyline")
 public class Choice
 {
-    @Id
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "choice_id", length=11)
     private int choiceId;
     @Column(name = "voters_count", length=11)

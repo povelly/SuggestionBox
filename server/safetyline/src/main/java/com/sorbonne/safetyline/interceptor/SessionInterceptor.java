@@ -28,7 +28,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-    	//System.out.println(request.getSession().getId());
+    	System.out.println(request.getSession().getId());
         HttpSession session = request.getSession(false);
         if(session==null)
         {

@@ -8,6 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdminComponent } from './admin/admin.component';
 import { ParametersComponent } from './parameters/parameters.component';
+import { SondageComponent } from './sondage/sondage.component';
 
 const routes: Routes = [
   { path: 'login', component:LoginFormComponent },
@@ -15,10 +16,11 @@ const routes: Routes = [
   { path: 'home', component:PageComponent },
   { path: 'admin', component:AdminComponent },
   { path: 'parameters', component:ParametersComponent },
+  { path: 'sondage', component:SondageComponent },
 ];
 
 @NgModule({
-  declarations: [LoginFormComponent, ResetComponent, PageComponent, AdminComponent, ParametersComponent],
+  declarations: [LoginFormComponent, ResetComponent, PageComponent, AdminComponent, ParametersComponent, SondageComponent],
   imports: [
     CommonModule,
     FormsModule,

@@ -1,0 +1,58 @@
+<form class="login-form">
+    <div class="login-content">
+    <h4>Création d'un nouveau sondage</h4>
+      <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
+        <label for="resetPasswordEmail">Titre du sondage</label>
+        <p> 
+          <input formControlName="title"
+          type = "title"
+          name="title" >
+        </p>
+        <label for="resetPasswordEmail">Date d'expiration:</label>
+        <p>
+            <input formControlName="expirationDate"
+            type = "title"
+            name="expirationDate">
+        </p>
+        <label for="resetPasswordEmail">Choix 1 (obligatoire):</label>
+        <p>
+            <input formControlName="choice1"
+            type = "title"
+            name="choice1" >
+        </p>
+        <label for="resetPasswordEmail">Choix 2 (obligatoire):</label>
+        <p>
+            <input formControlName="choice2"
+            type = "title"
+            name="choice2" >
+        </p>
+        <label for="resetPasswordEmail">Choix 3:</label>
+        <p>
+            <input formControlName="choice3"
+            type = "title"
+            name="choice3" 
+            placeholder="(Optionel)">
+        </p>
+        <label for="resetPasswordEmail">Choix 4:</label>
+        <p>
+            <input formControlName="choice4"
+            type = "title"
+            name="choice4"
+            placeholder="(Optionel)" >
+        </p>
+        <label for="resetPasswordEmail">Choix 5:</label>
+        <p>
+            <input formControlName="choice5"
+            type = "title"
+            name="choice5"
+            placeholder="(Optionel)" >
+        </p>
+        <button type="submit"
+        [disabled]="myForm.invalid">Creation du sondage<i class="fas fa-sign-in-alt"></i></button>
+      </form>
+    </div>
+    <div class="login-footer">
+      <!--<a href="#">Mot de passe oublié ?</a>-->
+      <button routerLink="/admin" type="button" class="btn btn-primary">Retour</button>
+    </div>
+</form>

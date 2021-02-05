@@ -18,6 +18,7 @@ public class MvcConfig implements WebMvcConfigurer
 	public void addInterceptors(InterceptorRegistry registry){
 		registry.addInterceptor(new SessionInterceptor())
 				.addPathPatterns("/accounts","/account", "/accoundDelete",
-						"/suggestions", "/suggestion","/createStrawpoll", "/account/{userId}");
+						"/suggestions", "/suggestion","/createStrawpoll", "/account/{userId}",
+						"/strawpolls");
 	}
 }

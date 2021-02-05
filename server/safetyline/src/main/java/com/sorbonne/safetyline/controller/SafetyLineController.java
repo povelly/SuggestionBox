@@ -10,6 +10,7 @@ package com.sorbonne.safetyline.controller;
 
 import com.mailjet.client.errors.MailjetException;
 import com.mailjet.client.errors.MailjetSocketTimeoutException;
+import com.sorbonne.safetyline.dto.ChoiceDTO;
 import com.sorbonne.safetyline.dto.StrawpollDTO;
 import com.sorbonne.safetyline.exception.EmptySuggestionException;
 import com.sorbonne.safetyline.exception.InvalidFormException;
@@ -17,9 +18,12 @@ import com.sorbonne.safetyline.exception.LastAdminException;
 import com.sorbonne.safetyline.exception.SessionExpired;
 import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
 import com.sorbonne.safetyline.exception.UtilisateurInconnuException;
+import com.sorbonne.safetyline.model.Choice;
 import com.sorbonne.safetyline.model.User;
 import com.sorbonne.safetyline.dto.SuggestionDTO;
 import com.sorbonne.safetyline.dto.UserDTO;
+import com.sorbonne.safetyline.dto.VoteDTO;
+import com.sorbonne.safetyline.service.ChoiceService;
 import com.sorbonne.safetyline.service.StrawpollService;
 import com.sorbonne.safetyline.service.SuggestionService;
 import com.sorbonne.safetyline.service.UserService;
@@ -50,6 +54,8 @@ public class SafetyLineController {
     private StrawpollService strawpollService   = new StrawpollService();
     @Autowired
     private SuggestionService suggestionService = new SuggestionService();
+    @Autowired
+    private ChoiceService choiceService = new ChoiceService();
 
 	private static final Logger LOGGER  = LoggerFactory.getLogger(SafetyLineController.class);
     ////////////////////////////////// USER //////////////////////////////////
@@ -305,7 +311,7 @@ public class SafetyLineController {
 			System.out.println(strawpollDTO.getChoices());
 			strawpollService.createStrawpoll(strawpollDTO.getTitle(),
 					strawpollDTO.getAuthor(),strawpollDTO.getExpirationDate(),
-					strawpollDTO.getChoices());
+					strawpollDTO.getChoicesContent());
 			LOGGER.info("Strawpoll has been created");
 
 		} catch(Exception e) {
@@ -315,6 +321,56 @@ public class SafetyLineController {
 			return new ResponseEntity<>(res, HttpStatus.OK);
 		}
 	}
+	
+	/**
+     * Get all strawpolls
+     * @return the HTTP response
+     */
+    @GetMapping("/strawpolls")
+    @ResponseBody
+    public ResponseEntity<List<StrawpollDTO>> getAllStrawpolls(HttpServletRequest request)
+    {
+		List<StrawpollDTO> result = new ArrayList<>();
+		try{
+			result = strawpollService.getAllStrawpolls().stream().map(s -> 
+				new StrawpollDTO(s.getTitle(), 
+						s.getAuthor(), 
+						s.getDeadlineTime(),
+						s.getStrawpollId(),
+						// Get all the different choices for this strawpoll
+						choiceService.getChoicesForOneStrawpoll(s.getStrawpollId()).stream().map(c -> 
+							new ChoiceDTO(c.getChoiceId(), c.getStrawpollId(), c.getChoiceContent(), c.getVoterCount()))
+						.collect(Collectors.toList())
+						))
+					.collect(Collectors.toList());
+			
+					
+		} catch(Exception e){
+			LOGGER.info("error occured");
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    
+    /**
+     * Save a vote for a strawpoll
+     * @return the HTTP response
+     */
+    @PostMapping("/vote")
+    @ResponseBody
+    public ResponseEntity<String> sauvegardeVote(@RequestBody VoteDTO vote)
+    {
+    	String result = "";
+		try{
+			strawpollService.sauvegardeVote(vote);
+			result = "Vote enregistré";
+			
+		} catch(Exception e){
+			e.printStackTrace();
+			result = "error occured while voting";
+			LOGGER.info(result);
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
 
 }

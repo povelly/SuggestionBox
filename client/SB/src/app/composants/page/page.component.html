@@ -1,51 +1,89 @@
 <nav>
-    <ul>
-      <li style="float: right" class="scrolling"><span class="profil">&ensp;Profil&ensp;▾&ensp;</span>
-        <ul class="under">
-          <span *ngIf="cond">
-            <a routerLink="/admin" type="button" class="btn btn-primary">Admin</a>
-          </span>
-          <li><a routerLink="/parameters" type="button" class="btn btn-primary">Paramètres</a></li>
-          <li><a (click)="clicSurBouton()" class="btn btn-primary">Supprmier mon compte</a></li>
-          <li><a (click)="cancel()" class="btn btn-primary">Deconnexion</a></li>
-        </ul>
-      </li>
-      <li><a href="/home">Sondages</a></li>
-      <li><a href="/home">Faire une suggestion</a></li>
-      <li style="float: left"><a href="/home">SafetyLine</a></li>
-    </ul>
-  </nav>
+  <ul>
+    <li style="float: right" class="scrolling"><span class="profil">&ensp;Profil&ensp;▾&ensp;</span>
+      <ul class="under">
+        <span *ngIf="cond">
+          <a routerLink="/admin" type="button" class="btn btn-primary">Admin</a>
+        </span>
+        <li><a routerLink="/parameters" type="button" class="btn btn-primary">Paramètres</a></li>
+        <li><a (click)="clicSurBouton()" class="btn btn-primary">Supprmier mon compte</a></li>
+        <li><a (click)="cancel()" class="btn btn-primary">Deconnexion</a></li>
+      </ul>
+    </li>
+    <li><a (click)="boutonSondages()" type="button" class="btn btn-primary">Sondages</a></li>
+    <li><a (click)="boutonSuggestions()" type="button" class="btn btn-primary">Faire une suggestion</a></li>
+    <li style="float: left"><a href="/home">SafetyLine</a></li>
+  </ul>
+</nav>
 
+<div *ngIf="modeSuggestions">
   <div class="login-form">
     <div class="login-content">
-        <h3>Entrez une suggestion</h3>
-        <form [formGroup]="myForm"
-        (ngSubmit)="sugg(myForm)">
+      <h3>Entrez une suggestion</h3>
+      <form [formGroup]="myForm" (ngSubmit)="sugg(myForm)">
 
-            <div class="form-group">
-                <label for="resetPasswordEmail">Suggestion:</label>
-                <!--<p>
+        <div class="form-group">
+          <label for="resetPasswordEmail">Suggestion:</label>
+          <!--<p>
                     <input formControlName="username" 
                     name="username"
                     placeholder="Email">
                 </p>-->
-                </div> 
-            <textarea formControlName="content" id="content" name="content"
-              rows="5" cols="33">
+        </div>
+        <textarea formControlName="content" id="content" name="content" rows="5" cols="33">
                 It was a dark and stormy night...
             </textarea>
-            
-            <div>
-                <input  formControlName="anonymous" type="checkbox" id="anonymous" name="anonymous">
-                <label for="anonymous">anonymous</label>
-            </div>
-            <button type="submit" 
-            [disabled]="myForm.invalid"
-            class="btn btn-primary">Envoyer suggestion </button>
 
-            <button routerLink="/login" type="button" class="btn btn-primary">Cancel</button>
-        </form>
+        <div>
+          <input formControlName="anonymous" type="checkbox" id="anonymous" name="anonymous">
+          <label for="anonymous">anonymous</label>
+        </div>
+        <button type="submit" [disabled]="myForm.invalid" class="btn btn-primary">Envoyer suggestion </button>
+
+        <!--<button routerLink="/login" type="button" class="btn btn-primary">Cancel</button>-->
+      </form>
     </div>
+  </div>
+</div>
+
+<div *ngIf="modeSondage">
+  <div *ngIf="consultation">
+    <div class="login-form">
+      <div class="login-content">
+        <form [formGroup]="myForm2" (ngSubmit)="reponse(myForm2)">
+          <div class="form-group">
+            <label for="consultationn">{{sondage.title}}</label>
+          </div>
+          <div *ngFor="let choix of sondage.choices; index as i" >
+            <input formControlName="rep{{i}}" type="checkbox" id="rep" name="rep">
+            <label for="choix">{{choix.content}}</label>
+          </div>
+          <button type="submit" [disabled]="myForm2.invalid" class="btn btn-primary">Soumettre la réponse </button>
+          <!--<button routerLink="/login" type="button" class="btn btn-primary">Cancel</button>-->
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <h3>Sondages :</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Auteur</th>
+        <th>Date d'expiration</th>
+        <th>Réponse</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sondage of sondages">
+        <td>{{sondage.title}}</td>
+        <td>{{sondage.author}}</td>
+        <td>{{sondage.expirationDate}}</td>
+        <mat-icon (click)="consSond(sondage)" aria-hidden="false" aria-label="Example home icon">done</mat-icon>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <!--
