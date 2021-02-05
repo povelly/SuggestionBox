@@ -24,16 +24,6 @@ public class Strawpoll
     @Column( name="title", length = 150)
     private String title;
 
-    @OneToMany( fetch = FetchType.EAGER,
-                cascade = {
-                    CascadeType.PERSIST,
-                        CascadeType.MERGE
-                })
-    @MapsId("strawpollId")
-    @JoinColumn(name = "strawpoll_id")
-    private List<Choice> choices;
-
-
     @Column(name="strawpoll_author")
     private String author;
 

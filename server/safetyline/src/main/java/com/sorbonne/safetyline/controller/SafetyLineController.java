@@ -346,16 +346,17 @@ public class SafetyLineController {
     }
 
 
-    @DeleteMapping("/strawpoll")
+    @DeleteMapping("/strawpoll/{id}")
 	@ResponseBody
-	public ResponseEntity<String> removeStrawpoll(@RequestBody StrawpollDTO strawpoll){
+	public ResponseEntity<String> removeStrawpoll(@PathVariable Integer id){
     	String res = null;
     	try{
-    		strawpollService.deleteStrawpoll(strawpoll.getIdStrawpoll());
+    		strawpollService.deleteStrawpoll(id);
 		} catch(StrawpollNotExists ex){
     		res="strawpoll does not exist";
     		LOGGER.info(res);
 		} catch(Exception e){
+			e.printStackTrace();
     		res="Error occured";
     		LOGGER.info(res);
 		}
