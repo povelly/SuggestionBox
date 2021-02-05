@@ -323,7 +323,7 @@ public class SafetyLineController {
 	}
 	
 	/**
-     * Get all users
+     * Get all strawpolls
      * @return the HTTP response
      */
     @GetMapping("/strawpolls")
@@ -339,7 +339,7 @@ public class SafetyLineController {
 						s.getStrawpollId(),
 						// Get all the different choices for this strawpoll
 						choiceService.getChoicesForOneStrawpoll(s.getStrawpollId()).stream().map(c -> 
-							new ChoiceDTO(c.getChoiceId(), c.getStrawpollId(), c.getChoiceContent()))
+							new ChoiceDTO(c.getChoiceId(), c.getStrawpollId(), c.getChoiceContent(), c.getVoterCount()))
 						.collect(Collectors.toList())
 						))
 					.collect(Collectors.toList());

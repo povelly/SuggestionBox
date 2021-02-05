@@ -14,5 +14,6 @@ public class ChoiceDTO {
 	private int idChoice;
 	private int idStrawpoll;
 	private String content;
-
+	private int votersCount;
+	
 }
