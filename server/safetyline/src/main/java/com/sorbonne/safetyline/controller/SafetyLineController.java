@@ -12,6 +12,7 @@ import com.mailjet.client.errors.MailjetException;
 import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import com.sorbonne.safetyline.dto.ChoiceDTO;
 import com.sorbonne.safetyline.dto.StrawpollDTO;
+import com.sorbonne.safetyline.exception.AlreadyVotedException;
 import com.sorbonne.safetyline.exception.EmptySuggestionException;
 import com.sorbonne.safetyline.exception.InvalidFormException;
 import com.sorbonne.safetyline.exception.LastAdminException;
@@ -362,9 +363,12 @@ public class SafetyLineController {
     	String result = "";
 		try{
 			strawpollService.sauvegardeVote(vote);
-			result = "Vote enregistré";
 			
-		} catch(Exception e){
+		} catch (AlreadyVotedException e) {
+			result = "The user has already voted for this poll";
+			LOGGER.info(result);
+		}
+		catch(Exception e){
 			e.printStackTrace();
 			result = "error occured while voting";
 			LOGGER.info(result);
