@@ -20,4 +20,12 @@ public interface VoteDAO extends JpaRepository<Vote, Integer> {
     @Query(value = "INSERT INTO vote (user_id, choice_id) values (?1, ?2)", nativeQuery = true)
     public void saveVote(String userId, int choiceId);
 	
+	
+	@Query(value = "SELECT * FROM choice WHERE strawpoll_id = ?1 AND choice_id IN"
+			+ " (SELECT choice_id FROM vote WHERE user_id = ?2)", nativeQuery = true)
+	public List<Choice> getVoteListForOneUser(int strawpollId, String userId);
+	
+	
+	
+	
 }

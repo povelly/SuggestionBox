@@ -2,57 +2,48 @@
     <ul>
         <li style="float: right" class="scrolling"><span class="profil">Profil&ensp;▾</span>
             <ul class="under">
-              <span *ngIf="cond">
-                <a routerLink="/admin" type="button" class="btn btn-primary">Admin</a>
-              </span>
-              <li><a routerLink="/parameters" type="button" class="btn btn-primary">Paramètres</a></li>
-              <li><a (click)="clicSurBouton()" class="btn btn-primary">Supprmier mon compte</a></li>
-              <li><a (click)="cancel()" class="btn btn-primary">Deconnexion</a></li>
+                <span *ngIf="cond">
+                    <a routerLink="/admin" type="button" class="btn btn-primary">Admin</a>
+                </span>
+                <li><a routerLink="/parameters" type="button" class="btn btn-primary">Paramètres</a></li>
+                <li><a (click)="clicSurBouton()" class="btn btn-primary">Supprmier mon compte</a></li>
+                <li><a (click)="cancel()" class="btn btn-primary">Deconnexion</a></li>
             </ul>
-          </li>
+        </li>
         <li><a (click)="boutonSondages()" type="button" class="btn btn-primary">Consultation des sondages</a></li>
         <li><a (click)="boutonSuggestions()" type="button" class="btn btn-primary">Consultation des suggestions</a></li>
         <li><a (click)="boutonSupp()" type="button" class="btn btn-primary">Remerciment d'un collaborateur</a></li>
         <li><a (click)="boutonCreation()" type="button" class="btn btn-primary">Ajout d'un salarié</a></li>
         <li style="float: left"><a href="/home">SafetyLine</a></li>
     </ul>
-  </nav>
+</nav>
 
 <div *ngIf="modeCreation">
     <div class="login-form">
         <div class="login-content">
             <h3>Ajouter un utilisateur</h3>
-            <form [formGroup]="myForm"
-            (ngSubmit)="creation(myForm)">
-    
+            <form [formGroup]="myForm" (ngSubmit)="creation(myForm)">
+
                 <div class="form-group">
                     <label for="resetPasswordEmail">Email</label>
                     <p>
-                        <input formControlName="username" 
-                        name="username"
-                        placeholder="exemple@mail.com">
+                        <input formControlName="username" name="username" placeholder="exemple@mail.com">
                     </p>
                     <label for="resetPasswordEmail">Nom</label>
                     <p>
-                        <input formControlName="lastName" 
-                        name="nom"
-                        placeholder="Dupont">
+                        <input formControlName="lastName" name="nom" placeholder="Dupont">
                     </p>
                     <label for="resetPasswordEmail">Prenom</label>
                     <p>
-                        <input formControlName="firstName" 
-                        name="Prenom"
-                        placeholder="Jean">
+                        <input formControlName="firstName" name="Prenom" placeholder="Jean">
                     </p>
                 </div>
                 <div>
-                    <input  formControlName="admin" type="checkbox" id="admin" name="admin">
+                    <input formControlName="admin" type="checkbox" id="admin" name="admin">
                     <label for="admin">Administrateur</label>
                 </div>
-                <button type="submit" 
-                [disabled]="myForm.invalid"
-                class="btn btn-primary">Envoyer inscription </button>
-    
+                <button type="submit" [disabled]="myForm.invalid" class="btn btn-primary">Envoyer inscription </button>
+
                 <button routerLink="/home" type="button" class="btn btn-primary">Cancel</button>
             </form>
         </div>
@@ -71,14 +62,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor= "let user of users">
+            <tr *ngFor="let user of users">
                 <td>{{user.username}}</td>
                 <td>{{user.firstName}}</td>
                 <td>{{user.lastName}}</td>
                 <!--<button onclick()="suppUser(user.username)">Supprimer</button>-->
                 <!--<button (click)="suppUser(user.username)">Supprimer</button>-->
                 <!--<mat-icon>delete</mat-icon>-->
-                <mat-icon (click)="suppUser(user.username)" aria-hidden="false" aria-label="Example home icon">person_remove</mat-icon>
+                <mat-icon (click)="suppUser(user.username)" aria-hidden="false" aria-label="Example home icon">
+                    person_remove</mat-icon>
             </tr>
         </tbody>
     </table>
@@ -95,7 +87,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor= "let suggestion of suggestions">
+            <tr *ngFor="let suggestion of suggestions">
                 <td>{{suggestion.content}}</td>
                 <td>{{suggestion.author}}</td>
                 <td>{{suggestion.begin}}</td>
@@ -105,24 +97,51 @@
 </div>
 
 <div *ngIf="modeSondage">
+    <div *ngIf="consultationRes">
+        <div>
+            <label for="consultationRes">{{resSondage.title}}</label>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Réponses:</th>
+                    <th *ngFor="let res of resSondage.choices">
+                        {{res.content}}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Nombre de votes:</th>
+                    <td *ngFor="let res of resSondage.choices">
+                        {{res.votersCount}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <h3>Sondages :</h3>
     <button routerLink="/sondage" type="button" class="btn btn-primary">Créer un sondage</button>
     <table class="table table-bordered">
         <thead>
-          <tr>
-            <th>Titre</th>
-            <th>Auteur</th>
-            <th>Date d'expiration</th>
-            <th>Réponse</th>
-          </tr>
+            <tr>
+                <th>Titre</th>
+                <th>Auteur</th>
+                <th>Date d'expiration</th>
+                <th>Consultation</th>
+                <th>Supression d'un sondage</th>
+            </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let sondage of resSondages">
-            <td>{{sondage.title}}</td>
-            <td>{{sondage.author}}</td>
-            <td>{{sondage.expirationDate}}</td>
-            <mat-icon (click)="suppSond(sondage)" aria-hidden="false" aria-label="Example home icon">delete</mat-icon>
-          </tr>
+            <tr *ngFor="let sondage of resSondages">
+                <td>{{sondage.title}}</td>
+                <td>{{sondage.author}}</td>
+                <td>{{sondage.expirationDate}}</td>
+                <td><mat-icon (click)="consResSond(sondage)" aria-hidden="false" aria-label="Example home icon">article
+                </mat-icon></td>
+                <td><mat-icon (click)="suppSond(sondage)" aria-hidden="false" aria-label="Example home icon">delete
+                </mat-icon></td>
+            </tr>
         </tbody>
-      </table>
+    </table>
 </div>

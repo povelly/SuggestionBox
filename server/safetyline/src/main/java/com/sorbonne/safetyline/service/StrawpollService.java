@@ -11,6 +11,7 @@ import com.sorbonne.safetyline.dataAccess.ChoiceDAO;
 import com.sorbonne.safetyline.dataAccess.StrawpollDAO;
 import com.sorbonne.safetyline.dataAccess.VoteDAO;
 import com.sorbonne.safetyline.dto.VoteDTO;
+import com.sorbonne.safetyline.exception.AlreadyVotedException;
 import com.sorbonne.safetyline.exception.EmptyChoice;
 import com.sorbonne.safetyline.exception.EmptyStrawpoll;
 import com.sorbonne.safetyline.exception.StrawpollNotExists;
@@ -18,6 +19,7 @@ import com.sorbonne.safetyline.model.Choice;
 import com.sorbonne.safetyline.model.Strawpoll;
 import com.sorbonne.safetyline.model.Vote;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,12 +99,25 @@ public class StrawpollService {
     
     /**
      * Saves a vote in the DB
+     * @throws AlreadyVotedException 
      */
     @Transactional
-    public void sauvegardeVote(VoteDTO voteDTO) {
-    	LOGGER.info(voteDTO.toString());
+    public void sauvegardeVote(VoteDTO voteDTO) throws AlreadyVotedException {
     	String author = voteDTO.getAuthor();
-    	for (String choiceId : voteDTO.getReponses()) {
+    	
+    	// We check if the user already voted for this poll
+    	/*List<Choice> c = voteDAO.getVoteListForOneUser(voteDTO.getId(), author);
+    	c.forEach(a -> System.out.println(a.getChoiceId() + " -> " + a.getChoiceContent()));
+    	if(!c.isEmpty()) {
+    		throw new AlreadyVotedException();
+    	} else {
+    		// The user hasn't voted yet
+    		for (String choiceId : voteDTO.getReponses()) {
+        		voteDAO.saveVote(author, Integer.parseInt(choiceId));
+    		}
+    	}*/
+    	// The user hasn't voted yet
+		for (String choiceId : voteDTO.getReponses()) {
     		voteDAO.saveVote(author, Integer.parseInt(choiceId));
 		}
     }
