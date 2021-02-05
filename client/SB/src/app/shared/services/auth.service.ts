@@ -228,7 +228,7 @@ export class AuthService {
   }
 
   addSondage(model: addSondMod){
-    return this.http.put(this.authUrl+ "createStrawpoll/" + model.title  , model).pipe(
+    return this.http.put(this.authUrl+ "createStrawpoll" , model).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/admin']);

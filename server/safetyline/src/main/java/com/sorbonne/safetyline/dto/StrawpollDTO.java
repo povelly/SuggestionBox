@@ -18,5 +18,5 @@ public class StrawpollDTO {
     private Date expirationDate;
     private List<String> choices;
     private int idStrawpoll;
-
+    
 }
