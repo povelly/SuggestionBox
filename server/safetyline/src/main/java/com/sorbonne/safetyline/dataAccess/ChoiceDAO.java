@@ -16,4 +16,12 @@ public interface ChoiceDAO extends JpaRepository<Choice, Integer> {
      */
     @Query(value = "SELECT * FROM choice where strawpoll_id = ?1", nativeQuery = true)
     public List<Choice> getChoicesForOneStrawpoll(Integer id);
+    
+    /**
+     * Get all the vote of a user for a given poll
+     * Used to check if the user already voter for this poll
+     */
+    @Query(value = "SELECT * FROM choice WHERE strawpoll_id = ?1 AND choice_id IN"
+			+ " (SELECT choice_id FROM vote WHERE user_id = ?2)", nativeQuery = true)
+	public List<Choice> getVoteListForOneUser(int strawpollId, String userId);
 }
