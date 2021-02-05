@@ -6,6 +6,6 @@ create table if not exists choice
 	strawpoll_id int not null,
 	choice_content varchar(200) not null,
 	constraint choice_strawpoll_strawpoll_id_fk
-		foreign key (strawpoll_id) references strawpoll (strawpoll_id)
+		foreign key (strawpoll_id) references strawpoll (strawpoll_id) ON DELETE CASCADE
 );
 
