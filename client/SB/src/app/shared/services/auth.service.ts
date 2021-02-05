@@ -239,4 +239,43 @@ export class AuthService {
     ).toPromise()
   }
 
+  getSondage(){
+    return this.http.put(this.authUrl + "strawpoll",{observe : 'response'}).pipe(
+      map((response: any) => {
+        if (response.status == 200) {
+          return response.body;
+        } else {
+          console.log(response);
+        }
+      })
+    ).toPromise()
+  }
+
+  getSondage2(){
+    return[
+      {
+          "title": "Le meilleur master info ?",
+          "author": "suggestionboxsafetyline1@gmail.com",
+          "expirationDate": "2021-02-01T00:00:00.000+00:00",
+          "choices": [
+              "ANDROID",
+              "STL",
+              "RES"
+          ],
+          "idStrawpoll": 1
+      },
+      {
+          "title": "Temps de pause midi",
+          "author": "suggestionboxsafetyline1@gmail.com",
+          "expirationDate": "2021-02-01T00:00:00.000+00:00",
+          "choices": [
+              "2H",
+              "30min",
+              "1H"
+          ],
+          "idStrawpoll": 2
+      }
+  ]
+  }
+
 }

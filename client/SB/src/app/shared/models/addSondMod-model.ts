@@ -3,7 +3,7 @@ export class addSondMod{
     title: string;
     author: string;
     expirationDate: string;
-    choices: [string];
+    choices:string[] = [];
 
     constructor(title:string, author:string, expirationDate: string, choice1: string, choice2: string, choice3: string, choice4: string, choice5: string){
         this.title = title;
