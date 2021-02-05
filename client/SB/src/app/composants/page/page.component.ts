@@ -46,8 +46,8 @@ export class PageComponent implements OnInit {
       rep4:[false]
     });
 
-    this.authService.getSondage().then((response) => this.sondages = response)
-    //this.sondages = this.authService.getSondage2();
+    //this.authService.getSondage().then((response) => this.sondages = response)
+    this.sondages = this.authService.getSondage2();
 
   }
 

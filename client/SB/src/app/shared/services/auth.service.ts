@@ -280,6 +280,7 @@ export class AuthService {
       }
   ]
   }
+
   repSondage(model:repSondMod):Promise<void>{
     return this.http.post(this.authUrl + "vote", model).pipe(
       map((response: string) => {
@@ -292,4 +293,58 @@ export class AuthService {
     ).toPromise()
   }
 
+  getResSondage():any{
+    return this.http.get(this.authUrl + "strawpolls",{observe : 'response'}).pipe(
+      map((response: any) => {
+        if (response.status == 200) {
+          return response.body;
+        } else {
+          console.log(response);
+        }
+      })
+    ).toPromise()
+  }
+
+  getResSondage2(){
+    return[
+      {
+          "title": "Le meilleur master info ?",
+          "author": "suggestionboxsafetyline1@gmail.com",
+          "expirationDate": "2021-02-01T00:00:00.000+00:00",
+          "choicesContent": null,
+          "idStrawpoll": 1,
+          "choices": [
+              {
+                  "idChoice": 1,
+                  "idStrawpoll": 1,
+                  "content": "ANDROID"
+              },
+              {
+                  "idChoice": 2,
+                  "idStrawpoll": 1,
+                  "content": "STL"
+              },
+              {
+                  "idChoice": 3,
+                  "idStrawpoll": 1,
+                  "content": "RES"
+              }
+          ]
+      }
+  ]
+  }
+
+  deleteSondage(id:string):Promise<void>{
+    const body = { 'idStrawpoll': id };
+    return this.http.post(this.authUrl + "strawpollDelete", body).pipe(
+      map((response: string) => {
+        //console.log(response)
+        if (response == "") {
+          this.router.navigate(['/admin']);
+        } else {
+          console.log(response);
+        }
+      })
+    ).toPromise()
+  }
 }

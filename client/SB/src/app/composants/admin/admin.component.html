@@ -107,4 +107,22 @@
 <div *ngIf="modeSondage">
     <h3>Sondages :</h3>
     <button routerLink="/sondage" type="button" class="btn btn-primary">Créer un sondage</button>
+    <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Date d'expiration</th>
+            <th>Réponse</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let sondage of resSondages">
+            <td>{{sondage.title}}</td>
+            <td>{{sondage.author}}</td>
+            <td>{{sondage.expirationDate}}</td>
+            <mat-icon (click)="suppSond(sondage)" aria-hidden="false" aria-label="Example home icon">delete</mat-icon>
+          </tr>
+        </tbody>
+      </table>
 </div>

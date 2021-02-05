@@ -21,6 +21,7 @@ export class AdminComponent implements OnInit {
   myForm: FormGroup;
   suggestions = [];
   users = [];
+  resSondages=[];
   cond = sessionStorage.getItem('admin')=='true';
   addusrmod1: addUsrMod; 
 
@@ -54,6 +55,9 @@ export class AdminComponent implements OnInit {
     //console.log("this.suggestion = " + this.suggestions)
     //this.suggestions = this.authService.getSuggestion();
     //this.users = this.authService.getUsers();
+
+    //this.authService.getSondage().then((response) => this.sondages = response)
+    this.resSondages = this.authService.getResSondage2();
     
     //this.myForm.valueChanges.subscribe(console.log)
 
@@ -119,6 +123,10 @@ export class AdminComponent implements OnInit {
     //console.log(localStorage)
     //this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  suppSond(sondage:any):void{
+    this.authService.deleteSondage(sondage.idStrawpoll);
   }
 
 }
