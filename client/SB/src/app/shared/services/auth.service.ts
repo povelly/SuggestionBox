@@ -10,6 +10,7 @@ import { upMod } from '../models/upMod-model';
 import { resMod } from '../models/resMod-model';
 import { promise } from 'protractor';
 import { addSondMod } from '../models/addSondMod-model';
+import { repSondMod } from '../models/repSondMod-model';
 //import { FormGroup } from '@angular/forms';
 
 
@@ -37,7 +38,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(model:logMod):Promise<void>{
+  login2(model:logMod):Promise<void>{
     return this.http.post(this.authUrl + "safetylineConnexion", model, {observe : 'response'}).pipe(
       map((response: any) => {
         const user = response;
@@ -56,7 +57,7 @@ export class AuthService {
     ).toPromise()
   }
 
-  login2(model: logMod) { 
+  login(model: logMod) { 
     sessionStorage.setItem('token', 'token');
     sessionStorage.setItem('username', model.username);
     sessionStorage.setItem('admin', 'true');
@@ -68,7 +69,7 @@ export class AuthService {
     //this.currentUserSubject.next(null);
   }*/
 
-  reset(model: resMod){
+  reset(model: resMod):Promise<void>{
     return this.http.post(this.authUrl + "forgetPassword", model).pipe(
       map((response: string) => {
         if (response == null) {
@@ -89,7 +90,7 @@ export class AuthService {
     return of(true);
   }
 
-  delete(){
+  delete():Promise<void>{
     const body = { 'username': sessionStorage.getItem('username') };
     return this.http.post(this.authUrl + "accountDelete", body).pipe(
       map((response: string) => {
@@ -115,7 +116,7 @@ export class AuthService {
     return of(true);
   }
 
-  update(model: upMod){
+  update(model: upMod):Promise<void>{
     return this.http.post(this.authUrl + "account", model).pipe(
       map((response: string) => {
         if (response == null) {
@@ -132,7 +133,7 @@ export class AuthService {
     return of(true);
   }
 
-  create(model: addUsrMod){
+  create(model: addUsrMod):Promise<void>{
     return this.http.put(this.authUrl+ "account" + "/" + model.username, model).pipe(
       map((response: string) => {
         if (response == null) {
@@ -149,7 +150,7 @@ export class AuthService {
     return of(true);
   }
 
-  suggestion(model: addSuggMod){
+  suggestion(model: addSuggMod):Promise<void>{
     return this.http.post(this.authUrl + "suggestion", model).pipe(
       map((response: string) => {
         if (response == null) {
@@ -167,7 +168,7 @@ export class AuthService {
     return of(true);
   }
 
-  getSuggestion(){
+  getSuggestion():any{
     return this.http.post(this.authUrl + "suggestions",{},{observe : 'response'}).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -190,7 +191,7 @@ export class AuthService {
     ]
   }
 
-  getUsers(){
+  getUsers():any{
     return this.http.get(this.authUrl + "accounts",{observe : 'response'}).pipe(
       map((response: any) => {
         if (response.status == 200) {
@@ -213,7 +214,7 @@ export class AuthService {
     ]
   }
 
-  deleteUser(id:string){
+  deleteUser(id:string):Promise<void>{
     const body = { 'username': id };
     return this.http.post(this.authUrl + "accountDelete", body).pipe(
       map((response: string) => {
@@ -227,7 +228,7 @@ export class AuthService {
     ).toPromise()
   }
 
-  addSondage(model: addSondMod){
+  addSondage(model: addSondMod):Promise<void>{
     return this.http.put(this.authUrl+ "createStrawpoll" , model).pipe(
       map((response: string) => {
         if (response == null) {
@@ -239,8 +240,8 @@ export class AuthService {
     ).toPromise()
   }
 
-  getSondage(){
-    return this.http.put(this.authUrl + "strawpoll",{observe : 'response'}).pipe(
+  getSondage():any{
+    return this.http.get(this.authUrl + "strawpoll",{observe : 'response'}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           return response.body;
@@ -276,6 +277,17 @@ export class AuthService {
           "idStrawpoll": 2
       }
   ]
+  }
+  repSondage(model:repSondMod):Promise<void>{
+    return this.http.post(this.authUrl + "reponse", model).pipe(
+      map((response: string) => {
+        if (response == null) {
+          this.router.navigate(['/home']);
+        } else {
+          console.log(response);
+        }
+      })
+    ).toPromise()
   }
 
 }

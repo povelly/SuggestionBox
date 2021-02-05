@@ -46,8 +46,8 @@ export class PageComponent implements OnInit {
       rep4:[false]
     });
 
-    this.authService.getSondage().then((response) => this.sondages = response)
-    //this.sondages = this.authService.getSondage2();
+    //this.authService.getSondage().then((response) => this.sondages = response)
+    this.sondages = this.authService.getSondage2();
 
   }
 
@@ -88,11 +88,11 @@ export class PageComponent implements OnInit {
     if (f.value.rep2) reponses.push(this.sondage.choices[2])
     if (f.value.rep3) reponses.push(this.sondage.choices[3])
     if (f.value.rep4) reponses.push(this.sondage.choices[4])
-    console.log(reponses)
     this.repsondmod1 = new repSondMod(this.sondage.idStrawpoll, sessionStorage.getItem("username"), reponses)
     console.log(this.repsondmod1)
-    //this.authService.suggestion(this.addsuggmod1).then(/*loginObserver*/);
+    //this.authService.repSondage(this.repsondmod1).then();
     //this.authService.suggestion(this.addsuggmod1).subscribe(loginObserver);
+    //location.reload();
   }
 
   consSond(sondage: any):void{
