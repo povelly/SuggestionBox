@@ -12,13 +12,7 @@ import com.mailjet.client.errors.MailjetException;
 import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import com.sorbonne.safetyline.dto.ChoiceDTO;
 import com.sorbonne.safetyline.dto.StrawpollDTO;
-import com.sorbonne.safetyline.exception.AlreadyVotedException;
-import com.sorbonne.safetyline.exception.EmptySuggestionException;
-import com.sorbonne.safetyline.exception.InvalidFormException;
-import com.sorbonne.safetyline.exception.LastAdminException;
-import com.sorbonne.safetyline.exception.SessionExpired;
-import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
-import com.sorbonne.safetyline.exception.UtilisateurInconnuException;
+import com.sorbonne.safetyline.exception.*;
 import com.sorbonne.safetyline.model.Choice;
 import com.sorbonne.safetyline.model.User;
 import com.sorbonne.safetyline.dto.SuggestionDTO;
@@ -309,7 +303,6 @@ public class SafetyLineController {
 	{
 		String res = null;
 		try{
-			System.out.println(strawpollDTO.getChoices());
 			strawpollService.createStrawpoll(strawpollDTO.getTitle(),
 					strawpollDTO.getAuthor(),strawpollDTO.getExpirationDate(),
 					strawpollDTO.getChoicesContent());
@@ -351,7 +344,25 @@ public class SafetyLineController {
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    
+
+
+    @DeleteMapping("/strawpoll")
+	@ResponseBody
+	public ResponseEntity<String> removeStrawpoll(@RequestBody StrawpollDTO strawpoll){
+    	String res = null;
+    	try{
+    		strawpollService.deleteStrawpoll(strawpoll.getIdStrawpoll());
+		} catch(StrawpollNotExists ex){
+    		res="strawpoll does not exist";
+    		LOGGER.info(res);
+		} catch(Exception e){
+    		res="Error occured";
+    		LOGGER.info(res);
+		}
+		return new ResponseEntity<>(res, HttpStatus.OK);
+	}
+
+
     /**
      * Save a vote for a strawpoll
      * @return the HTTP response

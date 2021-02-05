@@ -52,6 +52,7 @@ public class StrawpollService {
      * @param author        author of the suggestion his user_id/mail
      * @return              true if insertion worked
      */
+    @Transactional
     public Strawpoll createStrawpoll(String title, String author, Date expiracy, List<String> choices)
     throws EmptyStrawpoll {
         if(choices==null)
@@ -77,6 +78,7 @@ public class StrawpollService {
                 choicesRes.add(instantianteChoice(choice, strawpoll));
             }
         }
+
         choicesRes.stream().parallel().map(c -> choiceDAO.save(c)).collect(Collectors.toList());
         return strawpoll;
     }
@@ -162,5 +164,14 @@ public class StrawpollService {
         return strawpollDAO.findByTitle(title);
     }
 
+    /**
+     * @see StrawpollDAO#deleteById(Object)
+     */
+    @Transactional
+    public void deleteStrawpoll(int id) throws StrawpollNotExists{
+        if(!strawpollDAO.existsById(id))
+            throw new StrawpollNotExists();
+        strawpollDAO.deleteById(id);
+    }
 
 }
