@@ -1,4 +1,5 @@
 package com.sorbonne.safetyline.service;
+import com.sorbonne.safetyline.controller.SafetyLineController;
 /**
  *
  * @author Georges Mathieu/ Memmi Sacha
@@ -8,13 +9,20 @@ package com.sorbonne.safetyline.service;
  */
 import com.sorbonne.safetyline.dataAccess.ChoiceDAO;
 import com.sorbonne.safetyline.dataAccess.StrawpollDAO;
+import com.sorbonne.safetyline.dataAccess.VoteDAO;
+import com.sorbonne.safetyline.dto.VoteDTO;
 import com.sorbonne.safetyline.exception.EmptyChoice;
 import com.sorbonne.safetyline.exception.EmptyStrawpoll;
 import com.sorbonne.safetyline.exception.StrawpollNotExists;
 import com.sorbonne.safetyline.model.Choice;
 import com.sorbonne.safetyline.model.Strawpoll;
+import com.sorbonne.safetyline.model.Vote;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -24,11 +32,17 @@ import java.util.stream.Collectors;
 
 @Service
 public class StrawpollService {
+	
+	private static final Logger LOGGER  = LoggerFactory.getLogger(StrawpollService.class);
+	
     @Autowired
     private StrawpollDAO strawpollDAO;
 
     @Autowired
     private ChoiceDAO choiceDAO;
+    
+    @Autowired
+    private VoteDAO voteDAO;
 
     /**
      * It is possible to create an empty strawpoll
@@ -79,6 +93,18 @@ public class StrawpollService {
         c.setStrawpoll(strawpoll);
         c.setChoiceContent(content);
         return c;
+    }
+    
+    /**
+     * Saves a vote in the DB
+     */
+    @Transactional
+    public void sauvegardeVote(VoteDTO voteDTO) {
+    	LOGGER.info(voteDTO.toString());
+    	String author = voteDTO.getAuthor();
+    	for (String choiceId : voteDTO.getReponses()) {
+    		voteDAO.saveVote(author, Integer.parseInt(choiceId));
+		}
     }
 
     /**

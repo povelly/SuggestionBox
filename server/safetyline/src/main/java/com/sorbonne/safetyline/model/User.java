@@ -46,7 +46,6 @@ public class User
     @JoinColumn(name = "suggestion_author")
     private List<Suggestion> suggestionList;
 
-
     public String getUserId() {
         return userId;
     }
