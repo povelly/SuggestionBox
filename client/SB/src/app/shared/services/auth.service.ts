@@ -241,7 +241,7 @@ export class AuthService {
   }
 
   getSondage():any{
-    return this.http.get(this.authUrl + "strawpoll",{observe : 'response'}).pipe(
+    return this.http.get(this.authUrl + "strawpolls",{observe : 'response'}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           return response.body;
