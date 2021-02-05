@@ -88,12 +88,11 @@ export class PageComponent implements OnInit {
     if (f.value.rep2) reponses.push(this.sondage.choices[2].idChoice)
     if (f.value.rep3) reponses.push(this.sondage.choices[3].idChoice)
     if (f.value.rep4) reponses.push(this.sondage.choices[4].idChoice)
-    console.log(reponses)
+    //console.log(reponses)
     this.repsondmod1 = new repSondMod(this.sondage.idStrawpoll, sessionStorage.getItem("username"), reponses)
-    console.log(this.repsondmod1)
-    //this.authService.repSondage(this.repsondmod1).then();
-    //this.authService.suggestion(this.addsuggmod1).subscribe(loginObserver);
-    //location.reload();
+    //console.log(this.repsondmod1)
+    this.authService.repSondage(this.repsondmod1);
+    location.reload();
   }
 
   consSond(sondage: any):void{
