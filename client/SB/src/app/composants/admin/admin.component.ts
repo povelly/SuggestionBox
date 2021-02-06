@@ -57,8 +57,8 @@ export class AdminComponent implements OnInit {
     //this.suggestions = this.authService.getSuggestion();
     //this.users = this.authService.getUsers();
 
-    //this.authService.getResSondage().then((response) => this.resSondages = response)
-    this.resSondages = this.authService.getResSondage2();
+    this.authService.getResSondage().then((response) => this.resSondages = response)
+    //this.resSondages = this.authService.getResSondage2();
     
     //this.myForm.valueChanges.subscribe(console.log)
 
