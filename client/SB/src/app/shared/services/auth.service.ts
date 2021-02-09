@@ -52,7 +52,7 @@ export class AuthService {
           this.router.navigate(['/home']);
         } else {
           this.dialogService.openErrorDialog("Mail ou mot de passe incorrects").afterClosed().subscribe(res =>{});
-          //console.log("res.status = ko")
+          console.log("res.status = ko")
           //console.log(user.message);
         }
       })
@@ -144,7 +144,7 @@ export class AuthService {
     }
     this.router.navigate(['/home']);  //Pas ici
 
-    return this.http.put(this.authUrl+ "account" + "/" + model.username, model).pipe(
+    /*return this.http.put(this.authUrl+ "account" + "/" + model.username, model).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/home']);
@@ -152,7 +152,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 
   create2(model: addUsrMod){
