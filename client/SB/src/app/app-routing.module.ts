@@ -3,9 +3,9 @@ import { Routes, RouterModule } from '@angular/router'; // CLI imports router
 
 const routes: Routes = [
     /*{ path: 'home', 
-    loadChildren: () => import("./home/home.module").then(m => m.HomeModule)},  //Ici modifier le routage 
-    { path: 'login',
-    loadChildren: () => import("./login/login.module").then(m => m.LoginModule) }, //url */
+    loadChildren: () => import("./home/home.module").then(m => m.HomeModule)}, */ //Ici modifier le routage 
+    /*{ path: 'login',
+    loadChildren: () => import("./composants/login.module").then(m => m.LoginModule) },*/ //url 
     { path: '',
     loadChildren: () => import("./composants/composants.module").then(m => m.ComposantsModule) },
   ];

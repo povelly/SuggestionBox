@@ -11,6 +11,7 @@ import { resMod } from '../models/resMod-model';
 import { promise } from 'protractor';
 import { addSondMod } from '../models/addSondMod-model';
 import { repSondMod } from '../models/repSondMod-model';
+import { DialogService } from './dialog.service';
 //import { FormGroup } from '@angular/forms';
 
 
@@ -29,7 +30,7 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
 
-  constructor(private http: HttpClient,private router: Router) { 
+  constructor(private http: HttpClient,private router: Router,private dialogService: DialogService) { 
     this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(sessionStorage.getItem('user')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -38,7 +39,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login2(model:logMod):Promise<void>{
+  login(model:logMod):Promise<void>{
     return this.http.post(this.authUrl + "safetylineConnexion", model, {observe : 'response'}).pipe(
       map((response: any) => {
         const user = response;
@@ -50,18 +51,20 @@ export class AuthService {
           //console.log(localStorage.getItem("username"))
           this.router.navigate(['/home']);
         } else {
-          console.log("res.status = ko")
+          this.dialogService.openErrorDialog("Mail ou mot de passe incorrects").afterClosed().subscribe(res =>{});
+          //console.log("res.status = ko")
           //console.log(user.message);
         }
       })
     ).toPromise()
   }
 
-  login(model: logMod) { 
+  login2(model: logMod) { 
     sessionStorage.setItem('token', 'token');
     sessionStorage.setItem('username', model.username);
     sessionStorage.setItem('admin', 'true');
     this.router.navigate(['/home']);
+    //this.dialogService.openErrorDialog("Mail ou mot de passe incorrects").afterClosed().subscribe(res =>{});
     return of(true).toPromise();
   }
 
@@ -133,7 +136,14 @@ export class AuthService {
     return of(true);
   }
 
-  create(model: addUsrMod):Promise<void>{
+  //Pas joli joli -> Teams cours promise
+  async create(model: addUsrMod):Promise<void>{
+    let res = await this.http.put(this.authUrl+ "account" + "/" + model.username, model).toPromise();
+    if (res){
+      console.log(res);
+    }
+    this.router.navigate(['/home']);  //Pas ici
+
     return this.http.put(this.authUrl+ "account" + "/" + model.username, model).pipe(
       map((response: string) => {
         if (response == null) {

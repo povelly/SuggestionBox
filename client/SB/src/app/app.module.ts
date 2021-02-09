@@ -15,8 +15,11 @@ import { MatButtonModule} from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import {InterceptorService} from 'src/app/shared/services/interceptor.service';
+import { ConfirmDialogComponent } from './composants/confirm-dialog/confirm-dialog.component';
+import { ErrorConfirmComponent } from './composants/error-confirm/error-confirm.component';
 
 
 @NgModule({
@@ -36,10 +39,12 @@ import {InterceptorService} from 'src/app/shared/services/interceptor.service';
     MatCheckboxModule,
     MatChipsModule,
     MatIconModule,
+    MatDialogModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents:[ConfirmDialogComponent, ErrorConfirmComponent]
 })
 export class AppModule { }
