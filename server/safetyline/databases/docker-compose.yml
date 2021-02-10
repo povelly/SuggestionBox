@@ -14,3 +14,8 @@ services:
   volumes:
     - ./dump:/docker-entrypoint-initdb.d
     - /opt/mysql_safetyline:/var/lib/mysql
+#   networks:
+#     - myNetworkBackEnd
+# networks: 
+#  myNetworkBackEnd:
+#     driver: bridge

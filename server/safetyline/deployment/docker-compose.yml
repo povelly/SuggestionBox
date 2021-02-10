@@ -1,0 +1,49 @@
+version: "3.5"
+services:
+ db: 
+  image: mysql
+  restart: always
+  container_name: db-mysql
+  ports:
+  - "3306:3306"
+  environment:
+  - MYSQL_ROOT_PASSWORD=root
+  - MYSQL_USER=user
+  - MYSQL_PASSWORD=userpassword
+  - MYSQL_DATABASE=safetyline
+  - TZ=Europe/Paris
+  volumes:
+    - ./dump:/docker-entrypoint-initdb.d
+    - /opt/mysql_safetyline:/var/lib/mysql
+  networks:
+    - back-network
+  
+
+ back:
+    image: safetyline/back
+    restart: on-failure
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    ports:
+      - "8020:8020"
+    environment: 
+    - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/safetyline?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    - SPRING_DATASOURCE_NAME=safetyline
+    - SPRING_DATASOURCE_USERNAME=user
+    - SPRING_DATASOURCE_PASSWORD=userpassword
+    - SERVER_PORT=8020
+    - SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver
+    depends_on: 
+      - "db"
+    networks: 
+      - back-network
+    # links:
+    #   - db
+networks: 
+  back-network:
+    name: custom_back
+    driver: bridge
+
+  
+    
