@@ -1,5 +1,15 @@
 package com.sorbonne.safetyline.service;
-import com.sorbonne.safetyline.controller.SafetyLineController;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  *
  * @author Georges Mathieu/ Memmi Sacha
@@ -12,24 +22,10 @@ import com.sorbonne.safetyline.dataAccess.StrawpollDAO;
 import com.sorbonne.safetyline.dataAccess.VoteDAO;
 import com.sorbonne.safetyline.dto.VoteDTO;
 import com.sorbonne.safetyline.exception.AlreadyVotedException;
-import com.sorbonne.safetyline.exception.EmptyChoice;
 import com.sorbonne.safetyline.exception.EmptyStrawpoll;
 import com.sorbonne.safetyline.exception.StrawpollNotExists;
 import com.sorbonne.safetyline.model.Choice;
 import com.sorbonne.safetyline.model.Strawpoll;
-import com.sorbonne.safetyline.model.Vote;
-
-import org.hibernate.internal.build.AllowSysOut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.time.LocalDate;
-import java.util.stream.Collectors;
 
 
 @Service

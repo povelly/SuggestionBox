@@ -7,20 +7,26 @@ package com.sorbonne.safetyline.service;
  *
  */
 
-import com.mailjet.client.errors.MailjetException;
-import com.mailjet.client.errors.MailjetSocketTimeoutException;
-import com.sorbonne.safetyline.dataAccess.SuggestionDAO;
-import com.sorbonne.safetyline.model.Suggestion;
-import com.sorbonne.safetyline.model.User;
-import com.sorbonne.safetyline.utils.MailJetUtil;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.mailjet.client.errors.MailjetException;
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
+import com.sorbonne.safetyline.dataAccess.SuggestionDAO;
+import com.sorbonne.safetyline.exception.SuggestionNotExists;
+import com.sorbonne.safetyline.model.Suggestion;
+import com.sorbonne.safetyline.model.User;
+import com.sorbonne.safetyline.utils.MailJetUtil;
 
 @Service
 public class SuggestionService {
@@ -94,6 +100,16 @@ public class SuggestionService {
 		 */
 		MailJetUtil.sendMultiple(adminsMail, "Nouvelle suggestion sur la SuggestionBox de Safetyline",
 				"Bonjour, une nouvelle suggestion a été envoyée par un utilisateur");
+    }
+    
+    /**
+     * @see suggestionDAO#deleteById(Object)
+     */
+    @Transactional
+    public void deleteStrawpoll(int id) throws SuggestionNotExists{
+        if(!suggestionDAO.existsById(id))
+            throw new SuggestionNotExists();
+        suggestionDAO.deleteById(id);
     }
 
 }
