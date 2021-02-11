@@ -274,8 +274,9 @@ public class SafetyLineController {
     public ResponseEntity<String> supprimeSuggestion(@PathVariable Integer id)
     {
     	try{
+    		
 			suggestionService.deleteStrawpoll(id);
-		
+			
     	} catch(SuggestionNotExists e) {
     	    LOGGER.error("Suggestion does not exists");
     	    return new ResponseEntity<>("Suggestion does not exists", HttpStatus.NOT_FOUND);
@@ -283,10 +284,9 @@ public class SafetyLineController {
     	} catch(Exception e) {
     	    LOGGER.error("Exception");
     	    return new ResponseEntity<>("Error occured", HttpStatus.INTERNAL_SERVER_ERROR);
-    	    
-        } finally{
-			return new ResponseEntity<>("Suggestion Deleted", HttpStatus.OK);
-		}
+    	}
+    	
+		return new ResponseEntity<>("Suggestion Deleted", HttpStatus.OK);
     }
     
     
