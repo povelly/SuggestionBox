@@ -103,6 +103,9 @@ export class AuthService {
     if(res){
       console.log(res);
       //traiter le cas de supression impossible en cas de dernier admin
+    }else{
+      this.router.navigate(['/login']);
+      sessionStorage.clear();
     }
     /*const body = { 'username': sessionStorage.getItem('username') };
     return this.http.post(this.authUrl + "accountDelete", body).pipe(
@@ -211,8 +214,12 @@ export class AuthService {
     ]
   }
 
-  deleteSugg(id:string):Promise<void>{
-    return this.http.delete(this.authUrl + "suggestion/" + id).pipe(
+  async deleteSugg(id:string):Promise<void>{
+    let res = await this.http.delete(this.authUrl + "suggestion/" + id).toPromise()
+    if(res){
+      console.log(res);
+    }
+    /*return this.http.delete(this.authUrl + "suggestion/" + id).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/admin']);
@@ -220,7 +227,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 
   getUsers():any{
@@ -271,9 +278,13 @@ export class AuthService {
     ]
   }
 
-  deleteUser(id:string):Promise<void>{
+  async deleteUser(id:string):Promise<void>{
     const body = { 'username': id };
-    return this.http.post(this.authUrl + "accountDelete", body).pipe(
+    let res = await this.http.post(this.authUrl + "accountDelete", body).toPromise();
+    if(res){
+      console.log(res);
+    }
+    /*return this.http.post(this.authUrl + "accountDelete", body).pipe(
       map((response: string) => {
         //console.log(response)
         if (response == null) {
@@ -282,7 +293,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 
   addSondage(model: addSondMod):Promise<void>{

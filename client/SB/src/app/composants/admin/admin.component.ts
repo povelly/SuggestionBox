@@ -109,7 +109,7 @@ export class AdminComponent implements OnInit {
   suppUser(id: string): void {
     this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer l'utilisateur: '" + id + "' ?").afterClosed().subscribe(res => {
       if (res) {
-        this.authService.deleteUser(id).then(() => {/*Routeur ici (ou autre code)*/ }); //mettre une fonction vide dans le then
+        this.authService.deleteUser(id).then(() => {this.router.navigate(['/admin']);}); //mettre une fonction vide dans le then
       }
     });
   }
@@ -117,7 +117,7 @@ export class AdminComponent implements OnInit {
   suppSugg(id: string, content: string): void {
     this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer la suggestion: '" + content + "' ?").afterClosed().subscribe(res => {
       if (res) {
-        this.authService.deleteSugg(id).then(() => {/*Routeur ici (ou autre code)*/ }); //mettre une fonction vide dans le then
+        this.authService.deleteSugg(id).then(() => {this.router.navigate(['/admin']);}); //mettre une fonction vide dans le then
       }
     });
   }

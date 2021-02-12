@@ -80,7 +80,7 @@ export class PageComponent implements OnInit {
       f.value.author = sessionStorage.getItem("username");
     }
     this.addsuggmod1 = new addSuggMod(f.value.content, f.value.annonymous, f.value.author)
-    this.authService.suggestion(this.addsuggmod1).then(() => {this.router.navigate(['/home']);});
+    this.authService.suggestion(this.addsuggmod1).then(() =>{});
     //this.authService.suggestion(this.addsuggmod1).subscribe(loginObserver);
   }
 
