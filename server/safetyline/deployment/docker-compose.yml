@@ -45,5 +45,3 @@ networks:
     name: custom_back
     driver: bridge
 
-  
-    
