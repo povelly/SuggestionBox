@@ -114,8 +114,8 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  suppSugg(id:string):void{
-    this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer la suggestion:?").afterClosed().subscribe(res =>{
+  suppSugg(id:string, content:string):void{
+    this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer la suggestion: '"+ content + "' ?").afterClosed().subscribe(res =>{
       if(res){
         this.authService.deleteSugg(id).then(()=>{/*Routeur ici (ou autre code)*/ }); //mettre une fonction vide dans le then
       }

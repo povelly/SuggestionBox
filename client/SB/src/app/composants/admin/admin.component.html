@@ -95,7 +95,7 @@
                 <td>{{suggestion.content}}</td>
                 <td>{{suggestion.author}}</td>
                 <td>{{suggestion.begin}}</td>
-                <mat-icon (click)="suppSugg(suggestion.id)" aria-hidden="false" aria-label="Example home icon">
+                <mat-icon (click)="suppSugg(suggestion.id, suggestion.content)" aria-hidden="false" aria-label="Example home icon">
                     delete</mat-icon>
             </tr>
         </tbody>
