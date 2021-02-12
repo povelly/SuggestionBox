@@ -202,10 +202,9 @@ export class AuthService {
   }
 
   deleteSugg(id:string):Promise<void>{
-    return this.http.delete(this.authUrl + "suggestion/" + id,{observe : 'response'}).pipe(
-      map((response: any) => {
-        //console.log(response)
-        if (response.headers['status'] == 200) {
+    return this.http.delete(this.authUrl + "suggestion/" + id).pipe(
+      map((response: string) => {
+        if (response == null) {
           this.router.navigate(['/admin']);
         } else {
           console.log(response);
