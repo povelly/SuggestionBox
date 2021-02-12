@@ -296,8 +296,12 @@ export class AuthService {
     ).toPromise()*/
   }
 
-  addSondage(model: addSondMod):Promise<void>{
-    return this.http.put(this.authUrl+ "createStrawpoll" , model).pipe(
+  async addSondage(model: addSondMod):Promise<void>{
+    let res = await this.http.put(this.authUrl+ "createStrawpoll" , model).toPromise()
+    if(res){
+      console.log(res);
+    }
+    /*return this.http.put(this.authUrl+ "createStrawpoll" , model).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/admin']);
@@ -305,7 +309,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 
   getSondage():any{
@@ -349,8 +353,12 @@ export class AuthService {
   ]
   }
 
-  repSondage(model:repSondMod):Promise<void>{
-    return this.http.post(this.authUrl + "vote", model).pipe(
+  async repSondage(model:repSondMod):Promise<void>{
+    let res = await this.http.post(this.authUrl + "vote", model).toPromise()
+    if(res){
+      console.log(res)
+    }
+    /*return this.http.post(this.authUrl + "vote", model).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/home']);
@@ -358,7 +366,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 
   getResSondage():any{

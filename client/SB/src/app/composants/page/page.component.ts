@@ -80,7 +80,7 @@ export class PageComponent implements OnInit {
       f.value.author = sessionStorage.getItem("username");
     }
     this.addsuggmod1 = new addSuggMod(f.value.content, f.value.annonymous, f.value.author)
-    this.authService.suggestion(this.addsuggmod1).then(() =>{});
+    this.authService.suggestion(this.addsuggmod1).then(() =>{location.reload();});
     //this.authService.suggestion(this.addsuggmod1).subscribe(loginObserver);
   }
 
@@ -95,7 +95,7 @@ export class PageComponent implements OnInit {
     //console.log(reponses)
     this.repsondmod1 = new repSondMod(this.sondage.idStrawpoll, sessionStorage.getItem("username"), reponses)
     //console.log(this.repsondmod1)
-    this.authService.repSondage(this.repsondmod1);
+    this.authService.repSondage(this.repsondmod1).then(() => {this.router.navigate(['/home']);});
     location.reload();
   }
 
