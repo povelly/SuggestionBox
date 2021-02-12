@@ -119,8 +119,14 @@ export class AuthService {
     return of(true);
   }
 
-  update(model: upMod):Promise<void>{
-    return this.http.post(this.authUrl + "account", model).pipe(
+  async update(model: upMod):Promise<void>{
+    let res = await this.http.post(this.authUrl + "account", model).toPromise();
+    if (res){
+      console.log(res);
+    }
+    this.router.navigate(['/home']);
+
+    /*return this.http.post(this.authUrl + "account", model).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/home']);
@@ -128,7 +134,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 
   update2(model: upMod){
