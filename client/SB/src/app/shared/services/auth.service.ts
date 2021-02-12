@@ -43,7 +43,7 @@ export class AuthService {
     return this.http.post(this.authUrl + "safetylineConnexion", model, {observe : 'response'}).pipe(
       map((response: any) => {
         const user = response;
-        if (user.status == 200) {
+        if (user.status == 200){
           //sessionStorage.setItem('user', JSON.stringify(user));
           sessionStorage.setItem('username', user.body.username);
           sessionStorage.setItem('admin', user.body.admin);
@@ -166,8 +166,12 @@ export class AuthService {
     return of(true);
   }
 
-  suggestion(model: addSuggMod):Promise<void>{
-    return this.http.post(this.authUrl + "suggestion", model).pipe(
+  async suggestion(model: addSuggMod):Promise<void>{
+    let res = await this.http.post(this.authUrl + "suggestion", model).toPromise()
+    if(res){
+      console.log(res);
+    }
+    /*return this.http.post(this.authUrl + "suggestion", model).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/home']);
@@ -175,7 +179,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 
   suggestion2(model: addSuggMod){

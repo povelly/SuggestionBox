@@ -56,9 +56,9 @@ export class PageComponent implements OnInit {
 
 
   clicSurBouton():void{
-    this.dialogService.openConfirmDialog("Etes vous certains de vouloir auto-supprimer votre compte?").afterClosed().subscribe(res =>{
-      if(res){
-        this.authService.delete().then();
+    this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer votre compte ?").afterClosed().subscribe(res => {
+      if (res) {
+        this.authService.delete().then(() => { sessionStorage.clear(); this.router.navigate(['/login']); });
       }
     });
     
@@ -80,7 +80,7 @@ export class PageComponent implements OnInit {
       f.value.author = sessionStorage.getItem("username");
     }
     this.addsuggmod1 = new addSuggMod(f.value.content, f.value.annonymous, f.value.author)
-    this.authService.suggestion(this.addsuggmod1).then(/*loginObserver*/);
+    this.authService.suggestion(this.addsuggmod1).then(() => {this.router.navigate(['/home']);});
     //this.authService.suggestion(this.addsuggmod1).subscribe(loginObserver);
   }
 

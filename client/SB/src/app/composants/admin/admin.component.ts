@@ -19,19 +19,19 @@ export class AdminComponent implements OnInit {
   modeSondage = false;
   modeSuggestions = false;
   consultationRes = false;
-  
+
   myForm: FormGroup;
   suggestions = [];
   users = [];
-  resSondages=[];
+  resSondages = [];
   resSondage = null;
-  cond = sessionStorage.getItem('admin')=='true';
-  addusrmod1: addUsrMod; 
+  cond = sessionStorage.getItem('admin') == 'true';
+  addusrmod1: addUsrMod;
 
-  p:Number = 1 
+  p: Number = 1
 
-  constructor(private router: Router, private authService: AuthService, private fb: FormBuilder,iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private dialogService: DialogService) {
-    
+  constructor(private router: Router, private authService: AuthService, private fb: FormBuilder, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private dialogService: DialogService) {
+
 
     iconRegistry.addSvgIcon(
       'thumbs-up',
@@ -42,14 +42,14 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
 
     this.myForm = this.fb.group({
-      username: ['',[
+      username: ['', [
         Validators.required,
         Validators.email
       ]],
-      lastName: ['',[
+      lastName: ['', [
         Validators.required,
       ]],
-      firstName: ['',[
+      firstName: ['', [
         Validators.required,
       ]],
       admin: [false]
@@ -57,97 +57,101 @@ export class AdminComponent implements OnInit {
 
     this.authService.getSuggestion().subscribe((response) => this.suggestions = response)
     this.authService.getUsers().subscribe((response) => this.users = response)
-    
+
     //this.suggestions = this.authService.getSuggestion2();
     //this.users = this.authService.getUsers2();
 
     this.authService.getResSondage().then((response) => this.resSondages = response)
     //this.resSondages = this.authService.getResSondage2();
-    
+
     //this.myForm.valueChanges.subscribe(console.log)
 
-    
+
   }
 
-  boutonCreation():void{
+  boutonCreation(): void {
     this.modeCreation = true
     this.modeSupp = false
     this.modeSondage = false
     this.modeSuggestions = false
   }
 
-  boutonSupp():void{
+  boutonSupp(): void {
     this.modeCreation = false
     this.modeSupp = true
     this.modeSondage = false
     this.modeSuggestions = false
   }
 
-  boutonSondages():void{
+  boutonSondages(): void {
     this.modeCreation = false
     this.modeSupp = false
     this.modeSondage = true
     this.modeSuggestions = false
   }
 
-  boutonSuggestions():void{
+  boutonSuggestions(): void {
     this.modeCreation = false
     this.modeSupp = false
     this.modeSondage = false
     this.modeSuggestions = true
   }
 
-  creation(f: FormGroup):void{
+  creation(f: FormGroup): void {
     const loginObserver = {
-    next: x => console.log('reception http'),
-    error: err => console.log(err)
+      next: x => console.log('reception http'),
+      error: err => console.log(err)
     };
     this.addusrmod1 = new addUsrMod(f.value.username, f.value.lastName, f.value.firstName, f.value.admin)
     this.authService.create(this.addusrmod1).then();
   }
 
-  suppUser(id:string):void{
-    this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer l'utilisateur: '"+ id + "' ?").afterClosed().subscribe(res =>{
-      if(res){
-        this.authService.deleteUser(id).then(()=>{/*Routeur ici (ou autre code)*/ }); //mettre une fonction vide dans le then
+  suppUser(id: string): void {
+    this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer l'utilisateur: '" + id + "' ?").afterClosed().subscribe(res => {
+      if (res) {
+        this.authService.deleteUser(id).then(() => {/*Routeur ici (ou autre code)*/ }); //mettre une fonction vide dans le then
       }
     });
   }
 
-  suppSugg(id:string, content:string):void{
-    this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer la suggestion: '"+ content + "' ?").afterClosed().subscribe(res =>{
-      if(res){
-        this.authService.deleteSugg(id).then(()=>{/*Routeur ici (ou autre code)*/ }); //mettre une fonction vide dans le then
+  suppSugg(id: string, content: string): void {
+    this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer la suggestion: '" + content + "' ?").afterClosed().subscribe(res => {
+      if (res) {
+        this.authService.deleteSugg(id).then(() => {/*Routeur ici (ou autre code)*/ }); //mettre une fonction vide dans le then
       }
     });
   }
 
-  clicSurBouton():void{
-    this.authService.delete().then(()=>{sessionStorage.clear();
-      this.router.navigate(['/login']);});
+  clicSurBouton(): void {
+    this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer votre compte ?").afterClosed().subscribe(res => {
+      if (res) {
+        this.authService.delete().then(() => { sessionStorage.clear(); this.router.navigate(['/login']); });
+      }
+    });
   }
 
-  cancel():void{
+
+  cancel(): void {
     sessionStorage.clear()
     //console.log(localStorage)
     //this.authService.logout();
     this.router.navigate(['/login']);
   }
 
-  suppSond(sondage:any):void{
-    this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer le sondage: '"+ sondage.title +"' ?").afterClosed().subscribe(res =>{
-      if(res){
+  suppSond(sondage: any): void {
+    this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer le sondage: '" + sondage.title + "' ?").afterClosed().subscribe(res => {
+      if (res) {
         this.authService.deleteSondage(sondage.idStrawpoll);
       }
     });
-    
+
   }
 
-  consResSond(sondage: any):void{
+  consResSond(sondage: any): void {
     this.resSondage = sondage;
     this.consultationRes = true;
   }
 
-//this.dialogService.openErrorDialog("Error").afterClosed().subscribe(res =>{});
+  //this.dialogService.openErrorDialog("Error").afterClosed().subscribe(res =>{});
 
 }
