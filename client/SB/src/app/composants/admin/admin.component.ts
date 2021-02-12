@@ -56,10 +56,10 @@ export class AdminComponent implements OnInit {
     });
 
     this.authService.getSuggestion().subscribe((response) => this.suggestions = response)
-    this.authService.getUsers().subscribe((response) => this.users = response)
+    //this.authService.getUsers().subscribe((response) => this.users = response)
     
     //this.suggestions = this.authService.getSuggestion2();
-    //this.users = this.authService.getUsers2();
+    this.users = this.authService.getUsers2();
 
     this.authService.getResSondage().then((response) => this.resSondages = response)
     //this.resSondages = this.authService.getResSondage2();

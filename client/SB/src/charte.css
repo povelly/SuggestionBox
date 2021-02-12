@@ -6,7 +6,7 @@
 }
 * {
   font-family: "Montserrat", "Lato";
-  background: var(--grey-light-color);
+  /*background: var(--grey-light-color);*/
 }
 p {
   font-size: 16px;
