@@ -24,8 +24,8 @@ To launch this application locally you have to do the following commands:
     Run the back with the good network
         docker run --name myContainerName -p 8020:8020 \
         --network yourNetworkName \
-        -e SPRING_DATASOURCE_URL=yourServerURL
-                                example for local = 'jdbc:mysql://yourDockerDatabaseName:3306/NameOfDatabase?
+        -e SPRING_DATASOURCE_URL=yourServerURL \
+                                example for local purpose = 'jdbc:mysql://yourDockerDatabaseName:3306/NameOfDatabase?
                                                     autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true' \
         -e SPRING_DATASOURCE_NAME=NameOfDatabase \
         -e SPRING_DATASOURCE_USERNAME=YourUsername \
@@ -33,4 +33,7 @@ To launch this application locally you have to do the following commands:
         -e SERVER_PORT=8020 \
         -e SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver myImageBackName
     Front Part
-    
+    Build the image of front-server
+        Go to client/SB
+        docker build -t nameOfYourImage .
+        docker run --network=yourNetworkName -it --name nameOfYourContainerFront -p 4200:80 NameOfYourImage
