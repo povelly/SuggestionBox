@@ -254,7 +254,8 @@ public class SafetyLineController {
     	try{
 			listSuggestions = suggestionService
 					.getSuggestions(suggestion.getAuthor(), suggestion.getBegin(), suggestion.getEnd())
-					.stream().parallel().map(s -> new SuggestionDTO(s.getSuggestionContent(), s.getSuggestionAuthor(), s.getSuggestionCreationDate(), suggestion.getEnd()))
+					.stream().parallel().map(s -> new SuggestionDTO(s.getSuggestionId(), s.getSuggestionContent(), 
+							s.getSuggestionAuthor(), s.getSuggestionCreationDate(), suggestion.getEnd()))
 					.collect(Collectors.toList());
 
     	} catch(Exception e) {
@@ -286,7 +287,7 @@ public class SafetyLineController {
     	    return new ResponseEntity<>("Error occured", HttpStatus.INTERNAL_SERVER_ERROR);
     	}
     	
-		return new ResponseEntity<>("Suggestion Deleted", HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.OK);
     }
     
     

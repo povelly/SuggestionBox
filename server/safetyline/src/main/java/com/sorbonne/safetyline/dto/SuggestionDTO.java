@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SuggestionDTO {
 	
+	private int id;
 	private String content;
 	private String author;
 	// interval search begin
