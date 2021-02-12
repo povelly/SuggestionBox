@@ -39,8 +39,14 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(model:logMod):Promise<void>{
-    return this.http.post(this.authUrl + "safetylineConnexion", model, {observe : 'response'}).pipe(
+  async login(model:logMod):Promise<any>{
+    let res = await this.http.post(this.authUrl + "safetylineConnexion", model, {observe : 'response'}).toPromise();
+    if(res.status == 200){
+      return res;
+    }else{
+      this.dialogService.openErrorDialog("Mail ou mot de passe incorrects").afterClosed().subscribe(res =>{});
+    }
+    /*return this.http.post(this.authUrl + "safetylineConnexion", model, {observe : 'response'}).pipe(
       map((response: any) => {
         const user = response;
         if (user.status == 200) {
@@ -56,7 +62,7 @@ export class AuthService {
           //console.log(user.message);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 
   login2(model: logMod) { 
@@ -124,17 +130,8 @@ export class AuthService {
     if (res){
       console.log(res);
     }
+    //Afficher un message ici pour dire que le mdp a ete changé
     this.router.navigate(['/home']);
-
-    /*return this.http.post(this.authUrl + "account", model).pipe(
-      map((response: string) => {
-        if (response == null) {
-          this.router.navigate(['/home']);
-        } else {
-          console.log(response);
-        }
-      })
-    ).toPromise()*/
   }
 
   update2(model: upMod){
