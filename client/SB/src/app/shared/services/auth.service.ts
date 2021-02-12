@@ -202,7 +202,7 @@ export class AuthService {
   }
 
   deleteSugg(id:string):Promise<void>{
-    return this.http.delete(this.authUrl + "suggestion/" + id).pipe(
+    return this.http.delete(this.authUrl + "suggestion/" + id,{observe : 'response'}).pipe(
       map((response: any) => {
         //console.log(response)
         if (response.status == 200) {
