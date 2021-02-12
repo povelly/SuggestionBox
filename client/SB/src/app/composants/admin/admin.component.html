@@ -91,7 +91,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let suggestion of suggestions">
+            <tr *ngFor="let suggestion of suggestions | paginate : {itemsPerPage: 5,currentPage: p}">
                 <td>{{suggestion.content}}</td>
                 <td>{{suggestion.author}}</td>
                 <td>{{suggestion.begin}}</td>
@@ -100,6 +100,9 @@
             </tr>
         </tbody>
     </table>
+    <div class="has-text-centered">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
 </div>
 
 <div *ngIf="modeSondage">
@@ -139,7 +142,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let sondage of resSondages">
+            <tr *ngFor="let sondage of resSondages | paginate : {itemsPerPage: 5,currentPage: p}">
                 <td>{{sondage.title}}</td>
                 <td>{{sondage.author}}</td>
                 <td>{{sondage.expirationDate}}</td>
@@ -150,4 +153,7 @@
             </tr>
         </tbody>
     </table>
+    <div class="has-text-centered">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
 </div>

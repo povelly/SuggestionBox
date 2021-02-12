@@ -76,7 +76,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let sondage of sondages">
+      <tr *ngFor="let sondage of sondages | paginate : {itemsPerPage: 5,currentPage: p}">
         <td>{{sondage.title}}</td>
         <td>{{sondage.author}}</td>
         <td>{{sondage.expirationDate}}</td>
@@ -84,6 +84,9 @@
       </tr>
     </tbody>
   </table>
+  <div class="has-text-centered">
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
 </div>
 
 <!--

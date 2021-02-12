@@ -39,7 +39,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login2(model:logMod):Promise<void>{
+  login(model:logMod):Promise<void>{
     return this.http.post(this.authUrl + "safetylineConnexion", model, {observe : 'response'}).pipe(
       map((response: any) => {
         const user = response;
@@ -59,7 +59,7 @@ export class AuthService {
     ).toPromise()
   }
 
-  login(model: logMod) { 
+  login2(model: logMod) { 
     sessionStorage.setItem('token', 'token');
     sessionStorage.setItem('username', model.username);
     sessionStorage.setItem('admin', 'true');

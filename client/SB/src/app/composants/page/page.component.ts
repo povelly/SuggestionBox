@@ -23,6 +23,8 @@ export class PageComponent implements OnInit {
   addsuggmod1: addSuggMod;
   repsondmod1: repSondMod;
 
+  p:Number=1;
+
   constructor(private authService: AuthService, private router: Router, private fb: FormBuilder, private dialogService: DialogService) { }
 
   cond = sessionStorage.getItem('admin')=='true';
