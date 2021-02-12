@@ -28,6 +28,8 @@ export class AdminComponent implements OnInit {
   cond = sessionStorage.getItem('admin')=='true';
   addusrmod1: addUsrMod; 
 
+  p:Number = 1 
+
   constructor(private router: Router, private authService: AuthService, private fb: FormBuilder,iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private dialogService: DialogService) {
     
 
@@ -57,7 +59,7 @@ export class AdminComponent implements OnInit {
     this.authService.getUsers().subscribe((response) => this.users = response)
     
     //this.suggestions = this.authService.getSuggestion2();
-    //this.users = this.authService.getUsers();
+    //this.users = this.authService.getUsers2();
 
     this.authService.getResSondage().then((response) => this.resSondages = response)
     //this.resSondages = this.authService.getResSondage2();

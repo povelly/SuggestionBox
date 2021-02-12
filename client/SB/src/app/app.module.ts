@@ -20,6 +20,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {InterceptorService} from 'src/app/shared/services/interceptor.service';
 import { ConfirmDialogComponent } from './composants/confirm-dialog/confirm-dialog.component';
 import { ErrorConfirmComponent } from './composants/error-confirm/error-confirm.component';
+import {NgxPaginationModule} from 'ngx-pagination'
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { ErrorConfirmComponent } from './composants/error-confirm/error-confirm.
     MatChipsModule,
     MatIconModule,
     MatDialogModule,
+    NgxPaginationModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
