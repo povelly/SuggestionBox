@@ -38,8 +38,7 @@ export class LoginFormComponent implements OnInit {
     };
     this.logmod1 = new logMod(f2.value.username, f2.value.password)
     //this.authService.login(this.logmod1).subscribe(loginObserver);
-    this.authService.login(this.logmod1).then((res)=>{sessionStorage.setItem('username', res.body.username);
-    sessionStorage.setItem('admin', res.body.admin);});
+    this.authService.login(this.logmod1).then();
   }
 
   /*onSubmit(f: NgForm) {
