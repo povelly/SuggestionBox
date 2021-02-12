@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 //import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { logMod } from 'src/app/shared/models/logMod-model';
+import { DialogService } from 'src/app/shared/services/dialog.service';
 
 @Component({
   selector: 'app-login-form',
@@ -15,7 +16,7 @@ export class LoginFormComponent implements OnInit {
   myForm: FormGroup;
   logmod1: logMod; 
 
-  constructor(private authService: AuthService, private fb: FormBuilder) { }
+  constructor(private authService: AuthService, private fb: FormBuilder,private dialogService: DialogService) { }
 
   ngOnInit(): void {
     this.myForm = this.fb.group({
@@ -38,7 +39,7 @@ export class LoginFormComponent implements OnInit {
     };
     this.logmod1 = new logMod(f2.value.username, f2.value.password)
     //this.authService.login(this.logmod1).subscribe(loginObserver);
-    this.authService.login(this.logmod1).then();
+    this.authService.login(this.logmod1).then().catch(() => {this.dialogService.openErrorDialog("Mail ou mot de passe incorrects").afterClosed().subscribe(res =>{});})
   }
 
   /*onSubmit(f: NgForm) {
