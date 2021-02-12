@@ -205,7 +205,7 @@ export class AuthService {
     return this.http.delete(this.authUrl + "suggestion/" + id,{observe : 'response'}).pipe(
       map((response: any) => {
         //console.log(response)
-        if (response.status == 200) {
+        if (response.headers['status'] == 200) {
           this.router.navigate(['/admin']);
         } else {
           console.log(response);
