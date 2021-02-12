@@ -73,7 +73,7 @@ export class AuthService {
   }*/
 
   async reset(model: resMod):Promise<void>{
-    let res = await this.http.post(this.authUrl + "forgetPassword", model);
+    let res = await this.http.post(this.authUrl + "forgetPassword", model).toPromise();
     if(res){
       console.log(res)
     }

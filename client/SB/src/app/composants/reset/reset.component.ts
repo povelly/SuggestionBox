@@ -33,7 +33,8 @@ export class ResetComponent implements OnInit {
       error: err => console.log(err)
     };
     this.resmod1 = new resMod(f2.value.username)
-    this.authService.reset(this.resmod1).then(()=>{this.router.navigate(['/login']);});
+    this.authService.reset(this.resmod1).then(()=>{this.router.navigate(['/login']);
+    sessionStorage.clear();});
 
   }
 
