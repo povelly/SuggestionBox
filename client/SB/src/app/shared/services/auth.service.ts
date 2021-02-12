@@ -194,11 +194,24 @@ export class AuthService {
   getSuggestion2(){
     return [
         {
-          "username":"moi",
-          "text": "J'aime les pommes",
-          "date": 18
+          "author":"moi",
+          "content": "J'aime les pommes",
+          "begin": 18
         }   
     ]
+  }
+
+  deleteSugg(id:string):Promise<void>{
+    return this.http.delete(this.authUrl + "suggestion/" + id).pipe(
+      map((response: any) => {
+        //console.log(response)
+        if (response.status == 200) {
+          this.router.navigate(['/admin']);
+        } else {
+          console.log(response);
+        }
+      })
+    ).toPromise()
   }
 
   getUsers():any{
@@ -229,7 +242,7 @@ export class AuthService {
     return this.http.post(this.authUrl + "accountDelete", body).pipe(
       map((response: string) => {
         //console.log(response)
-        if (response == "") {
+        if (response == null) {
           this.router.navigate(['/admin']);
         } else {
           console.log(response);

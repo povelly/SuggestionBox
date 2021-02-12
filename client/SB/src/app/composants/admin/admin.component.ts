@@ -56,7 +56,7 @@ export class AdminComponent implements OnInit {
     this.authService.getSuggestion().subscribe((response) => this.suggestions = response)
     this.authService.getUsers().subscribe((response) => this.users = response)
     
-    //this.suggestions = this.authService.getSuggestion();
+    //this.suggestions = this.authService.getSuggestion2();
     //this.users = this.authService.getUsers();
 
     this.authService.getResSondage().then((response) => this.resSondages = response)
@@ -108,6 +108,14 @@ export class AdminComponent implements OnInit {
     this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer l'utilisateur: '"+ id + "' ?").afterClosed().subscribe(res =>{
       if(res){
         this.authService.deleteUser(id).then(()=>{/*Routeur ici (ou autre code)*/ }); //mettre une fonction vide dans le then
+      }
+    });
+  }
+
+  suppSugg(id:string):void{
+    this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer la suggestion:?").afterClosed().subscribe(res =>{
+      if(res){
+        this.authService.deleteSugg(id).then(()=>{/*Routeur ici (ou autre code)*/ }); //mettre une fonction vide dans le then
       }
     });
   }

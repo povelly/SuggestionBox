@@ -84,6 +84,7 @@
                 <th>Contenu</th>
                 <th>Auteur</th>
                 <th>Date</th>
+                <th>Suppression</th>
             </tr>
         </thead>
         <tbody>
@@ -91,6 +92,8 @@
                 <td>{{suggestion.content}}</td>
                 <td>{{suggestion.author}}</td>
                 <td>{{suggestion.begin}}</td>
+                <mat-icon (click)="suppSugg(suggestion.id)" aria-hidden="false" aria-label="Example home icon">
+                    delete</mat-icon>
             </tr>
         </tbody>
     </table>
