@@ -48,12 +48,11 @@ export class AuthService {
           sessionStorage.setItem('username', user.body.username);
           sessionStorage.setItem('admin', user.body.admin);
           this.currentUserSubject.next(user);
-          //console.log(localStorage.getItem("username"))
+          console.log(localStorage.getItem("username"))
           this.router.navigate(['/home']);
         } else {
           this.dialogService.openErrorDialog("Mail ou mot de passe incorrects").afterClosed().subscribe(res =>{});
           console.log("res.status = ko")
-          //console.log(user.message);
         }
       })
     ).toPromise()
@@ -77,6 +76,7 @@ export class AuthService {
     if(res){
       console.log(res)
     }
+    this.dialogService.openErrorDialog("Mot de passe modifié").afterClosed().subscribe(res =>{});
     /*return this.http.post(this.authUrl + "forgetPassword", model).pipe(
       map((response: string) => {
         if (response == null) {
@@ -97,8 +97,14 @@ export class AuthService {
     return of(true);
   }
 
-  delete():Promise<void>{
+  async delete():Promise<void>{
     const body = { 'username': sessionStorage.getItem('username') };
+    let res = await this.http.post(this.authUrl + "accountDelete", body).toPromise()
+    if(res){
+      console.log(res);
+      //traiter le cas de supression impossible en cas de dernier admin
+    }
+    /*const body = { 'username': sessionStorage.getItem('username') };
     return this.http.post(this.authUrl + "accountDelete", body).pipe(
       map((response: string) => {
         //console.log(response)
@@ -111,7 +117,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 
   delete2(){

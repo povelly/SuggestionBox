@@ -123,7 +123,8 @@ export class AdminComponent implements OnInit {
   }
 
   clicSurBouton():void{
-    this.authService.delete().then();
+    this.authService.delete().then(()=>{sessionStorage.clear();
+      this.router.navigate(['/login']);});
   }
 
   cancel():void{
