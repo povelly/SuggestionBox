@@ -103,13 +103,13 @@ export class AdminComponent implements OnInit {
       error: err => console.log(err)
     };
     this.addusrmod1 = new addUsrMod(f.value.username, f.value.lastName, f.value.firstName, f.value.admin)
-    this.authService.create(this.addusrmod1).then();
+    this.authService.create(this.addusrmod1).then(() => {this.router.navigate(['/home']);});
   }
 
   suppUser(id: string): void {
     this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer l'utilisateur: '" + id + "' ?").afterClosed().subscribe(res => {
       if (res) {
-        this.authService.deleteUser(id).then(() => {this.router.navigate(['/admin']);}); //mettre une fonction vide dans le then
+        this.authService.deleteUser(id).then(() => {this.router.navigate(['/admin']);}); 
       }
     });
   }
@@ -117,7 +117,7 @@ export class AdminComponent implements OnInit {
   suppSugg(id: string, content: string): void {
     this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer la suggestion: '" + content + "' ?").afterClosed().subscribe(res => {
       if (res) {
-        this.authService.deleteSugg(id).then(() => {this.router.navigate(['/admin']);}); //mettre une fonction vide dans le then
+        this.authService.deleteSugg(id).then(() => {this.router.navigate(['/admin']);}); 
       }
     });
   }
@@ -141,7 +141,7 @@ export class AdminComponent implements OnInit {
   suppSond(sondage: any): void {
     this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer le sondage: '" + sondage.title + "' ?").afterClosed().subscribe(res => {
       if (res) {
-        this.authService.deleteSondage(sondage.idStrawpoll);
+        this.authService.deleteSondage(sondage.idStrawpoll).then(()=>{this.router.navigate(['/admin']);});
       }
     });
 

@@ -95,8 +95,7 @@ export class PageComponent implements OnInit {
     //console.log(reponses)
     this.repsondmod1 = new repSondMod(this.sondage.idStrawpoll, sessionStorage.getItem("username"), reponses)
     //console.log(this.repsondmod1)
-    this.authService.repSondage(this.repsondmod1).then(() => {this.router.navigate(['/home']);});
-    location.reload();
+    this.authService.repSondage(this.repsondmod1).then(() => {location.reload();});
   }
 
   consSond(sondage: any):void{

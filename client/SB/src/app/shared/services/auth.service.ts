@@ -48,7 +48,7 @@ export class AuthService {
           sessionStorage.setItem('username', user.body.username);
           sessionStorage.setItem('admin', user.body.admin);
           this.currentUserSubject.next(user);
-          console.log(localStorage.getItem("username"))
+          //console.log(localStorage.getItem("username"))
           this.router.navigate(['/home']);
         } else {
           this.dialogService.openErrorDialog("Mail ou mot de passe incorrects").afterClosed().subscribe(res =>{});
@@ -137,7 +137,6 @@ export class AuthService {
     if (res){
       console.log(res);
     }
-    this.router.navigate(['/home']);
   }
 
   update2(model: upMod){
@@ -151,7 +150,7 @@ export class AuthService {
     if (res){
       console.log(res);
     }
-    this.router.navigate(['/home']);  //Pas ici
+    
 
     /*return this.http.put(this.authUrl+ "account" + "/" + model.username, model).pipe(
       map((response: string) => {
@@ -413,9 +412,14 @@ export class AuthService {
   ]
   }
 
-  deleteSondage(id:string):Promise<void>{
+  async deleteSondage(id:string):Promise<void>{
     //const body = { 'idStrawpoll': id };
-    return this.http.delete(this.authUrl + "strawpoll/" + id).pipe(
+    let res = await this.http.delete(this.authUrl + "strawpoll/" + id).toPromise()
+    if(res){
+      console.log(res)
+    }
+
+    /*return this.http.delete(this.authUrl + "strawpoll/" + id).pipe(
       map((response: string) => {
         //console.log(response)
         if (response == "") {
@@ -424,6 +428,6 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 }

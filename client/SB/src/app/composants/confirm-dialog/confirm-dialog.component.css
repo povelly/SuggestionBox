@@ -2,3 +2,30 @@ mat-icon{
     font-family: 'Material Icons' !important;
     cursor : pointer;
   }
+
+  .confirm-windows {
+    border: 3px solid #d97cc0;
+  }
+  .confirm-message {
+    font-weight: bold;
+    font-size: 16px;
+    font-family: "Montserrat", "Lato";
+    font-family: "Lato";
+    color: #613054;
+    padding: 3px;
+    background: #e6b5d9;
+    border-bottom: 3px solid #d158b0;
+  }
+  .confirm-button {
+    background: #b3599b;
+    font-size: 12px;
+    color: white;
+    border: 1px solid #A80D72;;
+    height: 20px;
+    width: 50px;
+  }
+  .confirm-box {
+    text-align: center;
+    background: #f5e4f0;
+    padding: 10px;
+  }

@@ -35,8 +35,9 @@
             </textarea>
 
         <div>
+          <label for="anonymous">Anonyme:</label>
           <input formControlName="anonymous" type="checkbox" id="anonymous" name="anonymous">
-          <label for="anonymous">anonymous</label>
+          
         </div>
         <button type="submit" [disabled]="myForm.invalid" class="btn btn-primary">Envoyer suggestion </button>
 
@@ -65,14 +66,14 @@
     </div>
   </div>
 
-  <h3>Sondages :</h3>
+  <h3 style="text-align: center;">Sondages :</h3>
   <table class="table table-bordered">
     <thead>
       <tr>
         <th>Titre</th>
         <th>Auteur</th>
         <th>Date d'expiration</th>
-        <th>Réponse</th>
+        <th>Consultation</th>
       </tr>
     </thead>
     <tbody>
@@ -80,7 +81,7 @@
         <td>{{sondage.title}}</td>
         <td>{{sondage.author}}</td>
         <td>{{sondage.expirationDate}}</td>
-        <mat-icon (click)="consSond(sondage)" aria-hidden="false" aria-label="Example home icon">done</mat-icon>
+        <td><mat-icon (click)="consSond(sondage)" aria-hidden="false" aria-label="Example home icon">done</mat-icon></td>
       </tr>
     </tbody>
   </table>

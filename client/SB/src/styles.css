@@ -6,3 +6,28 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 mat-icon{
     font-family: 'Material Icons' !important;
   }
+
+  button:disabled {
+
+  background: linear-gradient(to left, var(#7639AA), var(#A80D72));
+  opacity: 0.44;
+
+  }
+
+  .ng-valid:not(form) {
+    border-left: 5px solid #42A948; /* green */
+  }
+
+  .ng-invalid:not(form)  {
+    border-left: 5px solid #a94442; /* red */
+  }
+
+  input[type='checkbox'] { height:25px }
+
+  mat-icon{
+    font-family: 'Material Icons' !important;
+    cursor : pointer;
+    color: black;
+    background-color: green; 
+    font-size: 20px;
+  }

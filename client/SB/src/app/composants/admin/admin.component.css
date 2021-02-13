@@ -7,11 +7,7 @@ body {
     --grey-dark-color: #434343;
     --grey-light-color: #F8F8F8;
 }
-* {
-  margin: 0px;
-  padding: 0px;
-  font-family: "Montserrat", "Lato";
-}
+
 nav {
   width: 100%;
   margin: 0;
@@ -59,6 +55,7 @@ nav a:hover, .profil:hover {
 }
 nav > ul li:hover .under {
   display: block;
+  padding:0px;
 }
 .under li {
   float: none;
@@ -68,7 +65,7 @@ nav > ul li:hover .under {
 .under a, .under .profil {
   padding: 10px;
   border-bottom: none;
-  background-color: rgb(43, 50, 116);
+  background-color: var(--primary-color);
 }
 .under a:hover {
   border-bottom: none;
@@ -142,4 +139,18 @@ td:hover {
 mat-icon{
   font-family: 'Material Icons' !important;
   cursor : pointer;
+}
+
+has-text-centered{
+  text-align: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+button{
+  display: block;
+margin: auto;
 }

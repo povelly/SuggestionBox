@@ -7,11 +7,6 @@ body {
       --grey-dark-color: #434343;
       --grey-light-color: #F8F8F8;
   }
-  * {
-    margin: 0px;
-    padding: 0px;
-    font-family: "Montserrat", "Lato";
-  }
   nav {
     width: 100%;
     margin: 0;
@@ -59,6 +54,7 @@ body {
   }
   nav > ul li:hover .under {
     display: block;
+    padding: 0px;
   }
   .under li {
     float: none;
@@ -142,6 +138,10 @@ body {
   mat-icon{
     font-family: 'Material Icons' !important;
     cursor : pointer;
+    color: black;
+    background-color: green; 
+    font-size: 20px;
+    vertical-align: middle;
   }
 
 
