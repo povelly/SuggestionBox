@@ -154,3 +154,8 @@ button{
   display: block;
 margin: auto;
 }
+
+.btn-grid > .btn
+{
+    margin: 20px auto;
+}

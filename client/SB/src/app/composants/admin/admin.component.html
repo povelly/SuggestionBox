@@ -43,10 +43,12 @@
                     <input formControlName="admin" type="checkbox" id="admin" name="admin">
                     
                 </div>
-                <button type="submit" [disabled]="myForm.invalid" class="btn btn-primary">Envoyer inscription </button>
-
+                <div class="btn-grid">
+                    <button type="submit" [disabled]="myForm.invalid" class="btn btn-primary">Envoyer inscription </button>
+                    <button routerLink="/home" type="button" class="btn btn-primary">Retour</button>
+                </div>
             </form>
-            <button routerLink="/home" type="button" class="btn btn-primary">Retour</button>
+            
         </div>
     </div>
 </div>
