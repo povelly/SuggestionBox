@@ -56,7 +56,7 @@ export class PageComponent implements OnInit {
 
 
   clicSurBouton():void{
-    this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer votre compte ?").afterClosed().subscribe(res => {
+    this.dialogService.openConfirmDialog("Êtes-vous certains de vouloir supprimer votre compte ?").afterClosed().subscribe(res => {
       if (res) {
         this.authService.delete().then(() => { sessionStorage.clear(); this.router.navigate(['/login']); });
       }
