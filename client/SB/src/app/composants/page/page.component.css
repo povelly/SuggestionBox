@@ -140,5 +140,9 @@ body {
     justify-content: center;
   }
 
+  input{
+    width: 50px;
+  }
+
 
   

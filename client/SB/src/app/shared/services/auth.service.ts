@@ -345,7 +345,7 @@ export class AuthService {
               {
                   "idChoice": 3,
                   "idStrawpoll": 1,
-                  "content": "RES"
+                  "content": "RESAAAAAAAAAAAAAA"
               }
           ]
       }

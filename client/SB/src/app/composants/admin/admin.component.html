@@ -21,7 +21,7 @@
 <div *ngIf="modeCreation">
     <div class="login-form">
         <div class="login-content">
-            <h3>Ajouter un utilisateur</h3>
+            <div class="titre">Ajoutez un utilisateur:</div>
             <form [formGroup]="myForm" (ngSubmit)="creation(myForm)">
 
                 <div class="form-group">
@@ -54,7 +54,7 @@
 </div>
 
 <div *ngIf="modeSupp">
-    <h3 style="text-align: center;">Utilisateurs:</h3>
+    <div class="titre">Utilisateurs:</div>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -83,7 +83,7 @@
 </div>
 
 <div *ngIf="modeSuggestions">
-    <h3 style="text-align: center;">Suggestions :</h3>
+    <div class="titre">Suggestions:</div>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -132,7 +132,7 @@
             </tbody>
         </table>
     </div>
-    <h3 style="text-align: center;">Sondages :</h3>
+    <div class="titre">Sondages:</div>
     <table class="table table-bordered">
         <thead>
             <tr>

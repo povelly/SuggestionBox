@@ -31,3 +31,14 @@ mat-icon{
     background-color: #9e66b4; 
     font-size: 20px;
   }
+  @font-face {
+    font-family: montserrat;
+    src: url(assets/montserrat-bold.ttf) format("opentype");
+  }
+
+  .titre{
+    text-align: center; 
+    font-weight: bold; 
+    font-size: large; 
+    padding :6px
+  }
