@@ -113,6 +113,14 @@ public class StrawpollService {
     	}
 
     }
+    
+    /**
+     * @see StrawpollDAO#findByDeadlineTimeAfter()
+     */
+    public List<Strawpoll> getAvailableStrawpolls(Date lowerBound)
+    {
+        return strawpollDAO.findByDeadlineTimeAfter(lowerBound);
+    }
 
     /**
      * @see StrawpollDAO#findAll()

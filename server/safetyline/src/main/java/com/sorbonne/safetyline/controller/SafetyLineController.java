@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -375,6 +376,38 @@ public class SafetyLineController {
 					
 		} catch(Exception e){
 			LOGGER.info("error occured");
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    
+    /**
+     * Get all available strawpolls
+     * Ignores strawpoll with expired deadlines
+     * @return the HTTP response
+     */
+    @GetMapping("/availableStrawpolls")
+    @ResponseBody
+    public ResponseEntity<List<StrawpollDTO>> getAvailableStrawpolls()
+    {
+		List<StrawpollDTO> result = new ArrayList<>();
+		Date currentDate = new Date();
+		try{
+			result = strawpollService.getAvailableStrawpolls(currentDate).stream().map(s -> 
+				new StrawpollDTO(s.getTitle(), 
+						s.getAuthor(), 
+						s.getDeadlineTime(),
+						s.getStrawpollId(),
+						// Get all the different choices for this strawpoll
+						choiceService.getChoicesForOneStrawpoll(s.getStrawpollId()).stream().map(c -> 
+							new ChoiceDTO(c.getChoiceId(), c.getStrawpollId(), c.getChoiceContent(), c.getVoterCount()))
+						.collect(Collectors.toList())
+						))
+					.collect(Collectors.toList());
+			
+					
+		} catch(Exception e){
+			LOGGER.info("error occured");
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
     }
