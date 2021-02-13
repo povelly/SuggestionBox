@@ -144,5 +144,10 @@ body {
     vertical-align: middle;
   }
 
+  .pagination {
+    display: flex;
+    justify-content: center;
+  }
+
 
   
