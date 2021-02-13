@@ -30,13 +30,13 @@
                     placeholder="Email">
                 </p>-->
         </div>
-        <textarea formControlName="content" id="content" name="content" rows="5" cols="33">
+        <textarea formControlName="content" id="content" name="content" rows="5" cols="33"  placeholder="(500 caractères maximum)">
                 It was a dark and stormy night...
             </textarea>
 
         <div>
           <label for="anonymous">Anonyme:</label>
-          <input formControlName="anonymous" type="checkbox" id="anonymous" name="anonymous" placeholder="(500 caractères maximum)">
+          <input formControlName="anonymous" type="checkbox" id="anonymous" name="anonymous">
           
         </div>
         <button type="submit" [disabled]="myForm.invalid" class="btn btn-primary">Envoyer suggestion </button>
