@@ -134,15 +134,6 @@ body {
   td:hover {
     background: #D9F;
   }
-  
-  mat-icon{
-    font-family: 'Material Icons' !important;
-    cursor : pointer;
-    color: black;
-    background-color: green; 
-    font-size: 20px;
-    vertical-align: middle;
-  }
 
   .pagination {
     display: flex;

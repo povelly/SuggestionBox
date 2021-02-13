@@ -1,7 +1,17 @@
-<div>
+<!--<div>
     <div class="content-container">
       <mat-icon id="close-icon" (click)="closeDialog()">close</mat-icon>
       <span class="content-span full-width">{{data.message}}</span>
     </div>
     <button mat-flat-button id="ok-button" [mat-dialog-close]="true">OK</button>
+  </div>-->
+
+  <div class="confirm-windows">
+    <div class="confirm-message">
+      <mat-icon id="close-icon" (click)="closeDialog()">close</mat-icon>
+      <span class="content-span full-width">{{data.message}}</span>
+    </div>
+    <div class="confirm-box">
+      <button mat-flat-button class="confirm-button" id="yes-button" [mat-dialog-close]="true">Ok</button>
+    </div>
   </div>
