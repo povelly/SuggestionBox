@@ -37,7 +37,7 @@ h5 {
 }
 input {
   background: #F4F4F4;
-  border: none;
+  /*border: none;*/
   color: #808080;
   border-bottom: 2px solid #808080;
   height: 40px;
