@@ -1,12 +1,13 @@
 Application developped by:
     - Sacha MEMMI
-    - Mathieu
-    - Quentin
-    - Pierre-Octave
+    - Mathieu GEORGE
+    - Quentin PIOTROWSKI
+    - Pierre-Octave VELLY
 
 You can run the application either with:
 
 To launch this application locally you have to do the following commands:
+```
     Create the network on docker
         docker network create -d bridge yourNetworkName
     Run database docker image with the wanted options
@@ -21,9 +22,13 @@ To launch this application locally you have to do the following commands:
         -e MYSQL_PASSWORD=UsernamePASSWORD \
         -e MYSQL_DATABASE=NameOfDatabase \
         -e TZ=Europe/Paris mysql
+```
     Build the image of back-end server
+```
         docker build -t myImageBackName ./server/safetyline
+```
     Run the back with the good network
+```
         docker run --name myContainerName -p 8020:8020 \
         --network yourNetworkName \
         -e SPRING_DATASOURCE_URL=yourServerURL \
@@ -34,12 +39,16 @@ To launch this application locally you have to do the following commands:
         -e SPRING_DATASOURCE_PASSWORD=UsernamePASSWORD \
         -e SERVER_PORT=8020 \
         -e SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver myImageBackName
+```
     Front Part
     Build the image of front-server
+```
         Go to client/SB
         docker build -t nameOfYourImage .
         docker run --network=yourNetworkName -it --name nameOfYourContainerFront -p 4200:80 NameOfYourImage
+```
+or you can use docker-compose in deployment directory (Make sure you have set the variables with the one you want) : 
+```
+docker-compose up
+``` 
 
-or you can use docker-compose : 
-docker-compose up in deployment directory.
-(Make sure you have set the variables with the one you want)
