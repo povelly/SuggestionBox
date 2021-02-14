@@ -23,10 +23,13 @@ To launch this application locally you have to do the following commands:
         -e MYSQL_DATABASE=NameOfDatabase \
         -e TZ=Europe/Paris mysql
 ```
+\
     Build the image of back-end server
+    
 ```
         docker build -t myImageBackName ./server/safetyline
 ```
+\
     Run the back with the good network
 ```
         docker run --name myContainerName -p 8020:8020 \
@@ -40,6 +43,7 @@ To launch this application locally you have to do the following commands:
         -e SERVER_PORT=8020 \
         -e SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver myImageBackName
 ```
+\
     Front Part
     Build the image of front-server
 ```
