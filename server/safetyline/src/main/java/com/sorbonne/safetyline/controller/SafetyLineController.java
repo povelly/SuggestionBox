@@ -136,6 +136,11 @@ public class SafetyLineController {
 					userFromDB.get());
 			LOGGER.info("Password updated");
 
+    	} catch (WrongPasswordException e) {
+            res = "Wrong password";
+            LOGGER.error(res);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+            
 		} catch (UtilisateurInconnuException e) {
             res = "Unknown user";
             LOGGER.error(res);
@@ -446,14 +451,19 @@ public class SafetyLineController {
 		try{
 			strawpollService.sauvegardeVote(vote);
 			LOGGER.info("Vote registered");
+			
 		} catch (AlreadyVotedException e) {
 			result = "The user has already voted for this poll";
 			LOGGER.info(result);
+			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+			
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			result = "error occured while voting";
 			LOGGER.info(result);
+			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+			
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
     }

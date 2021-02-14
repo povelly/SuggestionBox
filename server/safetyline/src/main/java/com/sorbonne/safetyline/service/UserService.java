@@ -4,6 +4,7 @@ import com.mailjet.client.errors.MailjetException;
 import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import com.sorbonne.safetyline.dataAccess.*;
 import com.sorbonne.safetyline.exception.UsernameAlreadyExists;
+import com.sorbonne.safetyline.exception.WrongPasswordException;
 import com.sorbonne.safetyline.model.User;
 import com.sorbonne.safetyline.utils.MailJetUtil;
 import com.sorbonne.safetyline.utils.PasswordUtil;
@@ -95,7 +96,7 @@ public class UserService {
      */
     public void updatePassword(String userId, String oldPassword, String newPassword, 
     		User user) 
-    		throws JSONException, MailjetException, MailjetSocketTimeoutException {
+    		throws JSONException, MailjetException, MailjetSocketTimeoutException, WrongPasswordException {
     	String hashOldPassword = PasswordUtil.sha256(oldPassword);
     	
     	if(hashOldPassword.equals(user.getPassword())) {
@@ -110,6 +111,9 @@ public class UserService {
     		MailJetUtil.send(userId, "Changement de mot de passe sur la SuggestionBox de Safetyline",
     				"Bonjour, suite à votre demande, votre mot de passe a été modifié sur la SuggestionBox <br>"
     				+ "Si vous n'êtes pas à l'origine de cette demande, veuillez protéger votre compte.");
+    		
+    	} else {
+    		throw new WrongPasswordException();
     	}
         
     }
