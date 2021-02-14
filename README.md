@@ -40,6 +40,6 @@ To launch this application locally you have to do the following commands:
         docker build -t nameOfYourImage .
         docker run --network=yourNetworkName -it --name nameOfYourContainerFront -p 4200:80 NameOfYourImage
 
-or you can use : 
+or you can use docker-compose : 
 docker-compose up in deployment directory.
 (Make sure you have set the variables with the one you want)
