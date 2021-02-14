@@ -109,7 +109,7 @@ export class AdminComponent implements OnInit {
   suppUser(id: string): void {
     this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer l'utilisateur: '" + id + "' ?").afterClosed().subscribe(res => {
       if (res) {
-        this.authService.deleteUser(id).then(() => {this.router.navigate(['/admin']);}); 
+        this.authService.deleteUser(id).then(() => {location.reload();}); 
       }
     });
   }
@@ -117,7 +117,7 @@ export class AdminComponent implements OnInit {
   suppSugg(id: string, content: string): void {
     this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer la suggestion: '" + content + "' ?").afterClosed().subscribe(res => {
       if (res) {
-        this.authService.deleteSugg(id).then(() => {this.router.navigate(['/admin']);}); 
+        this.authService.deleteSugg(id).then(() => {location.reload();}); 
       }
     });
   }
@@ -141,7 +141,7 @@ export class AdminComponent implements OnInit {
   suppSond(sondage: any): void {
     this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer le sondage: '" + sondage.title + "' ?").afterClosed().subscribe(res => {
       if (res) {
-        this.authService.deleteSondage(sondage.idStrawpoll).then(()=>{this.router.navigate(['/admin']);});
+        this.authService.deleteSondage(sondage.idStrawpoll).then(()=>{location.reload();});
       }
     });
 
