@@ -50,8 +50,8 @@ Create the network on docker
 \
     Front Part
     Build the image of front-server
+    Go to client/SB
 ```
-        Go to client/SB
         docker build -t nameOfYourImage .
         docker run --network=yourNetworkName -it --name nameOfYourContainerFront -p 4200:80 NameOfYourImage
 ```
