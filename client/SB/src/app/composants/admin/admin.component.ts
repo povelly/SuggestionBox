@@ -125,7 +125,11 @@ export class AdminComponent implements OnInit {
   clicSurBouton(): void {
     this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer votre compte ?").afterClosed().subscribe(res => {
       if (res) {
-        this.authService.delete().then(() => { sessionStorage.clear(); this.router.navigate(['/login']); });
+        this.authService.delete().then(() => { sessionStorage.clear(); this.router.navigate(['/login']); }).catch(
+          (err)=>{
+            this.dialogService.openErrorDialog("Impossible de supprimer votre compte car vous êtes le dernier admin.").afterClosed().subscribe(res =>{});
+          }
+        );
       }
     });
   }
