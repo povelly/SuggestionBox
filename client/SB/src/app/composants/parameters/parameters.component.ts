@@ -56,7 +56,9 @@ export class ParametersComponent implements OnInit {
     this.authService.update(this.upmod1).then(()=>{
       this.dialogService.openErrorDialog("Mot de passe modifié").afterClosed().subscribe(() =>{
         this.router.navigate(['/home']);
-      });});
+      });}).catch(
+        () => {console.log("coucou2");}
+      );
     //this.authService.update(this.upmod1).subscribe(loginObserver);
   }
 }
