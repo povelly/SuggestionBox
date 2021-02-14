@@ -112,6 +112,11 @@ a:hover {
   border-left: 5px solid #a94442; /* red */
 } 
 
+button{
+  display: block;
+margin: auto;
+}
+
 
 .btn-grid > .btn
 {
