@@ -4,6 +4,8 @@ Application developped by:
     - Quentin
     - Pierre-Octave
 
+You can run the application either with:
+
 To launch this application locally you have to do the following commands:
     Create the network on docker
         docker network create -d bridge yourNetworkName
@@ -37,3 +39,7 @@ To launch this application locally you have to do the following commands:
         Go to client/SB
         docker build -t nameOfYourImage .
         docker run --network=yourNetworkName -it --name nameOfYourContainerFront -p 4200:80 NameOfYourImage
+
+or you can use : 
+docker-compose up in deployment directory.
+(Make sure you have set the variables with the one you want)
