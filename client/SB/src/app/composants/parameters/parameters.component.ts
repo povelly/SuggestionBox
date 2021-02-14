@@ -57,7 +57,11 @@ export class ParametersComponent implements OnInit {
       this.dialogService.openErrorDialog("Mot de passe modifié").afterClosed().subscribe(() =>{
         this.router.navigate(['/home']);
       });}).catch(
-        () => {console.log("coucou2");}
+        (err) => {
+          if (err.status=500){
+            this.dialogService.openErrorDialog("Ancien mot de passe incorrect").afterClosed().subscribe(()=>{});
+          }
+        }
       );
     //this.authService.update(this.upmod1).subscribe(loginObserver);
   }

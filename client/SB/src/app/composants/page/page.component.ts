@@ -95,7 +95,13 @@ export class PageComponent implements OnInit {
     //console.log(reponses)
     this.repsondmod1 = new repSondMod(this.sondage.idStrawpoll, sessionStorage.getItem("username"), reponses)
     //console.log(this.repsondmod1)
-    this.authService.repSondage(this.repsondmod1).then(() => {location.reload();});
+    this.authService.repSondage(this.repsondmod1).then(() => {location.reload();}).catch(
+      (err) => {
+        if(err.status == 500){
+          this.dialogService.openErrorDialog("Vous avez déjà voté pour ce sondage.").afterClosed().subscribe(() =>{});
+        }
+      }
+    );
   }
 
   consSond(sondage: any):void{

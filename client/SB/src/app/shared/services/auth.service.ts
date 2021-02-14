@@ -135,8 +135,8 @@ export class AuthService {
   async update(model: upMod):Promise<void>{
     let res = await this.http.post(this.authUrl + "account", model).toPromise();
     if (res){
-      console.log(res);
-      console.log("coucou")
+      //console.log(res);
+      //console.log("coucou");
     }
   }
 
