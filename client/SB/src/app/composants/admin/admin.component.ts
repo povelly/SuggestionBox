@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { addUsrMod } from 'src/app/shared/models/addUsrMod-model';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { DialogService } from 'src/app/shared/services/dialog.service';
 
 @Component({
   selector: 'app-admin',
@@ -27,7 +28,7 @@ export class AdminComponent implements OnInit {
   cond = sessionStorage.getItem('admin')=='true';
   addusrmod1: addUsrMod; 
 
-  constructor(private router: Router, private authService: AuthService, private fb: FormBuilder,iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+  constructor(private router: Router, private authService: AuthService, private fb: FormBuilder,iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private dialogService: DialogService) {
     
 
     iconRegistry.addSvgIcon(
@@ -54,6 +55,7 @@ export class AdminComponent implements OnInit {
 
     this.authService.getSuggestion().subscribe((response) => this.suggestions = response)
     this.authService.getUsers().subscribe((response) => this.users = response)
+    
     //this.suggestions = this.authService.getSuggestion();
     //this.users = this.authService.getUsers();
 
@@ -99,24 +101,19 @@ export class AdminComponent implements OnInit {
     error: err => console.log(err)
     };
     this.addusrmod1 = new addUsrMod(f.value.username, f.value.lastName, f.value.firstName, f.value.admin)
-    this.authService.create(this.addusrmod1).then(/*loginObserver*/);
+    this.authService.create(this.addusrmod1).then();
   }
 
   suppUser(id:string):void{
-    const loginObserver = {
-      next: x => console.log('reception http'),
-      error: err => console.log(err)
-      };
-      //console.log(id);
-      this.authService.deleteUser(id).then();
+    this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer l'utilisateur: '"+ id + "' ?").afterClosed().subscribe(res =>{
+      if(res){
+        this.authService.deleteUser(id).then(()=>{/*Routeur ici (ou autre code)*/ }); //mettre une fonction vide dans le then
+      }
+    });
   }
 
   clicSurBouton():void{
-    const loginObserver = {
-      next: x => console.log('reception http'),
-      error: err => console.log(err)
-    };
-    this.authService.delete().then(/*loginObserver*/);
+    this.authService.delete().then();
   }
 
   cancel():void{
@@ -127,12 +124,19 @@ export class AdminComponent implements OnInit {
   }
 
   suppSond(sondage:any):void{
-    this.authService.deleteSondage(sondage.idStrawpoll);
+    this.dialogService.openConfirmDialog("Etes vous certains de vouloir supprimer le sondage: '"+ sondage.title +"' ?").afterClosed().subscribe(res =>{
+      if(res){
+        this.authService.deleteSondage(sondage.idStrawpoll);
+      }
+    });
+    
   }
 
   consResSond(sondage: any):void{
     this.resSondage = sondage;
     this.consultationRes = true;
   }
+
+//this.dialogService.openErrorDialog("Error").afterClosed().subscribe(res =>{});
 
 }

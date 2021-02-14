@@ -4,6 +4,7 @@ import { FormGroup, NgForm, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { addSuggMod } from 'src/app/shared/models/addSuggMod-model';
 import { repSondMod } from 'src/app/shared/models/repSondMod-model';
+import { DialogService } from 'src/app/shared/services/dialog.service';
 
 @Component({
   selector: 'app-page',
@@ -22,7 +23,7 @@ export class PageComponent implements OnInit {
   addsuggmod1: addSuggMod;
   repsondmod1: repSondMod;
 
-  constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) { }
+  constructor(private authService: AuthService, private router: Router, private fb: FormBuilder, private dialogService: DialogService) { }
 
   cond = sessionStorage.getItem('admin')=='true';
   myForm: FormGroup;
@@ -53,11 +54,12 @@ export class PageComponent implements OnInit {
 
 
   clicSurBouton():void{
-    const loginObserver = {
-      next: x => console.log('reception http'),
-      error: err => console.log(err)
-    };
-    this.authService.delete().then(/*loginObserver*/);
+    this.dialogService.openConfirmDialog("Etes vous certains de vouloir auto-supprimer votre compte?").afterClosed().subscribe(res =>{
+      if(res){
+        this.authService.delete().then();
+      }
+    });
+    
   }
 
   cancel():void{
