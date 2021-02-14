@@ -7,10 +7,14 @@ Application developped by:
 You can run the application either with:
 
 To launch this application locally you have to do the following commands:
+
+Create the network on docker
 ```
-    Create the network on docker
         docker network create -d bridge yourNetworkName
+```
+\
     Run database docker image with the wanted options
+```
         go to the directory databases in server 
         docker run --name yourDockerDatabaseName \
         -p 3306:3306 \
