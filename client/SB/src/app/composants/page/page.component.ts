@@ -23,6 +23,8 @@ export class PageComponent implements OnInit {
   addsuggmod1: addSuggMod;
   repsondmod1: repSondMod;
 
+  p:Number=1;
+
   constructor(private authService: AuthService, private router: Router, private fb: FormBuilder, private dialogService: DialogService) { }
 
   cond = sessionStorage.getItem('admin')=='true';
@@ -54,9 +56,14 @@ export class PageComponent implements OnInit {
 
 
   clicSurBouton():void{
-    this.dialogService.openConfirmDialog("Etes vous certains de vouloir auto-supprimer votre compte?").afterClosed().subscribe(res =>{
-      if(res){
-        this.authService.delete().then();
+    this.dialogService.openConfirmDialog("Êtes-vous certains de vouloir supprimer votre compte ?").afterClosed().subscribe(res => {
+      if (res) {
+        this.authService.delete().then(() => { 
+          sessionStorage.clear(); this.router.navigate(['/login']); }).catch(
+            (err)=>{
+              this.dialogService.openErrorDialog("Impossible de supprimer votre compte car vous êtes le derneir admin").afterClosed().subscribe(() =>{});
+            }
+          );
       }
     });
     
@@ -78,7 +85,7 @@ export class PageComponent implements OnInit {
       f.value.author = sessionStorage.getItem("username");
     }
     this.addsuggmod1 = new addSuggMod(f.value.content, f.value.annonymous, f.value.author)
-    this.authService.suggestion(this.addsuggmod1).then(/*loginObserver*/);
+    this.authService.suggestion(this.addsuggmod1).then(() =>{location.reload();});
     //this.authService.suggestion(this.addsuggmod1).subscribe(loginObserver);
   }
 
@@ -93,8 +100,13 @@ export class PageComponent implements OnInit {
     //console.log(reponses)
     this.repsondmod1 = new repSondMod(this.sondage.idStrawpoll, sessionStorage.getItem("username"), reponses)
     //console.log(this.repsondmod1)
-    this.authService.repSondage(this.repsondmod1);
-    location.reload();
+    this.authService.repSondage(this.repsondmod1).then(() => {location.reload();}).catch(
+      (err) => {
+        if(err.status == 500){
+          this.dialogService.openErrorDialog("Vous avez déjà voté pour ce sondage.").afterClosed().subscribe(() =>{});
+        }
+      }
+    );
   }
 
   consSond(sondage: any):void{

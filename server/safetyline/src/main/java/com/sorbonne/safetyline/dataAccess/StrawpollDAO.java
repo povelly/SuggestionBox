@@ -10,6 +10,13 @@ import java.util.List;
 
 @Repository
 public interface StrawpollDAO extends JpaRepository<Strawpoll, Integer> {
+	
+	/**
+	 * Get the non expired strawpolls
+	 * @param lowerBound, 	current date
+	 * @return
+	 */
+	public List<Strawpoll> findByDeadlineTimeAfter(Date lowerBound);
 
     /**
      * @return                  all strawpoll in the table

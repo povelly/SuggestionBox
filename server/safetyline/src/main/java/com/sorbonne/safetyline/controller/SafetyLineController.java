@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -97,22 +98,24 @@ public class SafetyLineController {
     	String res = null;
     	try{
     		if(user.getFirstName() == null || user.getLastName() == null) throw new InvalidFormException();
-    		userService.addUser(userId, user.getFirstName(), user.getLastName(), true);
+    		userService.addUser(userId, user.getFirstName(), user.getLastName(), user.isAdmin());
     	} catch (UsernameAlreadyExists e) {
             res = "Username already exists";
             LOGGER.error(res);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
             
         } catch (InvalidFormException e) {
             res = "Invalid form";
             LOGGER.error(res);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
 
         } catch(Exception e) {
     	    res = "exception occured";
     	    LOGGER.error(res);
-
-        } finally {
-    	    return new ResponseEntity<>(res, HttpStatus.OK);
+    	    return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    	
+    	return new ResponseEntity<>(res, HttpStatus.OK);
     }
     
     /**
@@ -133,17 +136,23 @@ public class SafetyLineController {
 					userFromDB.get());
 			LOGGER.info("Password updated");
 
+    	} catch (WrongPasswordException e) {
+            res = "Wrong password";
+            LOGGER.error(res);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+            
 		} catch (UtilisateurInconnuException e) {
             res = "Unknown user";
             LOGGER.error(res);
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
 
         } catch(Exception e) {
     	    res = "error occured in server";
     	    LOGGER.error(res);
-
-        } finally {
-    	    return new ResponseEntity<>(res, HttpStatus.OK);
+    	    return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    	
+    	return new ResponseEntity<>(res, HttpStatus.OK);
     }
     
     /**
@@ -167,14 +176,15 @@ public class SafetyLineController {
 		} catch (UtilisateurInconnuException e) {
             res = "Unknown user";
             LOGGER.error(res);
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
 
         } catch(Exception e) {
     	    res = "error occured in server";
     	    LOGGER.error(res);
-
-        } finally {
-    	    return new ResponseEntity<>(res, HttpStatus.OK);
+    	    return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    	
+    	return new ResponseEntity<>(res, HttpStatus.OK);
     }
     
     
@@ -205,22 +215,28 @@ public class SafetyLineController {
     	    else{
     	    	userService.deleteUserByIdUser(user.getUsername());
 			}
+    	    LOGGER.info("Account deleted");
 		}catch(UtilisateurInconnuException u){
 			LOGGER.error("The user does not exist");
 			res="The user does not exist";
+			return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
 		}catch(LastAdminException l){
 			LOGGER.error("Can't delete the last admin's account");
 			res="Can't delete the last admin's account";
+			return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
 		}catch(MailjetException | MailjetSocketTimeoutException c ){
 			LOGGER.error("An error occured with mailJet");
 			res="An error occured with mailJet";
+			return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
 		}catch(Exception e){
 			LOGGER.error("An other error occured");
 			res="Another error occured";
-		} finally {
-			return new ResponseEntity<>(res, HttpStatus.OK);
+			return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-    }
+		
+		return new ResponseEntity<>(res, HttpStatus.OK);
+
+	}
     
     /**
      * Get all users
@@ -254,7 +270,8 @@ public class SafetyLineController {
     	try{
 			listSuggestions = suggestionService
 					.getSuggestions(suggestion.getAuthor(), suggestion.getBegin(), suggestion.getEnd())
-					.stream().parallel().map(s -> new SuggestionDTO(s.getSuggestionContent(), s.getSuggestionAuthor(), s.getSuggestionCreationDate(), suggestion.getEnd()))
+					.stream().parallel().map(s -> new SuggestionDTO(s.getSuggestionId(), s.getSuggestionContent(), 
+							s.getSuggestionAuthor(), s.getSuggestionCreationDate(), suggestion.getEnd()))
 					.collect(Collectors.toList());
 
     	} catch(Exception e) {
@@ -263,6 +280,31 @@ public class SafetyLineController {
         } finally{
 			return new ResponseEntity<>(listSuggestions, HttpStatus.OK);
 		}
+    }
+    
+    /**
+     * Deletes one suggestion
+     * @return the HTTP response
+     */
+    @DeleteMapping("/suggestion/{id}")
+    @ResponseBody
+    public ResponseEntity<String> supprimeSuggestion(@PathVariable Integer id)
+    {
+    	try{
+    		
+			suggestionService.deleteStrawpoll(id);
+			LOGGER.info("Suggestion deleted");
+			
+    	} catch(SuggestionNotExists e) {
+    	    LOGGER.error("Suggestion does not exists");
+    	    return new ResponseEntity<>("Suggestion does not exists", HttpStatus.NOT_FOUND);
+    	    
+    	} catch(Exception e) {
+    	    LOGGER.error("Exception");
+    	    return new ResponseEntity<>("Error occured", HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
+    	
+		return new ResponseEntity<>(null, HttpStatus.OK);
     }
     
     
@@ -344,6 +386,38 @@ public class SafetyLineController {
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
     }
+    
+    /**
+     * Get all available strawpolls
+     * Ignores strawpoll with expired deadlines
+     * @return the HTTP response
+     */
+    @GetMapping("/availableStrawpolls")
+    @ResponseBody
+    public ResponseEntity<List<StrawpollDTO>> getAvailableStrawpolls()
+    {
+		List<StrawpollDTO> result = new ArrayList<>();
+		Date currentDate = new Date();
+		try{
+			result = strawpollService.getAvailableStrawpolls(currentDate).stream().map(s -> 
+				new StrawpollDTO(s.getTitle(), 
+						s.getAuthor(), 
+						s.getDeadlineTime(),
+						s.getStrawpollId(),
+						// Get all the different choices for this strawpoll
+						choiceService.getChoicesForOneStrawpoll(s.getStrawpollId()).stream().map(c -> 
+							new ChoiceDTO(c.getChoiceId(), c.getStrawpollId(), c.getChoiceContent(), c.getVoterCount()))
+						.collect(Collectors.toList())
+						))
+					.collect(Collectors.toList());
+			
+					
+		} catch(Exception e){
+			LOGGER.info("error occured");
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
 
     @DeleteMapping("/strawpoll/{id}")
@@ -352,6 +426,7 @@ public class SafetyLineController {
     	String res = null;
     	try{
     		strawpollService.deleteStrawpoll(id);
+    		LOGGER.info("Strawpoll deleted");
 		} catch(StrawpollNotExists ex){
     		res="strawpoll does not exist";
     		LOGGER.info(res);
@@ -375,15 +450,20 @@ public class SafetyLineController {
     	String result = "";
 		try{
 			strawpollService.sauvegardeVote(vote);
+			LOGGER.info("Vote registered");
 			
 		} catch (AlreadyVotedException e) {
 			result = "The user has already voted for this poll";
 			LOGGER.info(result);
+			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+			
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			result = "error occured while voting";
 			LOGGER.info(result);
+			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+			
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
     }

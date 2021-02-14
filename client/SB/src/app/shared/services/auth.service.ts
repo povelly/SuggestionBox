@@ -43,7 +43,7 @@ export class AuthService {
     return this.http.post(this.authUrl + "safetylineConnexion", model, {observe : 'response'}).pipe(
       map((response: any) => {
         const user = response;
-        if (user.status == 200) {
+        if (user.status == 200){
           //sessionStorage.setItem('user', JSON.stringify(user));
           sessionStorage.setItem('username', user.body.username);
           sessionStorage.setItem('admin', user.body.admin);
@@ -53,7 +53,6 @@ export class AuthService {
         } else {
           this.dialogService.openErrorDialog("Mail ou mot de passe incorrects").afterClosed().subscribe(res =>{});
           console.log("res.status = ko")
-          //console.log(user.message);
         }
       })
     ).toPromise()
@@ -72,8 +71,13 @@ export class AuthService {
     //this.currentUserSubject.next(null);
   }*/
 
-  reset(model: resMod):Promise<void>{
-    return this.http.post(this.authUrl + "forgetPassword", model).pipe(
+  async reset(model: resMod):Promise<void>{
+    let res = await this.http.post(this.authUrl + "forgetPassword", model).toPromise();
+    if(res){
+      console.log(res)
+    }
+    this.dialogService.openErrorDialog("Mot de passe modifié").afterClosed().subscribe(res =>{});
+    /*return this.http.post(this.authUrl + "forgetPassword", model).pipe(
       map((response: string) => {
         if (response == null) {
           sessionStorage.clear();
@@ -82,7 +86,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 
   reset2(model: resMod){
@@ -93,8 +97,17 @@ export class AuthService {
     return of(true);
   }
 
-  delete():Promise<void>{
+  async delete():Promise<void>{
     const body = { 'username': sessionStorage.getItem('username') };
+    let res = await this.http.post(this.authUrl + "accountDelete", body).toPromise()
+    if(res){
+      console.log(res);
+      //traiter le cas de supression impossible en cas de dernier admin
+    }else{
+      this.router.navigate(['/login']);
+      sessionStorage.clear();
+    }
+    /*const body = { 'username': sessionStorage.getItem('username') };
     return this.http.post(this.authUrl + "accountDelete", body).pipe(
       map((response: string) => {
         //console.log(response)
@@ -107,7 +120,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 
   delete2(){
@@ -119,16 +132,12 @@ export class AuthService {
     return of(true);
   }
 
-  update(model: upMod):Promise<void>{
-    return this.http.post(this.authUrl + "account", model).pipe(
-      map((response: string) => {
-        if (response == null) {
-          this.router.navigate(['/home']);
-        } else {
-          console.log(response);
-        }
-      })
-    ).toPromise()
+  async update(model: upMod):Promise<void>{
+    let res = await this.http.post(this.authUrl + "account", model).toPromise();
+    if (res){
+      //console.log(res);
+      //console.log("coucou");
+    }
   }
 
   update2(model: upMod){
@@ -142,7 +151,7 @@ export class AuthService {
     if (res){
       console.log(res);
     }
-    this.router.navigate(['/home']);  //Pas ici
+    
 
     /*return this.http.put(this.authUrl+ "account" + "/" + model.username, model).pipe(
       map((response: string) => {
@@ -160,8 +169,12 @@ export class AuthService {
     return of(true);
   }
 
-  suggestion(model: addSuggMod):Promise<void>{
-    return this.http.post(this.authUrl + "suggestion", model).pipe(
+  async suggestion(model: addSuggMod):Promise<void>{
+    let res = await this.http.post(this.authUrl + "suggestion", model).toPromise()
+    if(res){
+      console.log(res);
+    }
+    /*return this.http.post(this.authUrl + "suggestion", model).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/home']);
@@ -169,7 +182,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 
   suggestion2(model: addSuggMod){
@@ -194,11 +207,27 @@ export class AuthService {
   getSuggestion2(){
     return [
         {
-          "username":"moi",
-          "text": "J'aime les pommes",
-          "date": 18
+          "author":"moi",
+          "content": "J'aime les pommes",
+          "begin": 18
         }   
     ]
+  }
+
+  async deleteSugg(id:string):Promise<void>{
+    let res = await this.http.delete(this.authUrl + "suggestion/" + id).toPromise()
+    if(res){
+      console.log(res);
+    }
+    /*return this.http.delete(this.authUrl + "suggestion/" + id).pipe(
+      map((response: string) => {
+        if (response == null) {
+          this.router.navigate(['/admin']);
+        } else {
+          console.log(response);
+        }
+      })
+    ).toPromise()*/
   }
 
   getUsers():any{
@@ -220,26 +249,59 @@ export class AuthService {
           "username":"moi",
           "firstName": "J'aime les pommes",
           "lastName": 18
-        }  
+        },
+        {
+          "username":"moi",
+          "firstName": "J'aime les pommes",
+          "lastName": 18
+        },
+        {
+          "username":"moi",
+          "firstName": "J'aime les pommes",
+          "lastName": 18
+        },
+        {
+          "username":"moi",
+          "firstName": "J'aime les pommes",
+          "lastName": 18
+        },
+        {
+          "username":"moi",
+          "firstName": "J'aime les pommes",
+          "lastName": 18
+        },
+        {
+          "username":"moi",
+          "firstName": "J'aime les pommes",
+          "lastName": 18
+        } 
     ]
   }
 
-  deleteUser(id:string):Promise<void>{
+  async deleteUser(id:string):Promise<void>{
     const body = { 'username': id };
-    return this.http.post(this.authUrl + "accountDelete", body).pipe(
+    let res = await this.http.post(this.authUrl + "accountDelete", body).toPromise();
+    if(res){
+      console.log(res);
+    }
+    /*return this.http.post(this.authUrl + "accountDelete", body).pipe(
       map((response: string) => {
         //console.log(response)
-        if (response == "") {
+        if (response == null) {
           this.router.navigate(['/admin']);
         } else {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 
-  addSondage(model: addSondMod):Promise<void>{
-    return this.http.put(this.authUrl+ "createStrawpoll" , model).pipe(
+  async addSondage(model: addSondMod):Promise<void>{
+    let res = await this.http.put(this.authUrl+ "createStrawpoll" , model).toPromise()
+    if(res){
+      console.log(res);
+    }
+    /*return this.http.put(this.authUrl+ "createStrawpoll" , model).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/admin']);
@@ -247,11 +309,11 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 
   getSondage():any{
-    return this.http.get(this.authUrl + "strawpolls",{observe : 'response'}).pipe(
+    return this.http.get(this.authUrl + "availableStrawpolls",{observe : 'response'}).pipe(
       map((response: any) => {
         if (response.status == 200) {
           return response.body;
@@ -284,15 +346,19 @@ export class AuthService {
               {
                   "idChoice": 3,
                   "idStrawpoll": 1,
-                  "content": "RES"
+                  "content": "RESAAAAAAAAAAAAAA"
               }
           ]
       }
   ]
   }
 
-  repSondage(model:repSondMod):Promise<void>{
-    return this.http.post(this.authUrl + "vote", model).pipe(
+  async repSondage(model:repSondMod):Promise<void>{
+    let res = await this.http.post(this.authUrl + "vote", model).toPromise()
+    if(res){
+      console.log(res)
+    }
+    /*return this.http.post(this.authUrl + "vote", model).pipe(
       map((response: string) => {
         if (response == null) {
           this.router.navigate(['/home']);
@@ -300,7 +366,7 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 
   getResSondage():any{
@@ -347,9 +413,14 @@ export class AuthService {
   ]
   }
 
-  deleteSondage(id:string):Promise<void>{
+  async deleteSondage(id:string):Promise<void>{
     //const body = { 'idStrawpoll': id };
-    return this.http.delete(this.authUrl + "strawpoll/" + id).pipe(
+    let res = await this.http.delete(this.authUrl + "strawpoll/" + id).toPromise()
+    if(res){
+      console.log(res)
+    }
+
+    /*return this.http.delete(this.authUrl + "strawpoll/" + id).pipe(
       map((response: string) => {
         //console.log(response)
         if (response == "") {
@@ -358,6 +429,6 @@ export class AuthService {
           console.log(response);
         }
       })
-    ).toPromise()
+    ).toPromise()*/
   }
 }

@@ -6,7 +6,7 @@
           <a routerLink="/admin" type="button" class="btn btn-primary">Admin</a>
         </span>
         <li><a routerLink="/parameters" type="button" class="btn btn-primary">Paramètres</a></li>
-        <li><a (click)="clicSurBouton()" class="btn btn-primary">Supprmier mon compte</a></li>
+        <li><a (click)="clicSurBouton()" class="btn btn-primary">Supprimer mon compte</a></li>
         <li><a (click)="cancel()" class="btn btn-primary">Deconnexion</a></li>
       </ul>
     </li>
@@ -19,7 +19,7 @@
 <div *ngIf="modeSuggestions">
   <div class="login-form">
     <div class="login-content">
-      <h3>Entrez une suggestion</h3>
+      <div class="titre">Entrez une suggestion:</div>
       <form [formGroup]="myForm" (ngSubmit)="sugg(myForm)">
 
         <div class="form-group">
@@ -30,13 +30,15 @@
                     placeholder="Email">
                 </p>-->
         </div>
-        <textarea formControlName="content" id="content" name="content" rows="5" cols="33">
+        <textarea formControlName="content" id="content" name="content" rows="5" cols="33"
+          placeholder="(500 caractères maximum)">
                 It was a dark and stormy night...
             </textarea>
 
         <div>
+          <label for="anonymous">Anonyme:</label>
           <input formControlName="anonymous" type="checkbox" id="anonymous" name="anonymous">
-          <label for="anonymous">anonymous</label>
+
         </div>
         <button type="submit" [disabled]="myForm.invalid" class="btn btn-primary">Envoyer suggestion </button>
 
@@ -47,43 +49,44 @@
 </div>
 
 <div *ngIf="modeSondage">
-  <div *ngIf="consultation">
-    <div class="login-form">
-      <div class="login-content">
-        <form [formGroup]="myForm2" (ngSubmit)="reponse(myForm2)">
-          <div class="form-group">
-            <label for="consultationn">{{sondage.title}}</label>
-          </div>
-          <div *ngFor="let choix of sondage.choices; index as i" >
-            <input formControlName="rep{{i}}" type="checkbox" id="rep" name="rep">
-            <label for="choix">{{choix.content}}</label>
-          </div>
-          <button type="submit" [disabled]="myForm2.invalid" class="btn btn-primary">Soumettre la réponse </button>
-          <!--<button routerLink="/login" type="button" class="btn btn-primary">Cancel</button>-->
-        </form>
+  <div *ngIf="consultation" class="login-form login-content">
+    <form [formGroup]="myForm2" (ngSubmit)="reponse(myForm2)">
+      <div class="form-group">
+        <label for="consultationn">{{sondage.title}}</label>
       </div>
-    </div>
+      <div *ngFor="let choix of sondage.choices; index as i" style="white-space: nowrap; text-align: left;">
+        <input formControlName="rep{{i}}" type="checkbox" id="rep" name="rep">
+        <label for="choix">{{choix.content}}</label>
+      </div>
+      <button type="submit" [disabled]="myForm2.invalid" class="btn btn-primary">Soumettre la réponse </button>
+      <!--<button routerLink="/login" type="button" class="btn btn-primary">Cancel</button>-->
+    </form>
   </div>
 
-  <h3>Sondages :</h3>
+  <div style="text-align: center; font-weight: bold; font-size: large; padding :6px">Sondages :</div>
   <table class="table table-bordered">
     <thead>
       <tr>
         <th>Titre</th>
         <th>Auteur</th>
         <th>Date d'expiration</th>
-        <th>Réponse</th>
+        <th>Voter</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let sondage of sondages">
+      <tr *ngFor="let sondage of sondages | paginate : {itemsPerPage: 5,currentPage: p}">
         <td>{{sondage.title}}</td>
         <td>{{sondage.author}}</td>
         <td>{{sondage.expirationDate}}</td>
-        <mat-icon (click)="consSond(sondage)" aria-hidden="false" aria-label="Example home icon">done</mat-icon>
+        <td>
+          <mat-icon (click)="consSond(sondage)" aria-hidden="false" aria-label="Example home icon">done</mat-icon>
+        </td>
       </tr>
     </tbody>
   </table>
+  <div class="pagination">
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
 </div>
 
 <!--

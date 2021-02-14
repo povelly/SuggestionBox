@@ -13,6 +13,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { MatDialogModule } from '@angular/material/dialog';
 import { ErrorConfirmComponent } from './error-confirm/error-confirm.component';
 import { GuardeGuard } from '../shared/services/guarde.guard';
+import {NgxPaginationModule} from 'ngx-pagination'
 
 const routes: Routes = [
   { path: 'login', component:LoginFormComponent},
@@ -31,6 +32,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     RouterModule.forChild(routes),
     MatDialogModule,
+    NgxPaginationModule,
   ],
   
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]

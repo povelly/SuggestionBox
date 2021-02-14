@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, NgForm, FormBuilder, Validators } from '@angular/forms';
 import { resMod } from 'src/app/shared/models/resMod-model';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reset',
@@ -13,7 +14,7 @@ export class ResetComponent implements OnInit {
   resmod1:resMod;
   myForm: FormGroup;
 
-  constructor(private authService: AuthService, private fb: FormBuilder) { }
+  constructor(private authService: AuthService, private fb: FormBuilder,private router: Router) { }
 
   ngOnInit(): void{
     this.myForm = this.fb.group({
@@ -32,7 +33,8 @@ export class ResetComponent implements OnInit {
       error: err => console.log(err)
     };
     this.resmod1 = new resMod(f2.value.username)
-    this.authService.reset(this.resmod1).then(/*loginObserver*/);
+    this.authService.reset(this.resmod1).then(()=>{this.router.navigate(['/login']);
+    sessionStorage.clear();});
 
   }
 
