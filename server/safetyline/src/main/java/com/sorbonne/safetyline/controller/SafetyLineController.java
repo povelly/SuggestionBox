@@ -98,22 +98,24 @@ public class SafetyLineController {
     	String res = null;
     	try{
     		if(user.getFirstName() == null || user.getLastName() == null) throw new InvalidFormException();
-    		userService.addUser(userId, user.getFirstName(), user.getLastName(), true);
+    		userService.addUser(userId, user.getFirstName(), user.getLastName(), user.isAdmin());
     	} catch (UsernameAlreadyExists e) {
             res = "Username already exists";
             LOGGER.error(res);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
             
         } catch (InvalidFormException e) {
             res = "Invalid form";
             LOGGER.error(res);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
 
         } catch(Exception e) {
     	    res = "exception occured";
     	    LOGGER.error(res);
-
-        } finally {
-    	    return new ResponseEntity<>(res, HttpStatus.OK);
+    	    return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    	
+    	return new ResponseEntity<>(res, HttpStatus.OK);
     }
     
     /**
