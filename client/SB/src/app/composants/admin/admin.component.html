@@ -12,7 +12,7 @@
         </li>
         <li><a (click)="boutonSondages()" type="button" class="btn btn-primary">Consultation des sondages</a></li>
         <li><a (click)="boutonSuggestions()" type="button" class="btn btn-primary">Consultation des suggestions</a></li>
-        <li><a (click)="boutonSupp()" type="button" class="btn btn-primary">Remerciment d'un collaborateur</a></li>
+        <li><a (click)="boutonSupp()" type="button" class="btn btn-primary">Remerciement d'un collaborateur</a></li>
         <li><a (click)="boutonCreation()" type="button" class="btn btn-primary">Ajout d'un salarié</a></li>
         <li style="float: left"><a href="/home">SafetyLine</a></li>
     </ul>
@@ -21,7 +21,7 @@
 <div *ngIf="modeCreation">
     <div class="login-form">
         <div class="login-content">
-            <div class="titre">Ajoutez un utilisateur:</div>
+            <div class="titre">Ajoutez un utilisateur :</div>
             <form [formGroup]="myForm" (ngSubmit)="creation(myForm)">
 
                 <div class="form-group">
@@ -54,7 +54,7 @@
 </div>
 
 <div *ngIf="modeSupp">
-    <div class="titre">Utilisateurs:</div>
+    <div class="titre">Utilisateurs :</div>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -83,7 +83,7 @@
 </div>
 
 <div *ngIf="modeSuggestions">
-    <div class="titre">Suggestions:</div>
+    <div class="titre">Suggestions :</div>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -122,7 +122,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <th>Nombre de votes:</th>
+                    <th>Nombre de votes :</th>
                     <td *ngFor="let res of resSondage.choices">
                         {{res.votersCount}}
                     </td>
@@ -130,7 +130,7 @@
             </tbody>
         </table>
     </div>
-    <div class="titre">Sondages:</div>
+    <div class="titre">Sondages :</div>
     <table class="table table-bordered">
         <thead>
             <tr>
