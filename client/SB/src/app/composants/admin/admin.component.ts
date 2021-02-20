@@ -29,6 +29,8 @@ export class AdminComponent implements OnInit {
   addusrmod1: addUsrMod;
 
   p: Number = 1
+  p1: Number = 1
+  p2: Number = 1
 
   constructor(private router: Router, private authService: AuthService, private fb: FormBuilder, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private dialogService: DialogService) {
 

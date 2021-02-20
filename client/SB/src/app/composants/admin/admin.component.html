@@ -94,7 +94,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let suggestion of suggestions | paginate : {itemsPerPage: 5,currentPage: p}">
+            <tr *ngFor="let suggestion of suggestions | paginate : {itemsPerPage: 5,currentPage: p1}">
                 <td>{{suggestion.content}}</td>
                 <td>{{suggestion.author}}</td>
                 <td>{{suggestion.begin}}</td>
@@ -104,7 +104,7 @@
         </tbody>
     </table>
     <div class="pagination">
-        <pagination-controls (pageChange)="p = $event" ></pagination-controls>     
+        <pagination-controls (pageChange)="p1 = $event" ></pagination-controls>     
     </div>
 </div>
 
@@ -142,7 +142,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let sondage of resSondages | paginate : {itemsPerPage: 5,currentPage: p}">
+            <tr *ngFor="let sondage of resSondages | paginate : {itemsPerPage: 5,currentPage: p2}">
                 <td>{{sondage.title}}</td>
                 <td>{{sondage.author}}</td>
                 <td>{{sondage.expirationDate}}</td>
@@ -154,7 +154,7 @@
         </tbody>
     </table>
     <div class="pagination">
-        <pagination-controls (pageChange)="p = $event" ></pagination-controls>     
+        <pagination-controls (pageChange)="p2 = $event" ></pagination-controls>     
     </div>
     <button routerLink="/sondage" type="button" class="btn btn-primary">Créer un nouveau sondage</button>
 </div>
